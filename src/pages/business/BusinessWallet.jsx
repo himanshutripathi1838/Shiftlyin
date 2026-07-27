@@ -409,7 +409,7 @@ Thank you for using Shiftlyin Platform Services.
           </div>
 
           <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}>
+            <table className="business-wallet-table" style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}>
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>
                   <th style={{ padding: "12px" }}>Date</th>
@@ -425,12 +425,12 @@ Thank you for using Shiftlyin Platform Services.
               <tbody>
                 {filteredSettlements.map((item) => (
                   <tr key={item.id} style={{ borderBottom: "1px solid var(--border)" }}>
-                    <td style={{ padding: "12px" }}>
+                    <td data-label="Date" style={{ padding: "12px" }}>
                       {item.createdAt ? new Date(item.createdAt.seconds ? item.createdAt.seconds * 1000 : item.createdAt).toLocaleDateString() : "Today"}
                     </td>
-                    <td style={{ padding: "12px", fontWeight: "700" }}>{item.jobId}</td>
-                    <td style={{ padding: "12px" }}>{item.studentName || "Verified Worker"}</td>
-                    <td style={{ padding: "12px" }}>
+                    <td data-label="Job ID" style={{ padding: "12px", fontWeight: "700" }}>{item.jobId}</td>
+                    <td data-label="Student Name" style={{ padding: "12px" }}>{item.studentName || "Verified Worker"}</td>
+                    <td data-label="Payment Mode" style={{ padding: "12px" }}>
                       <span style={{ 
                         background: item.paymentMode === "cash" ? "#fff7ed" : "#ecfdf5", 
                         color: item.paymentMode === "cash" ? "#c2410c" : "#047857",
@@ -442,9 +442,9 @@ Thank you for using Shiftlyin Platform Services.
                         {item.paymentMode === "cash" ? "💵 Cash" : "💳 Online"}
                       </span>
                     </td>
-                    <td style={{ padding: "12px", fontWeight: "700" }}>{formatCurrency(item.jobAmount)}</td>
-                    <td style={{ padding: "12px", color: "var(--primary)", fontWeight: "700" }}>{formatCurrency(item.commissionAmount)}</td>
-                    <td style={{ padding: "12px" }}>
+                    <td data-label="Job Amount" style={{ padding: "12px", fontWeight: "700" }}>{formatCurrency(item.jobAmount)}</td>
+                    <td data-label="Commission (10%)" style={{ padding: "12px", color: "var(--primary)", fontWeight: "700" }}>{formatCurrency(item.commissionAmount)}</td>
+                    <td data-label="Status" style={{ padding: "12px" }}>
                       <span style={{ 
                         background: item.status === "paid" ? "#ecfdf5" : "#fef2f2", 
                         color: item.status === "paid" ? "#047857" : "#b91c1c",
@@ -456,7 +456,7 @@ Thank you for using Shiftlyin Platform Services.
                         {item.status === "paid" ? "Paid ✅" : "Pending ⏳"}
                       </span>
                     </td>
-                    <td style={{ padding: "12px" }}>
+                    <td data-label="Actions" style={{ padding: "12px" }}>
                       <div style={{ display: "flex", gap: "6px" }}>
                         <button 
                           className="ghost-button" 

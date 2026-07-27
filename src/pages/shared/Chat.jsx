@@ -81,7 +81,10 @@ export default function Chat() {
     return onSnapshot(query(collection(db, "chats"), where(field, "==", currentUser.uid)), (snapshot) => {
       const nextChats = snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
       setChats(nextChats);
-      setSelectedChatId((current) => current || nextChats[0]?.id || "");
+      // Auto-select first chat only on desktop screens
+      if (window.innerWidth > 768) {
+        setSelectedChatId((current) => current || nextChats[0]?.id || "");
+      }
     });
   }, [currentUser.uid, profile.role]);
 
@@ -98,7 +101,7 @@ export default function Chat() {
           </div>
         </div>
         <div className="chat-layout">
-          <aside className="chat-list">
+          <aside className={`chat-list ${selectedChatId ? "hidden-mobile" : ""}`}>
             {chats.map((chat) => (
               <ChatListItem
                 key={chat.id}
@@ -110,7 +113,9 @@ export default function Chat() {
             ))}
             {chats.length === 0 && <p className="empty-state">No unlocked chats yet.</p>}
           </aside>
-          <ChatBox chat={selectedChat} />
+          <div className={`chat-box-wrapper ${!selectedChatId ? "hidden-mobile" : ""}`} style={{ width: "100%" }}>
+            <ChatBox chat={selectedChat} onBack={() => setSelectedChatId("")} />
+          </div>
         </div>
       </section>
     </main>

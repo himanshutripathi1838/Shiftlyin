@@ -162,7 +162,7 @@ export default function AdminSettlements() {
           <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "16px", padding: "20px" }}>
             <h3 style={{ fontSize: "16px", fontWeight: "800", marginBottom: "16px" }}>Business Settlement Status & Actions</h3>
             <div style={{ overflowX: "auto" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}>
+              <table className="admin-settlements-table" style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}>
                 <thead>
                   <tr style={{ borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>
                     <th style={{ padding: "12px" }}>Business Name</th>
@@ -177,12 +177,12 @@ export default function AdminSettlements() {
                 <tbody>
                   {adminList.map((biz) => (
                     <tr key={biz.id} style={{ borderBottom: "1px solid var(--border)" }}>
-                      <td style={{ padding: "12px", fontWeight: "700" }}>{biz.businessName}</td>
-                      <td style={{ padding: "12px", color: biz.outstanding > 0 ? "#ef4444" : "#10b981", fontWeight: "800" }}>₹{biz.outstanding}</td>
-                      <td style={{ padding: "12px", fontWeight: "700" }}>₹{biz.completed}</td>
-                      <td style={{ padding: "12px" }}>{biz.pending} Pending</td>
-                      <td style={{ padding: "12px" }}>{biz.lastPayment}</td>
-                      <td style={{ padding: "12px" }}>
+                      <td data-label="Business Name" style={{ padding: "12px", fontWeight: "700" }}>{biz.businessName}</td>
+                      <td data-label="Outstanding Amount" style={{ padding: "12px", color: biz.outstanding > 0 ? "#ef4444" : "#10b981", fontWeight: "800" }}>₹{biz.outstanding}</td>
+                      <td data-label="Completed Amount" style={{ padding: "12px", fontWeight: "700" }}>₹{biz.completed}</td>
+                      <td data-label="Pending Count" style={{ padding: "12px" }}>{biz.pending} Pending</td>
+                      <td data-label="Last Settlement" style={{ padding: "12px" }}>{biz.lastPayment}</td>
+                      <td data-label="Posting Status" style={{ padding: "12px" }}>
                         <span style={{ 
                           background: biz.isPostingBlocked ? "#fef2f2" : "#ecfdf5", 
                           color: biz.isPostingBlocked ? "#991b1b" : "#065f46",
@@ -194,7 +194,7 @@ export default function AdminSettlements() {
                           {biz.isPostingBlocked ? "🔒 Suspended (>₹5k)" : "✅ Active Allowed"}
                         </span>
                       </td>
-                      <td style={{ padding: "12px" }}>
+                      <td data-label="Actions" style={{ padding: "12px" }}>
                         <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                           <button className="ghost-button" onClick={() => setSelectedBusiness(biz)} style={{ padding: "4px 8px", fontSize: "11px", minHeight: "28px" }}>
                             Details

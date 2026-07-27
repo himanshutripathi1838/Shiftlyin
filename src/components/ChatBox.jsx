@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { db } from "../services/firebase.js";
 
-export default function ChatBox({ chat }) {
+export default function ChatBox({ chat, onBack }) {
   const { currentUser, profile } = useAuth();
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
@@ -90,11 +90,31 @@ export default function ChatBox({ chat }) {
     <div className="chat-box-container" style={{ display: "flex", width: "100%", height: "100%", gap: "20px", alignItems: "stretch" }}>
       <section className="chat-box" style={{ flex: 1, display: "flex", flexDirection: "column", height: "100%" }}>
         <div className="chat-header" style={{ padding: "12px 16px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", background: "var(--surface-soft)", borderRadius: "8px 8px 0 0" }}>
-          <div>
-            <h3 style={{ margin: 0, fontSize: "16px", fontWeight: "600" }}>{counterparty?.name || "Loading..."}</h3>
-            <span style={{ fontSize: "12px", color: "var(--muted)" }}>
-              {counterparty?.role === "business" ? "Business Owner" : "Student"}
-            </span>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            {onBack && (
+              <button 
+                onClick={onBack} 
+                className="chat-back-btn" 
+                style={{ 
+                  background: "none", 
+                  border: "none", 
+                  cursor: "pointer", 
+                  fontSize: "18px", 
+                  padding: "0 8px 0 0", 
+                  color: "var(--primary)", 
+                  fontWeight: "900"
+                }}
+                aria-label="Back to chat list"
+              >
+                ←
+              </button>
+            )}
+            <div>
+              <h3 style={{ margin: 0, fontSize: "16px", fontWeight: "600" }}>{counterparty?.name || "Loading..."}</h3>
+              <span style={{ fontSize: "12px", color: "var(--muted)" }}>
+                {counterparty?.role === "business" ? "Business Owner" : "Student"}
+              </span>
+            </div>
           </div>
           {counterparty?.phone && (
             <a 

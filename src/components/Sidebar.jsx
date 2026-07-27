@@ -3,6 +3,7 @@ import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { db } from "../services/firebase.js";
+import { Home, Briefcase, Calendar, Wallet, MessageSquare, User, PlusSquare, BarChart2, Users } from "lucide-react";
 
 const items = {
   student: [
@@ -27,6 +28,19 @@ const items = {
     ["Reports", "/admin"],
     ["Users", "/admin"]
   ]
+};
+
+const iconMap = {
+  "Dashboard": Home,
+  "Applications": Briefcase,
+  "Attendance": Calendar,
+  "Earnings": Wallet,
+  "Wallet & Settlement": Wallet,
+  "Chat": MessageSquare,
+  "Profile": User,
+  "Post Job": PlusSquare,
+  "Reports": BarChart2,
+  "Users": Users
 };
 
 import logoImg from "../assets/logo.png";
@@ -91,29 +105,35 @@ export default function Sidebar({ role = "student" }) {
         </div>
       </div>
       <p className="sidebar-label">{role === "business" ? "owner menu" : `${role} menu`}</p>
-      {items[role]?.map(([label, to]) => (
-        <NavLink key={label} to={to} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
-          <span>{label}</span>
-          {label === "Chat" && totalUnread > 0 && (
-            <span style={{ 
-              background: "#ef4444", 
-              color: "white", 
-              fontSize: "10px", 
-              fontWeight: "bold", 
-              borderRadius: "50%", 
-              minWidth: "18px", 
-              height: "18px", 
-              padding: "0 5px",
-              display: "flex", 
-              alignItems: "center", 
-              justifyContent: "center",
-              marginLeft: "8px"
-            }}>
-              {totalUnread}
-            </span>
-          )}
-        </NavLink>
-      ))}
+      {items[role]?.map(([label, to]) => {
+        const IconComponent = iconMap[label] || Briefcase;
+        return (
+          <NavLink key={label} to={to} className="sidebar-link">
+            <div className="sidebar-link-inner" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <IconComponent className="sidebar-icon" size={18} />
+              <span className="sidebar-text">{label}</span>
+            </div>
+            {label === "Chat" && totalUnread > 0 && (
+              <span style={{ 
+                background: "#ef4444", 
+                color: "white", 
+                fontSize: "10px", 
+                fontWeight: "bold", 
+                borderRadius: "50%", 
+                minWidth: "18px", 
+                height: "18px", 
+                padding: "0 5px",
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center",
+                marginLeft: "8px"
+              }}>
+                {totalUnread}
+              </span>
+            )}
+          </NavLink>
+        );
+      })}
     </aside>
   );
 }
