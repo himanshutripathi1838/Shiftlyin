@@ -182,7 +182,7 @@ export default function Home() {
       <section className="landing-section" id="businesses" style={{ padding: "40px 2rem" }}>
         <div style={{ textAlign: "center", marginBottom: "30px" }}>
           <span className="eyebrow" style={{ display: "inline-flex" }}>Trusted partners</span>
-          <h2 style={{ fontSize: "28px", fontWeight: "800", marginTop: "8px" }}>Top Businesses Hiring on Shiftlyin</h2>
+          <h2 className="section-title" style={{ fontWeight: "800", marginTop: "8px" }}>Top Businesses Hiring on Shiftlyin</h2>
         </div>
         <div className="logo-carousel-container">
           <div className="logo-carousel-track">
@@ -199,7 +199,7 @@ export default function Home() {
       <section className="landing-section" id="how-it-works" style={{ padding: "60px 2rem" }}>
         <div style={{ textAlign: "center", marginBottom: "50px" }}>
           <span className="eyebrow" style={{ display: "inline-flex" }}>Workflow</span>
-          <h2 style={{ fontSize: "36px", fontWeight: "800", marginTop: "8px" }}>How Shiftlyin Works</h2>
+          <h2 className="section-title" style={{ fontWeight: "800", marginTop: "8px" }}>How Shiftlyin Works</h2>
         </div>
         <div className="how-works-grid">
           {[
@@ -229,7 +229,7 @@ export default function Home() {
       <section className="landing-section" style={{ padding: "60px 2rem" }}>
         <div style={{ textAlign: "center", marginBottom: "50px" }}>
           <span className="eyebrow" style={{ display: "inline-flex" }}>Key features</span>
-          <h2 style={{ fontSize: "36px", fontWeight: "800", marginTop: "8px" }}>Engineered for Gig Workers</h2>
+          <h2 className="section-title" style={{ fontWeight: "800", marginTop: "8px" }}>Engineered for Gig Workers</h2>
         </div>
         <div className="features-grid">
           {[
@@ -261,7 +261,7 @@ export default function Home() {
       <section className="landing-section" style={{ padding: "60px 2rem" }}>
         <div style={{ textAlign: "center", marginBottom: "50px" }}>
           <span className="eyebrow" style={{ display: "inline-flex" }}>Explore gigs</span>
-          <h2 style={{ fontSize: "36px", fontWeight: "800", marginTop: "8px" }}>Popular Job Categories</h2>
+          <h2 className="section-title" style={{ fontWeight: "800", marginTop: "8px" }}>Popular Job Categories</h2>
         </div>
         <div className="categories-grid">
           {categories.map((cat) => (
@@ -284,7 +284,7 @@ export default function Home() {
       <section className="landing-section hero-split" id="about" style={{ padding: "80px 2rem" }}>
         <div style={{ order: 2 }}>
           <span className="eyebrow">Platform advantages</span>
-          <h2 style={{ fontSize: "36px", fontWeight: "800", margin: "12px 0 20px" }}>Why Choose Shiftlyin</h2>
+          <h2 className="section-title" style={{ fontWeight: "800", margin: "12px 0 20px" }}>Why Choose Shiftlyin</h2>
           <ul style={{ listStyle: "none", padding: 0, display: "grid", gap: "16px" }}>
             {[
               { t: "Instant Hiring", d: "Fill empty vacancies in under 30 minutes." },
@@ -304,7 +304,7 @@ export default function Home() {
             ))}
           </ul>
         </div>
-        <div style={{ background: "var(--surface-soft)", borderRadius: "var(--radius-xl)", padding: "40px", display: "flex", flexDirection: "column", gap: "24px", order: 1 }}>
+        <div style={{ background: "var(--surface-soft)", borderRadius: "var(--radius-xl)", padding: "clamp(20px, 6vw, 40px)", display: "flex", flexDirection: "column", gap: "24px", order: 1 }}>
           <div style={{ padding: "20px", background: "var(--surface)", borderRadius: "12px", boxShadow: "var(--shadow-sm)" }}>
             <span style={{ background: "rgba(37,99,235,0.1)", color: "var(--primary)", padding: "4px 8px", borderRadius: "6px", fontSize: "11px", fontWeight: "700" }}>STUDENTS</span>
             <p style={{ margin: "10px 0 0", fontSize: "14px", lineHeight: "1.5" }}>"I can easily fund my fees and weekend food bills without getting tied down by full-time hours."</p>
@@ -338,7 +338,7 @@ export default function Home() {
         <span className="eyebrow" style={{ display: "inline-flex" }}>Testimonials</span>
         <h2 style={{ fontSize: "36px", fontWeight: "800", margin: "8px 0 40px" }}>Reviews from Shiftlyiners</h2>
         
-        <div style={{ maxWidth: "700px", margin: "0 auto", minHeight: "220px", display: "flex", flexDirection: "column", justifyContent: "center", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-xl)", padding: "40px", boxShadow: "var(--shadow)", position: "relative" }}>
+        <div style={{ maxWidth: "700px", margin: "0 auto", minHeight: "220px", display: "flex", flexDirection: "column", justifyContent: "center", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-xl)", padding: "clamp(20px, 6vw, 40px)", boxShadow: "var(--shadow)", position: "relative" }}>
           <div style={{ fontSize: "28px", color: "var(--primary)", marginBottom: "15px" }}>★★★★★</div>
           <p style={{ fontSize: "1.15rem", lineHeight: "1.6", fontStyle: "italic", margin: 0 }}>
             "{testimonials[activeTestimonial].text}"
@@ -374,7 +374,7 @@ export default function Home() {
       <section className="landing-section" id="faq" style={{ padding: "60px 2rem", maxWidth: "800px" }}>
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
           <span className="eyebrow" style={{ display: "inline-flex" }}>FAQ</span>
-          <h2 style={{ fontSize: "36px", fontWeight: "800", marginTop: "8px" }}>Frequently Asked Questions</h2>
+          <h2 className="section-title" style={{ fontWeight: "800", marginTop: "8px" }}>Frequently Asked Questions</h2>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
           {faqs.map((faq, idx) => {
