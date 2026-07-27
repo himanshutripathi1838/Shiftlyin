@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Google Search Console Verification -->
+    <meta name="google-site-verification" content="%VITE_GOOGLE_SITE_VERIFICATION%" />
+
+    <!-- Google Analytics (gtag.js) & Google Tag Manager -->
+    <script>
+      (function() {
+        const gaId = "%VITE_GA_MEASUREMENT_ID%";
+        const gtmId = "%VITE_GTM_ID%";
+
+        if (gaId && gaId !== "%" + "VITE_GA_MEASUREMENT_ID%" && gaId.trim() !== "") {
+          const script = document.createElement("script");
+          script.async = true;
+          script.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
+          document.head.appendChild(script);
+
+          window.dataLayer = window.dataLayer || [];
+          function gtag() { dataLayer.push(arguments); }
+          window.gtag = gtag;
+          gtag("js", new Date());
+          gtag("config", gaId);
+        }
+
+        if (gtmId && gtmId !== "%" + "VITE_GTM_ID%" && gtmId.trim() !== "") {
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer',gtmId);
+        }
+      })();
+    </script>
+    
+    <title>Shiftlyin | Find Jobs. Fit Future.</title>
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <script>
+      (function() {
+        const gtmId = "%VITE_GTM_ID%";
+        if (gtmId && gtmId !== "%" + "VITE_GTM_ID%" && gtmId.trim() !== "") {
+          const iframe = document.createElement("iframe");
+          iframe.src = "https://www.googletagmanager.com/ns.html?id=" + gtmId;
+          iframe.height = "0";
+          iframe.width = "0";
+          iframe.style.display = "none";
+          iframe.style.visibility = "hidden";
+          
+          const noscript = document.createElement("noscript");
+          noscript.appendChild(iframe);
+          document.body.insertBefore(noscript, document.body.firstChild);
+        }
+      })();
+    </script>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -1,0 +1,536 @@
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1rem;
+}
+
+.job-card,
+.application-card {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  box-shadow: var(--shadow-sm);
+  padding: 1.1rem;
+  min-width: 0;
+}
+
+.job-card {
+  grid-template-rows: auto auto minmax(48px, auto) auto auto;
+  border-bottom-width: 3px;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.job-card::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 6px;
+  background: repeating-linear-gradient(90deg, var(--primary) 0 34px, var(--signal) 34px 46px);
+  content: "";
+}
+
+.job-card:hover {
+  border-color: var(--ink);
+  box-shadow: var(--hard-shadow);
+  transform: translate(-2px, -2px);
+}
+
+.job-card-deck {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  overflow: hidden;
+  padding: 1.5rem 0 0.25rem;
+}
+
+.job-fan {
+  position: relative;
+  width: min(100%, 980px);
+  height: 390px;
+}
+
+.job-fan-item {
+  position: absolute;
+  top: 1.5rem;
+  left: 50%;
+  width: min(360px, calc(100vw - 3rem));
+  z-index: var(--card-order);
+  opacity: 1;
+  transform: translateX(calc(-50% + var(--card-x))) translateY(var(--card-y)) rotate(var(--card-rotation)) scale(var(--card-scale));
+  transform-origin: 50% 100%;
+  transition: transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 250ms ease, filter 250ms ease;
+}
+
+.job-fan-item[aria-hidden="true"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.job-fan-item:not(.active) {
+  cursor: pointer;
+  filter: saturate(0.8) brightness(0.92);
+}
+
+.job-fan-item:not(.active):hover {
+  filter: none;
+  transform: translateX(calc(-50% + var(--card-x))) translateY(calc(var(--card-y) - 8px)) rotate(var(--card-rotation)) scale(calc(var(--card-scale) + 0.02));
+}
+
+.job-fan-item.active .job-card {
+  border-color: var(--ink);
+  box-shadow: 8px 8px 0 var(--ink), 0 24px 55px rgba(16, 32, 28, 0.16);
+}
+
+.job-fan-item .job-card {
+  min-height: 330px;
+  background: var(--surface);
+}
+
+.job-card-title {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.job-card-title > div {
+  min-width: 0;
+}
+
+.job-card-title h3 {
+  overflow-wrap: anywhere;
+}
+
+.job-card-title > div > span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.job-business-mark {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 2px solid currentColor;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--surface-soft) 82%, var(--signal));
+  color: var(--primary);
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.job-card.compact .card-actions {
+  visibility: hidden;
+}
+
+.job-deck-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.deck-arrow {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--muted);
+  box-shadow: var(--shadow-sm);
+}
+
+.deck-arrow:hover,
+.deck-arrow:focus-visible {
+  border-color: var(--primary);
+  color: var(--primary);
+  outline: none;
+}
+
+.deck-arrow svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.deck-dots {
+  max-width: min(360px, 60vw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  overflow: hidden;
+}
+
+.deck-dots button {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--border);
+  padding: 0;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.deck-dots button.active {
+  background: var(--primary);
+  transform: scale(1.4);
+}
+
+.student-view .job-card {
+  border-color: #bde7dd;
+}
+
+.owner-view .job-card {
+  border-color: #f6d28d;
+}
+
+.job-card h3,
+.application-card h3,
+.panel h2 {
+  margin: 0;
+}
+
+.job-card p,
+.application-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.card-topline,
+.job-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+  flex-wrap: wrap;
+}
+
+.status-pill {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  border: 1px solid currentColor;
+  border-radius: 5px;
+  background: var(--surface-soft);
+  color: var(--primary);
+  padding: 0.35rem 0.65rem;
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.status-pill.urgent {
+  background: repeating-linear-gradient(-45deg, #fff3d6 0 7px, #ffe8ad 7px 14px);
+  color: #965a00;
+}
+
+.status-pill.expired {
+  border-color: #9f2d24;
+  background: #fff0ee;
+  color: #9f2d24;
+}
+
+.status-pill.success {
+  border-color: #0f766e;
+  background: #e8f8f3;
+  color: #0f766e;
+}
+
+.payment-card {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.payment-actions {
+  display: grid;
+  justify-items: end;
+  gap: 0.65rem;
+}
+
+.payment-actions strong {
+  font-size: 1.4rem;
+  color: var(--ink);
+}
+
+.job-card.expired-card {
+  border-color: #d8aaa5;
+  background: color-mix(in srgb, var(--surface) 88%, #fff0ee);
+  filter: saturate(0.72);
+}
+
+.job-card.expired-card::before {
+  background: repeating-linear-gradient(90deg, #9f2d24 0 34px, #d8aaa5 34px 46px);
+}
+
+.list-stack {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.notification-item {
+  display: grid;
+  gap: 0.25rem;
+  border-top: 1px solid var(--border);
+  padding: 0.8rem 0 0;
+}
+
+.notification-item span {
+  color: var(--muted);
+}
+
+.live-location-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.live-location-list {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.live-location-card {
+  display: grid;
+  gap: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fffdf7;
+  padding: 1rem;
+}
+
+.live-location-summary {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.live-map-visual {
+  position: relative;
+  min-height: 92px;
+  overflow: hidden;
+  border: 1px solid #cddfda;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(15, 118, 110, 0.11) 25%, transparent 25%) 0 0 / 24px 24px,
+    linear-gradient(135deg, transparent 75%, rgba(245, 158, 11, 0.16) 75%) 0 0 / 24px 24px,
+    #f8faf5;
+}
+
+.map-pin {
+  position: absolute;
+  z-index: 2;
+  width: 18px;
+  height: 18px;
+  border: 3px solid #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 0 0 2px #111827;
+}
+
+.student-pin {
+  left: 22px;
+  bottom: 18px;
+  background: #0f766e;
+}
+
+.restaurant-pin {
+  top: 18px;
+  right: 22px;
+  background: #f59e0b;
+}
+
+.map-route-line {
+  position: absolute;
+  left: 42px;
+  right: 42px;
+  top: 45px;
+  height: 3px;
+  background: repeating-linear-gradient(90deg, #111827 0 12px, transparent 12px 20px);
+  transform: rotate(-23deg);
+  transform-origin: center;
+}
+
+.live-location-copy {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.live-location-copy h3,
+.live-location-copy p {
+  margin: 0;
+}
+
+.live-location-copy small,
+.live-location-actions span,
+.live-location-help {
+  color: var(--muted);
+}
+
+.live-location-actions {
+  display: grid;
+  justify-items: end;
+  gap: 0.65rem;
+  text-align: right;
+}
+
+.live-location-help {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.inline-map-frame {
+  overflow: hidden;
+  border: 2px solid #111827;
+  border-radius: 8px;
+  box-shadow: 6px 6px 0 rgba(17, 24, 39, 0.18);
+  background: #eef2f7;
+}
+
+.inline-map-frame iframe {
+  display: block;
+  width: 100%;
+  height: 340px;
+  border: 0;
+}
+
+.compact-heading h2 {
+  margin: 0.2rem 0 0;
+  font-size: 1.35rem;
+}
+
+.application-card {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.detail-panel {
+  width: min(900px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 1rem;
+}
+
+.detail-panel h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.messages {
+  height: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  overflow: auto;
+  padding-right: 0.2rem;
+}
+
+.messages.demo-messages {
+  height: auto;
+  min-height: 120px;
+}
+
+.demo-action {
+  width: fit-content;
+}
+
+.messages p {
+  width: fit-content;
+  max-width: 75%;
+  margin: 0;
+  border-radius: 8px;
+  background: var(--surface-soft);
+  padding: 0.75rem 0.9rem;
+}
+
+.messages p.mine {
+  align-self: flex-end;
+  background: var(--primary);
+  color: white;
+}
+
+.chat-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.rating-inline {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) auto;
+  gap: 0.75rem;
+}
+
+@media (max-width: 560px) {
+  .application-card,
+  .chat-form,
+  .rating-inline,
+  .payment-card {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-actions {
+    justify-items: start;
+  }
+
+  .card-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .job-card-deck {
+    padding-top: 0.5rem;
+  }
+
+  .job-fan {
+    height: 400px;
+  }
+
+  .job-fan-item {
+    top: 0.5rem;
+    width: calc(100vw - 3rem);
+    transform: translateX(-50%) scale(var(--card-scale));
+  }
+
+  .job-fan-item:not(.active) {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .job-fan-item .job-card {
+    min-height: 350px;
+  }
+
+  .live-location-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .live-location-actions {
+    justify-items: start;
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .job-fan-item {
+    transition: none;
+  }
+}
