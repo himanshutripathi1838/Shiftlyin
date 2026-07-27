@@ -1,4 +1,5 @@
-# HUSTLR
+# Shiftlyin
+
 
 HUSTLR is a React + Vite + Firebase job portal for college students and local businesses. Students can discover part-time jobs, apply for shifts, check in with GPS, and build ratings. Restaurant owners and local businesses can post jobs, review applications, accept or reject students, track vacancies, and manage attendance.
 
