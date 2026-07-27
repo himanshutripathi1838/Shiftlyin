@@ -10,6 +10,9 @@ export default function Navbar() {
   const location = useLocation();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
 
   useEffect(() => {
     // Close mobile menu on route change
