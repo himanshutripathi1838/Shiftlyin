@@ -479,7 +479,7 @@
   gap: 0.75rem;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 767px) {
   .application-card,
   .chat-form,
   .rating-inline,
