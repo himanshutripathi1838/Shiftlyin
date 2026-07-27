@@ -81,7 +81,7 @@ export default function Sidebar({ role = "student" }) {
 
   return (
     <aside className="sidebar">
-      <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 14px 20px 14px", borderBottom: "1px solid var(--border)", marginBottom: "15px" }}>
+      <div className="sidebar-brand-wrapper" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 14px 20px 14px", borderBottom: "1px solid var(--border)", marginBottom: "15px" }}>
         <img src={logoImg} alt="Shiftlyin Logo" style={{ width: "32px", height: "32px", objectFit: "contain", borderRadius: "5px" }} />
         <div>
           <strong style={{ display: "block", fontSize: "14px", color: "var(--text)" }}>Shiftlyin</strong>

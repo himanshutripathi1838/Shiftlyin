@@ -9,9 +9,12 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
-  });
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    // Close mobile menu on route change
+    setIsMenuOpen(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (darkMode) {
@@ -29,6 +32,7 @@ export default function Navbar() {
   }
 
   function handleAnchorClick(event, anchorId) {
+    setIsMenuOpen(false);
     if (location.pathname === "/") {
       event.preventDefault();
       const element = document.getElementById(anchorId);
@@ -48,7 +52,18 @@ export default function Navbar() {
         </span>
       </Link>
 
-      <nav className="nav-actions" style={{ display: "flex", gap: "24px", alignItems: "center" }}>
+      <button 
+        type="button"
+        className={`hamburger-btn ${isMenuOpen ? "open" : ""}`}
+        onClick={() => setIsMenuOpen((prev) => !prev)}
+        aria-label="Toggle navigation menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav className={`nav-actions ${isMenuOpen ? "is-active" : ""}`} style={{ display: "flex", gap: "24px", alignItems: "center" }}>
         <a href="/#jobs" onClick={(e) => handleAnchorClick(e, "jobs")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "14px" }}>Jobs</a>
         <a href="/#businesses" onClick={(e) => handleAnchorClick(e, "businesses")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "14px" }}>Businesses</a>
         <a href="/#how-it-works" onClick={(e) => handleAnchorClick(e, "how-it-works")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "14px" }}>How It Works</a>

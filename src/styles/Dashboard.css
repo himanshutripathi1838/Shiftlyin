@@ -411,6 +411,10 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .sidebar-brand-wrapper {
+    grid-column: 1 / -1;
+  }
+
   .sidebar-label {
     grid-column: 1 / -1;
   }
