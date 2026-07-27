@@ -111,7 +111,7 @@ export default function Home() {
           <span className="eyebrow animate-pulse-subtle" style={{ display: "inline-block", background: "rgba(37,99,235,0.08)", color: "var(--primary)", padding: "6px 16px", borderRadius: "30px", fontSize: "11px", fontWeight: "900", letterSpacing: "0.08em", textTransform: "uppercase" }}>
             🚀 Work Smart. Earn More.
           </span>
-          <h1 className="hero-heading gradient-text" style={{ fontWeight: "900", lineHeight: "1.05", margin: "20px 0", fontSize: "clamp(32px, 6.5vw, 64px)" }}>
+          <h1 className="hero-heading gradient-text" style={{ fontWeight: "900", lineHeight: "1.05", margin: "20px 0" }}>
             Find Part-Time <br />
             Jobs Near You
           </h1>
