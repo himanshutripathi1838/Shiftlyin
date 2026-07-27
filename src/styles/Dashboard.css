@@ -399,7 +399,7 @@
   color: var(--primary);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .dashboard-layout,
   .chat-layout,
   .admin-columns {
@@ -408,6 +408,72 @@
 
   .dashboard-layout {
     padding: 1rem !important;
+  }
+
+  .metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Tablet Layout (768px to 1023px) - Collapsible Sidebar (narrow icons only) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .dashboard-layout {
+    grid-template-columns: 72px minmax(0, 1fr) !important;
+    padding: 1.25rem !important;
+    gap: 1rem !important;
+  }
+
+  .sidebar {
+    position: sticky !important;
+    top: 88px !important;
+    width: 72px !important;
+    padding: 0.5rem !important;
+    align-items: center !important;
+    display: grid !important;
+    gap: 0.4rem !important;
+  }
+
+  .sidebar-brand-wrapper {
+    padding: 10px 0 !important;
+    justify-content: center !important;
+  }
+
+  .sidebar-brand-wrapper strong,
+  .sidebar-brand-wrapper small,
+  .sidebar-label {
+    display: none !important;
+  }
+
+  .sidebar-link {
+    padding: 10px 0 !important;
+    justify-content: center !important;
+    min-height: 44px !important;
+  }
+
+  .sidebar-link-inner {
+    justify-content: center !important;
+  }
+
+  .sidebar-text {
+    display: none !important; /* Hide text on tablet, show icon only */
+  }
+
+  .sidebar-icon {
+    width: 20px !important;
+    height: 20px !important;
+    display: block !important;
+    margin: 0 auto !important;
+  }
+
+  .dashboard-content {
+    padding-bottom: 40px !important;
+  }
+}
+
+/* Mobile Layout (320px to 767px) - Fixed Bottom Navigation Bar */
+@media (max-width: 767px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr !important;
   }
 
   .sidebar {
@@ -495,10 +561,6 @@
   .dashboard-content {
     padding-bottom: 85px !important; /* Make room for bottom nav */
   }
-
-  .metric-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
 }
 
 @media (max-width: 560px) {
@@ -522,7 +584,6 @@
   }
 
   .metric-grid,
-  .sidebar,
   .segmented.compact {
     grid-template-columns: 1fr;
   }
