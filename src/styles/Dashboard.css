@@ -611,3 +611,23 @@
     overflow-wrap: anywhere;
   }
 }
+
+@media (max-width: 480px) {
+  .dashboard-layout {
+    padding: 0.5rem !important;
+    gap: 0.75rem !important;
+  }
+  .sidebar {
+    height: 56px !important;
+  }
+  .sidebar-link {
+    font-size: 8px !important;
+    padding: 4px 0 !important;
+  }
+  .sidebar-text {
+    font-size: 8px !important;
+  }
+  .dashboard-content {
+    padding-bottom: 75px !important;
+  }
+}

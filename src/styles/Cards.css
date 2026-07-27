@@ -529,6 +529,21 @@
   }
 }
 
+@media (max-width: 480px) {
+  .job-card,
+  .application-card {
+    padding: 0.85rem !important;
+    gap: 0.65rem !important;
+  }
+  .card-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+  .job-fan {
+    height: 365px !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .job-fan-item {
     transition: none;
