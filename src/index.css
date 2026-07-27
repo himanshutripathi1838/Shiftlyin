@@ -146,14 +146,23 @@ textarea {
 }
 
 .hero-split {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: 60px;
   align-items: center;
 }
 
 .hero-split > * {
+  flex: 1 1 320px;
   min-width: 0;
+  max-width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .hero-split {
+    text-align: center;
+    gap: 30px;
+  }
 }
 
 .hero-illu-container {
@@ -384,24 +393,70 @@ textarea {
   background: var(--surface-soft);
 }
 
+/* Search bar — base (desktop/tablet) */
 .search-bar-container {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 16px 28px;
   box-shadow: var(--shadow);
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 20px;
-  align-items: center;
-  flex-wrap: wrap;
+  align-items: end;
+  padding: 20px 28px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .search-input-group {
-  flex: 1;
-  min-width: 200px;
+  min-width: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.search-input-group input,
+.search-input-group select {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Large phones / phablets (425–767px) — 2 columns */
+@media (max-width: 767px) {
+  .search-bar-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 18px 20px;
+    gap: 16px;
+  }
+}
+
+/* Standard phones (375–424px) — 1 column, fields aur bade */
+@media (max-width: 424px) {
+  .search-bar-container {
+    grid-template-columns: 1fr;
+    padding: 16px 16px;
+    gap: 14px;
+  }
+
+  .search-input-group input,
+  .search-input-group select {
+    font-size: 15px;
+    padding: 10px 0;
+  }
+}
+
+/* Chhote phones jaise iPhone SE (320–374px) */
+@media (max-width: 374px) {
+  .search-bar-container {
+    padding: 14px 12px;
+    gap: 12px;
+    border-radius: 16px;
+  }
+
+  .search-input-group label {
+    font-size: 10px;
+  }
 }
 
 .search-input-group label {
@@ -454,7 +509,6 @@ html, body, #root {
   }
 
   .hero-split {
-    grid-template-columns: 1fr !important;
     text-align: center !important;
     gap: 30px !important;
   }
