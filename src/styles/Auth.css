@@ -812,7 +812,7 @@
   width: 18px;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1024px) {
   .auth-shell,
   .form-grid {
     grid-template-columns: 1fr;
