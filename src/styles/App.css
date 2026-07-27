@@ -1289,3 +1289,37 @@
 .zoom-close:hover {
   color: #e9edef;
 }
+
+.app-promo-banner {
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  border-radius: var(--radius-xl);
+  color: white;
+  padding: 60px clamp(20px, 5vw, 60px);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .app-promo-banner {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+    justify-items: center;
+    gap: 30px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .hero-actions a {
+    width: 100% !important;
+    min-width: 0 !important;
+    text-align: center !important;
+  }
+}

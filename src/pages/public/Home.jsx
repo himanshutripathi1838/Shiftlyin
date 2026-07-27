@@ -401,7 +401,7 @@ export default function Home() {
 
       {/* 12. Mobile App Promotion */}
       <section className="landing-section" style={{ padding: "60px 2rem" }}>
-        <div style={{ background: "linear-gradient(135deg, #1e3a8a, #2563eb)", borderRadius: "var(--radius-xl)", color: "white", padding: "60px clamp(20px, 5vw, 60px)", display: "grid", gridTemplateColumns: "1fr auto", gap: "40px", alignItems: "center" }}>
+        <div className="app-promo-banner">
           <div>
             <h2 style={{ fontSize: "36px", fontWeight: "900", margin: "0 0 16px" }}>Shiftlyin on the Go</h2>
             <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "1.1rem", lineHeight: "1.6", maxWidth: "600px" }}>
