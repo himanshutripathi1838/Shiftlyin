@@ -90,11 +90,11 @@ export default function Home() {
   return (
     <main className="home-page" style={{ background: "var(--bg)", color: "var(--text)" }}>
       {/* 2. Hero Section */}
-      <section className="landing-section hero-split" style={{ padding: "80px 2rem 40px" }}>
+      <section className="landing-section hero-split" style={{ padding: "clamp(40px, 8vw, 80px) clamp(1rem, 4vw, 2rem) 40px" }}>
         <div>
           <span className="eyebrow" style={{ fontSize: "12px", color: "var(--primary)", letterSpacing: "0.05em" }}>College Gig Marketplace</span>
-          <h1 style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)", fontWeight: "900", lineHeight: "1.05", margin: "16px 0 20px", color: "var(--text)" }}>
-            Find Part-Time <br />
+          <h1 className="hero-heading" style={{ fontWeight: "900", lineHeight: "1.05", margin: "16px 0 20px", color: "var(--text)" }}>
+            Find Part-Time <br className="desktop-only-br" />
             <span style={{ color: "var(--primary)" }}>Jobs Near You</span>
           </h1>
           <p style={{ fontSize: "1.1rem", color: "var(--muted)", lineHeight: "1.6", maxHeight: "150px", overflow: "hidden", textOverflow: "ellipsis" }}>
