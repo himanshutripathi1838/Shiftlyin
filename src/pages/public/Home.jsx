@@ -118,7 +118,7 @@ export default function Home() {
           <p style={{ fontSize: "1.15rem", color: "var(--muted)", lineHeight: "1.6", maxWidth: "540px", marginBottom: "35px" }}>
             Connect with verified businesses, discover local shifts, earn while studying, and build your professional reputation with Shiftlyin.
           </p>
-          <div className="hero-actions" style={{ display: "flex", gap: "16px", marginBottom: "40px" }}>
+          <div className="hero-actions" style={{ display: "flex", gap: "16px", marginBottom: "40px", flexWrap: "wrap" }}>
             <a href="#jobs" className="primary-button hover-lift" style={{ minWidth: "160px", display: "inline-flex", alignItems: "center", justifyContent: "center", height: "48px", fontWeight: "700" }}>Find Jobs</a>
             <Link to="/register" className="ghost-button hover-lift" style={{ minWidth: "160px", display: "inline-flex", alignItems: "center", justifyContent: "center", height: "48px", fontWeight: "700" }}>Post a Job</Link>
           </div>

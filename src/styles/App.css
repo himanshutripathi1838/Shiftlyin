@@ -1,30 +1,4 @@
-.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  min-height: 72px;
-  padding: 0.75rem clamp(1rem, 4vw, 3rem);
-  border-bottom: 3px solid var(--ink);
-  background: color-mix(in srgb, var(--surface) 94%, transparent);
-  backdrop-filter: blur(16px);
-}
-
-.navbar::after {
-  position: absolute;
-  right: 0;
-  bottom: -3px;
-  width: min(34vw, 430px);
-  height: 3px;
-  background: var(--signal);
-  content: "";
-}
-
 .brand,
-.nav-actions,
 .hero-actions,
 .card-actions {
   display: flex;
@@ -60,14 +34,7 @@
   font-size: 0.74rem;
 }
 
-.nav-actions > a:not(.primary-button) {
-  color: var(--muted);
-  font-weight: 700;
-}
 
-.nav-actions > a:not(.primary-button).active {
-  color: var(--primary);
-}
 
 .primary-button,
 .ghost-button {
@@ -117,16 +84,9 @@
 }
 
 .page-shell,
-.hero-page,
-.home-page {
+.hero-page {
   min-height: calc(100vh - 72px);
   min-height: calc(100dvh - 72px);
-}
-
-.home-page {
-  display: grid;
-  align-content: start;
-  gap: 0;
 }
 
 .page-shell,
@@ -874,81 +834,7 @@
   color: var(--muted);
 }
 
-/* Premium Hamburger menu styles */
-.hamburger-btn {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  flex-direction: column;
-  gap: 5px;
-  z-index: 30;
-}
-
-.hamburger-btn span {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background-color: var(--text);
-  border-radius: 1px;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.hamburger-btn.open span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-
-.hamburger-btn.open span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger-btn.open span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-
 @media (max-width: 1024px) {
-  .hamburger-btn {
-    display: flex;
-  }
-
-  .navbar {
-    flex-direction: row !important;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 1.5rem !important;
-  }
-
-  .nav-actions {
-    display: none !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    align-items: stretch !important;
-    gap: 1.25rem !important;
-    padding: 1.5rem 0.5rem !important;
-    border-top: 1px solid var(--border);
-    margin-top: 0.5rem;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .nav-actions.is-active {
-    display: flex !important;
-  }
-
-  .nav-actions > div {
-    margin-left: 0 !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    align-items: stretch !important;
-    gap: 12px !important;
-  }
-
-  .nav-actions .primary-button, 
-  .nav-actions .ghost-button {
-    width: 100% !important;
-    min-height: 44px !important;
-  }
 
   .help-hero,
   .help-report-section {
@@ -1389,37 +1275,4 @@
   }
 }
 
-/* Hero Split Responsive Override */
-.hero-split {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 60px;
-  align-items: center;
-}
 
-.hero-heading {
-  font-size: clamp(32px, 6.5vw, 64px) !important;
-  line-height: 1.05 !important;
-}
-
-@media (max-width: 1024px) {
-  .hero-split {
-    grid-template-columns: 1fr !important;
-    text-align: center !important;
-    gap: 30px !important;
-  }
-
-  .hero-illu-container {
-    max-width: 100% !important;
-    overflow: hidden !important;
-  }
-
-  .floating-stat-card {
-    display: none !important;
-  }
-
-  .hero-heading {
-    font-size: clamp(28px, 6vw, 48px) !important;
-    line-height: 1.15 !important;
-  }
-}
