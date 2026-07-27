@@ -16,7 +16,7 @@ export default function JobCard({ job, distance, onApply, compact = false, appli
         <span className={`status-pill ${isExpired ? "expired" : isUrgent ? "urgent" : ""}`}>
           {isExpired ? "Session expired" : isUrgent ? "Urgent" : status}
         </span>
-        <span>{job.location || formatDistance(distance)}</span>
+        <span>{job.location}{distance !== undefined && distance !== null ? ` (${formatDistance(distance)})` : ""}</span>
       </div>
       <div className="job-card-title">
         <span className="job-business-mark" aria-hidden="true">

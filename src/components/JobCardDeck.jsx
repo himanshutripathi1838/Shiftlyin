@@ -49,6 +49,7 @@ export default function JobCardDeck({ jobs, onApply, emptyMessage = "No jobs ava
             >
               <JobCard 
                 job={job} 
+                distance={job.distance}
                 onApply={isActive ? onApply : undefined} 
                 compact={!isActive} 
                 applied={appliedJobIds.has(job.id)}

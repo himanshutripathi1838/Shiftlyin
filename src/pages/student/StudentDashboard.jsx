@@ -9,6 +9,7 @@ import { db } from "../../services/firebase.js";
 import { isDateTimePast } from "../../utils/dateTime.js";
 import { formatCurrency } from "../../utils/payments.js";
 import LiveApplicantMap from "../../components/LiveApplicantMap.jsx";
+import { calculateDistanceKm } from "../../utils/distance.js";
 
 
 export default function StudentDashboard() {
@@ -19,14 +20,91 @@ export default function StudentDashboard() {
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const now = useCurrentTime();
+
+  const [studentLoc, setStudentLoc] = useState(null);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const loc = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          };
+          console.log("[StudentDashboard] Live location obtained successfully:", loc);
+          setStudentLoc(loc);
+        },
+        (err) => {
+          console.warn("[StudentDashboard] Geolocation warning: fallback to profile location coordinates.", err.message);
+          if (profile?.latitude && profile?.longitude) {
+            const loc = {
+              latitude: Number(profile.latitude),
+              longitude: Number(profile.longitude)
+            };
+            console.log("[StudentDashboard] Profile location coordinates found:", loc);
+            setStudentLoc(loc);
+          }
+        },
+        { enableHighAccuracy: true }
+      );
+    } else if (profile?.latitude && profile?.longitude) {
+      const loc = {
+        latitude: Number(profile.latitude),
+        longitude: Number(profile.longitude)
+      };
+      console.log("[StudentDashboard] Geolocation not supported, falling back to profile location coordinates:", loc);
+      setStudentLoc(loc);
+    }
+  }, [profile?.latitude, profile?.longitude]);
+
   const activeJobs = jobs.filter((job) => !isDateTimePast(job.shiftEndsAt, now));
+
+  const sortedJobs = [...activeJobs].map((job) => {
+    let distance = null;
+    if (
+      studentLoc?.latitude &&
+      studentLoc?.longitude &&
+      job.latitude &&
+      job.longitude
+    ) {
+      const distanceKm = calculateDistanceKm(
+        Number(studentLoc.latitude),
+        Number(studentLoc.longitude),
+        Number(job.latitude),
+        Number(job.longitude)
+      );
+      if (!isNaN(distanceKm)) {
+        distance = distanceKm;
+      }
+    }
+    return { ...job, distance };
+  }).sort((a, b) => {
+    if (a.distance !== null && b.distance !== null) return a.distance - b.distance;
+    if (a.distance !== null) return -1;
+    if (b.distance !== null) return 1;
+    return 0;
+  });
+
+  console.log("[StudentDashboard] Debug info:");
+  console.log("  - Current studentLoc state:", studentLoc);
+  console.log("  - Raw jobs fetched from Firestore:", jobs.length, jobs);
+  console.log("  - Active unexpired jobs filter result:", activeJobs.length, activeJobs);
+  console.log("  - Final distance-sorted jobs list:", sortedJobs.length, sortedJobs);
 
   useEffect(() => {
     const jobsQuery = query(collection(db, "jobs"), where("status", "==", "active"));
+    console.log("[StudentDashboard] Fetching jobs where status == active...");
     const unsubJobs = onSnapshot(
       jobsQuery,
-      (snapshot) => setJobs(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))),
-      (err) => setError(err.message)
+      (snapshot) => {
+        const fetched = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        console.log("[StudentDashboard] Firestore snap count:", fetched.length, fetched);
+        setJobs(fetched);
+      },
+      (err) => {
+        console.error("[StudentDashboard] Jobs listener error:", err.message);
+        setError(err.message);
+      }
     );
     const appsQuery = query(collection(db, "applications"), where("studentId", "==", currentUser.uid));
     const unsubApps = onSnapshot(
@@ -218,7 +296,7 @@ export default function StudentDashboard() {
         </div>
         
         <JobCardDeck
-          jobs={activeJobs}
+          jobs={sortedJobs}
           onApply={applyForJob}
           emptyMessage="No active jobs available right now."
           appliedJobIds={new Set(applications.filter((app) => app.status === "pending" || app.status === "accepted").map((app) => app.jobId))}
