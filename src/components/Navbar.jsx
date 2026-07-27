@@ -66,12 +66,15 @@ export default function Navbar() {
         <span></span>
       </button>
 
-      <nav className={`nav-actions ${isMenuOpen ? "is-active" : ""}`} style={{ display: "flex", gap: "24px", alignItems: "center" }}>
-        <a href="/#jobs" onClick={(e) => handleAnchorClick(e, "jobs")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "14px" }}>Jobs</a>
-        <a href="/#businesses" onClick={(e) => handleAnchorClick(e, "businesses")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "14px" }}>Businesses</a>
-        <a href="/#how-it-works" onClick={(e) => handleAnchorClick(e, "how-it-works")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "14px" }}>How It Works</a>
-        <a href="/#faq" onClick={(e) => handleAnchorClick(e, "faq")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "14px" }}>FAQ</a>
-        <NavLink to="/help" style={{ color: "var(--muted)", fontWeight: "600", fontSize: "14px" }}>Help</NavLink>
+      <nav className={`nav-actions ${isMenuOpen ? "is-active" : ""}`} style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+        <a href="/" onClick={(e) => { setIsMenuOpen(false); if (location.pathname === "/") { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); } }} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>Home</a>
+        <a href="/#jobs" onClick={(e) => handleAnchorClick(e, "jobs")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>Jobs</a>
+        <a href="/#businesses" onClick={(e) => handleAnchorClick(e, "businesses")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>Businesses</a>
+        <a href="/#students" onClick={(e) => handleAnchorClick(e, "students")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>Students</a>
+        <a href="/#how-it-works" onClick={(e) => handleAnchorClick(e, "how-it-works")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>How It Works</a>
+        <a href="/#about" onClick={(e) => handleAnchorClick(e, "about")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>About</a>
+        <a href="/#faq" onClick={(e) => handleAnchorClick(e, "faq")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>FAQ</a>
+        <NavLink to="/help" style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>Help</NavLink>
         
         <div style={{ display: "flex", gap: "12px", alignItems: "center", marginLeft: "12px" }}>
           <button 
