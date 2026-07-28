@@ -45,36 +45,7 @@ export default function Home() {
   const [error, setError] = useState("");
   const now = useCurrentTime();
 
-  // Debug info state for responsive audit
-  const [debugInfo, setDebugInfo] = useState("");
-  useEffect(() => {
-    const handleResize = () => {
-      const heroSplit = document.querySelector(".hero-split");
-      if (heroSplit) {
-        const child1 = heroSplit.children[0];
-        const child2 = heroSplit.children[1];
-        setDebugInfo(`Split: ${heroSplit.offsetWidth}px | C1: ${child1?.offsetWidth}px | C2: ${child2?.offsetWidth}px | View: ${window.innerWidth}px | Body: ${document.body.offsetWidth}px`);
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    setTimeout(handleResize, 1000);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
-  // Red outline overflow detector hook (runs after data renders)
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const docWidth = document.documentElement.clientWidth;
-      document.querySelectorAll("*").forEach((el) => {
-        if (el.scrollWidth > docWidth) {
-          el.style.outline = "3px solid red";
-          console.log("OVERFLOW:", el, "width:", el.scrollWidth, "vs viewport:", docWidth);
-        }
-      });
-    }, 1500); // 1.5s delay to ensure everything is mounted and rendered
-    return () => clearTimeout(timer);
-  }, [loading, jobs]);
 
   // Search state
   const [searchQuery, setSearchQuery] = useState("");
@@ -135,11 +106,7 @@ export default function Home() {
 
   return (
     <main className="home-page" style={{ background: "var(--bg)", color: "var(--text)" }}>
-      {debugInfo && (
-        <div style={{ background: "#ef4444", color: "white", padding: "8px 16px", position: "fixed", bottom: "20px", left: "20px", zIndex: 99999, borderRadius: "8px", fontSize: "12px", fontWeight: "bold", boxShadow: "0 10px 25px rgba(0,0,0,0.3)", pointerEvents: "none" }}>
-          {debugInfo}
-        </div>
-      )}
+
       
       {/* SECTION 2: Hero Section */}
       <section className="landing-section hero-split bg-gradient-radial" style={{ padding: "clamp(60px, 10vw, 120px) clamp(1rem, 4vw, 2rem) 60px" }}>
