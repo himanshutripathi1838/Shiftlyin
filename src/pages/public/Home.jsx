@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import heroImage from "../../assets/hustlr-cafe-hero.png";
 import fullLogoImg from "../../assets/shiftlyin-full-logo.png";
@@ -40,6 +40,24 @@ function Reveal({ children, className = "", delay = 0 }) {
 
 /* ── Static Data ── */
 const BRANDS = ["Café Coffee Day", "Domino's", "Barista", "McDonald's", "Zomato", "Swiggy", "Radisson"];
+
+const INDIAN_CITIES = [
+  "Delhi NCR", "Noida", "Gurgaon", "Faridabad", "Ghaziabad",
+  "Mumbai", "Pune", "Thane", "Navi Mumbai", "Nagpur", "Nashik",
+  "Bangalore", "Mysuru", "Hubli",
+  "Hyderabad", "Warangal",
+  "Chennai", "Coimbatore", "Madurai",
+  "Kolkata", "Howrah", "Siliguri",
+  "Ahmedabad", "Surat", "Vadodara", "Rajkot",
+  "Jaipur", "Jodhpur", "Udaipur", "Kota",
+  "Lucknow", "Kanpur", "Agra", "Varanasi", "Prayagraj", "Bareilly", "Gorakhpur",
+  "Indore", "Bhopal", "Gwalior", "Jabalpur",
+  "Chandigarh", "Mohali", "Panchkula", "Ludhiana", "Amritsar", "Jalandhar",
+  "Patna", "Gaya", "Muzaffarpur",
+  "Ranchi", "Jamshedpur", "Dhanbad",
+  "Bhubaneswar", "Cuttack",
+  "Guwahati", "Dehradun", "Shimla", "Jammu", "Kochi", "Trivandrum", "Raipur", "Goa"
+];
 
 const STEPS = [
   { num: "1", icon: "👤", title: "Register", desc: "Sign up as a Student or Business." },
@@ -97,6 +115,24 @@ export default function Home() {
   const [studentIdx, setStudentIdx] = useState(0);
   const [bizIdx, setBizIdx] = useState(0);
   const [searchLocation, setSearchLocation] = useState("");
+  const [isLocDropdownOpen, setIsLocDropdownOpen] = useState(false);
+  const locationRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (locationRef.current && !locationRef.current.contains(e.target)) {
+        setIsLocDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const filteredCities = useMemo(() => {
+    const term = searchLocation.trim().toLowerCase();
+    if (!term) return INDIAN_CITIES;
+    return INDIAN_CITIES.filter((c) => c.toLowerCase().includes(term));
+  }, [searchLocation]);
 
   function detectCurrentLocation() {
     if (navigator.geolocation) {
@@ -182,13 +218,16 @@ export default function Home() {
             <div className="search-field">
               <input type="text" placeholder="🔍 Search job title or keyword" />
             </div>
-            <div className="search-field" style={{ position: "relative" }}>
+            <div className="search-field" style={{ position: "relative" }} ref={locationRef}>
               <input
                 type="text"
-                list="location-suggestions"
                 placeholder="📍 Type or Select Location..."
                 value={searchLocation}
-                onChange={(e) => setSearchLocation(e.target.value)}
+                onChange={(e) => {
+                  setSearchLocation(e.target.value);
+                  setIsLocDropdownOpen(true);
+                }}
+                onFocus={() => setIsLocDropdownOpen(true)}
               />
               <button
                 type="button"
@@ -208,22 +247,77 @@ export default function Home() {
               >
                 📍 GPS
               </button>
-              <datalist id="location-suggestions">
-                <option value="Delhi NCR" />
-                <option value="Noida" />
-                <option value="Gurgaon" />
-                <option value="Mumbai" />
-                <option value="Bangalore" />
-                <option value="Pune" />
-                <option value="Hyderabad" />
-                <option value="Jaipur" />
-                <option value="Lucknow" />
-                <option value="Indore" />
-                <option value="Chandigarh" />
-                <option value="Kolkata" />
-                <option value="Ahmedabad" />
-                <option value="Patna" />
-              </datalist>
+
+              {isLocDropdownOpen && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "105%",
+                    left: 0,
+                    right: 0,
+                    maxHeight: "260px",
+                    overflowY: "auto",
+                    background: "var(--surface)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "14px",
+                    boxShadow: "0 14px 30px rgba(0,0,0,0.2)",
+                    zIndex: 999,
+                    padding: "6px",
+                    textAlign: "left"
+                  }}
+                >
+                  <div
+                    onClick={() => {
+                      detectCurrentLocation();
+                      setIsLocDropdownOpen(false);
+                    }}
+                    style={{
+                      padding: "9px 12px",
+                      fontSize: "0.83rem",
+                      fontWeight: 800,
+                      color: "#2563eb",
+                      cursor: "pointer",
+                      borderRadius: "8px",
+                      background: "rgba(37, 99, 235, 0.08)",
+                      marginBottom: "6px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px"
+                    }}
+                  >
+                    📍 Use Current GPS Location
+                  </div>
+
+                  {filteredCities.length > 0 ? (
+                    filteredCities.map((city) => (
+                      <div
+                        key={city}
+                        onClick={() => {
+                          setSearchLocation(city);
+                          setIsLocDropdownOpen(false);
+                        }}
+                        style={{
+                          padding: "8px 12px",
+                          fontSize: "0.85rem",
+                          fontWeight: 600,
+                          color: "var(--text)",
+                          cursor: "pointer",
+                          borderRadius: "8px",
+                          transition: "background 0.15s"
+                        }}
+                        onMouseEnter={(e) => (e.target.style.background = "var(--surface-soft)")}
+                        onMouseLeave={(e) => (e.target.style.background = "transparent")}
+                      >
+                        📍 {city}
+                      </div>
+                    ))
+                  ) : (
+                    <div style={{ padding: "10px 12px", fontSize: "0.82rem", color: "var(--muted)" }}>
+                      Press search to use "{searchLocation}"
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
             <div className="search-field">
               <select defaultValue="">
