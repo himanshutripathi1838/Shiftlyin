@@ -42,7 +42,7 @@ export default function App() {
       <LiveLocationTracker />
       {!isAdminRoute && <Navbar />}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/help" element={<Help />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
