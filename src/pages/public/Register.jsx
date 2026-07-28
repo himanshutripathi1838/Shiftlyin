@@ -107,7 +107,7 @@ export default function Register() {
     } else if (form.idDocumentType === "PAN Card") {
       sanitized = sanitized.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 10);
     } else if (form.idDocumentType === "Driving Licence") {
-      sanitized = sanitized.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 16);
+      sanitized = sanitized.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 15);
     } else if (form.idDocumentType === "Voter ID") {
       sanitized = sanitized.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 10);
     }
@@ -123,7 +123,7 @@ export default function Register() {
     form.idDocumentNumber &&
     ((form.idDocumentType === "Aadhaar Card" && aadhaarRegex.test(form.idDocumentNumber)) ||
      (form.idDocumentType === "PAN Card" && panRegex.test(form.idDocumentNumber)) ||
-     (form.idDocumentType === "Driving Licence" && form.idDocumentNumber.length >= 14) ||
+     (form.idDocumentType === "Driving Licence" && form.idDocumentNumber.length === 15) ||
      (form.idDocumentType === "Voter ID" && form.idDocumentNumber.length === 10))
   );
 
@@ -521,7 +521,7 @@ export default function Register() {
                           }}>
                             <option value="Aadhaar Card">Aadhaar Card (12 Digits)</option>
                             <option value="PAN Card">PAN Card (10 Chars)</option>
-                            <option value="Driving Licence">Driving Licence (15-16 Chars)</option>
+                            <option value="Driving Licence">Driving Licence (15 Chars)</option>
                             <option value="Voter ID">Voter ID (10 Chars)</option>
                           </select>
                         </label>
@@ -536,7 +536,7 @@ export default function Register() {
                               maxLength={
                                 form.idDocumentType === "PAN Card" ? 10 :
                                 form.idDocumentType === "Aadhaar Card" ? 12 :
-                                form.idDocumentType === "Voter ID" ? 10 : 16
+                                form.idDocumentType === "Voter ID" ? 10 : 15
                               }
                               value={form.idDocumentNumber}
                               onChange={(e) => handleDocNumChange(e.target.value)}
@@ -708,7 +708,7 @@ export default function Register() {
                         <label>Document Number
                           <input 
                             placeholder="Document Number" 
-                            maxLength={16}
+                            maxLength={15}
                             value={form.idDocumentNumber} 
                             onChange={(e) => handleDocNumChange(e.target.value)} 
                           />
