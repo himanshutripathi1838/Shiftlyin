@@ -145,17 +145,7 @@ export default function Login() {
           {loading ? "Signing in..." : "Sign in"}
         </button>
 
-        <div className="asi-separator">
-          <span>or continue with</span>
-        </div>
-
-        <div className="asi-social-login">
-          <button type="button" className="asi-social-button">🐙</button>
-          <button type="button" className="asi-social-button">🐦</button>
-          <button type="button" className="asi-social-button">💼</button>
-        </div>
-
-        <p className="asi-signup-prompt">
+        <p className="asi-signup-prompt" style={{ marginTop: "1.5rem" }}>
           New to Shiftlyin? <Link to="/register" style={{ color: "#2563eb", fontWeight: "700" }}>Create an account</Link>
         </p>
       </form>
