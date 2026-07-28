@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ImageUploadField from "../../components/ImageUploadField.jsx";
 import CreditCardForm from "../../components/ui/credit-card-form.jsx";
+import { Checkbox } from "../../components/ui/signup.jsx";
 import { uploadImageToCloudinary } from "../../services/cloudinary.js";
 import { auth, db } from "../../services/firebase.js";
 
@@ -816,8 +817,24 @@ export default function Register() {
                 </>
               )}
 
+              {/* Newsletter & Terms Agreement (Integrated from signup.jsx) */}
+              <div style={{ marginTop: "24px", paddingTop: "16px", borderTop: "1px solid var(--border)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+                  <Checkbox id="newsletter-signup" defaultChecked />
+                  <label htmlFor="newsletter-signup" style={{ fontSize: "13px", color: "var(--muted)", cursor: "pointer", userSelect: "none" }}>
+                    Sign up to our newsletter for instant job alerts & platform updates
+                  </label>
+                </div>
+                <p style={{ textAlign: "center", fontSize: "12px", color: "var(--muted)", margin: "8px 0 0" }}>
+                  By signing up, you agree to Shiftlyin's{" "}
+                  <a href="#" style={{ color: "var(--primary)", fontWeight: "600", textDecoration: "none" }}>Terms of use</a>{" "}
+                  and{" "}
+                  <a href="#" style={{ color: "var(--primary)", fontWeight: "600", textDecoration: "none" }}>Privacy policy</a>.
+                </p>
+              </div>
+
               {/* Wizard Footer Buttons */}
-              <div style={{ display: "flex", justifyContent: "space-between", marginTop: "24px", gap: "12px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px", gap: "12px" }}>
                 {step > 1 && (
                   <button type="button" className="ghost-button" onClick={prevStep} disabled={loading} style={{ minWidth: "100px" }}>
                     ← Back
