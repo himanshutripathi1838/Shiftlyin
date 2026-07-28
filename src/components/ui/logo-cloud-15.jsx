@@ -1,5 +1,3 @@
-import { useAnimationFrame } from "motion/react";
-import { useRef } from "react";
 import {
   Logo01,
   Logo02,
@@ -17,85 +15,17 @@ const BEAM_DURATION = 8;
 const BEAM_SIZE = 100;
 
 const LogoCloud = () => {
-  const cardRef = useRef(null);
-  const textRef = useRef(null);
-  const waveSpanRef = useRef(null);
-  const startTimeRef = useRef(null);
-
-  useAnimationFrame((time) => {
-    if (!(cardRef.current && textRef.current && waveSpanRef.current)) return;
-
-    if (startTimeRef.current === null) {
-      startTimeRef.current = time;
-    }
-
-    const elapsed = ((time - startTimeRef.current) / 1000) % BEAM_DURATION;
-    const beamOffset = (elapsed / BEAM_DURATION) * 100;
-
-    const cardRect = cardRef.current.getBoundingClientRect();
-    const textRect = textRef.current.getBoundingClientRect();
-
-    const W = cardRect.width;
-    const H = cardRect.height;
-    const perimeter = 2 * (W + H);
-
-    const textLeft = Math.max(0, textRect.left - cardRect.left);
-    const textRight = Math.min(W, textRect.right - cardRect.left);
-
-    const textStartPercent = (textLeft / perimeter) * 100;
-    const textEndPercent = (textRight / perimeter) * 100;
-
-    const span = waveSpanRef.current;
-
-    if (beamOffset >= textStartPercent && beamOffset <= textEndPercent) {
-      const t =
-        (beamOffset - textStartPercent) / (textEndPercent - textStartPercent);
-      span.style.backgroundPosition = `${95 - t * 90}% center`;
-    } else if (beamOffset < textStartPercent) {
-      span.style.backgroundPosition = "0% center";
-    } else {
-      span.style.backgroundPosition = "100% center";
-    }
-  });
-
   return (
-    <div className="flex w-full items-center justify-center px-4 py-8">
-      <div
-        className="relative w-full max-w-[1050px] rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-xl backdrop-blur-md transition-colors duration-300"
-        ref={cardRef}
-      >
+    <div className="flex w-full items-center justify-center px-4 py-6">
+      <div className="relative w-full max-w-[1050px] rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-xl backdrop-blur-md transition-colors duration-300">
         <BorderBeam
           className="isolate -z-1"
           duration={BEAM_DURATION}
           size={BEAM_SIZE}
         />
 
-        <div className="absolute inset-x-0 top-0 flex -translate-y-1/2 items-center justify-center px-6">
-          <p
-            className="bg-[var(--surface)] border border-[var(--border)] rounded-full px-6 py-1.5 text-center font-bold text-[var(--text)] text-base shadow-md transition-colors duration-300"
-            ref={textRef}
-          >
-            <span
-              ref={waveSpanRef}
-              style={{
-                backgroundImage:
-                  "linear-gradient(90deg, currentColor 0%, currentColor 45%, #f59e0b 47%, #3b82f6 50%, #f59e0b 53%, currentColor 55%, currentColor 100%)",
-                backgroundSize: "250% 100%",
-                backgroundRepeat: "no-repeat",
-                backgroundClip: "text",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundPosition: "0% center",
-              }}
-            >
-              Trusted by 500+ Businesses{" "}
-              <span className="max-sm:hidden">across India</span>
-            </span>
-          </p>
-        </div>
-
         <div className="grid overflow-hidden">
-          <div className="flex min-w-0 items-center justify-center gap-x-10 p-6 pt-10">
+          <div className="flex min-w-0 items-center justify-center gap-x-10 p-6">
             <Marquee
               className="[--duration:25s]"
               pauseOnHover
