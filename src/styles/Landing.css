@@ -1270,6 +1270,404 @@
 }
 
 /* ═══════════════════════════════════
+   ANIMATED SIGN IN & CREDIT CARD FORM STYLES
+   ═══════════════════════════════════ */
+.asi-container {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg, #f8fafc);
+  color: var(--text, #0f172a);
+  overflow: hidden;
+  padding: 2rem 1rem;
+}
+
+.asi-particles-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.asi-theme-toggle {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e2e8f0);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.asi-theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+.asi-login-card {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 440px;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(37, 99, 235, 0.15), 0 10px 20px -5px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(16px);
+  transition: all 0.3s ease;
+}
+
+.asi-login-card-inner {
+  padding: 2.5rem 2rem;
+}
+
+.asi-login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.asi-login-header h1 {
+  font-size: 1.85rem;
+  font-weight: 900;
+  color: var(--text, #0f172a);
+  margin: 0 0 0.4rem 0;
+}
+
+.asi-login-header p {
+  color: var(--muted, #64748b);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.asi-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.asi-form-field {
+  position: relative;
+  width: 100%;
+}
+
+.asi-form-field input {
+  width: 100%;
+  height: 52px;
+  padding: 16px 16px 4px;
+  border-radius: 12px;
+  border: 1px solid var(--border, #cbd5e1);
+  background: var(--surface-soft, #f8fafc);
+  color: var(--text, #0f172a);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.asi-form-field label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted, #64748b);
+  font-size: 0.9rem;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+.asi-form-field.active label,
+.asi-form-field input:focus ~ label {
+  top: 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.asi-form-field input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.asi-form-field.invalid input {
+  border-color: #ef4444;
+}
+
+.asi-error-message {
+  font-size: 0.75rem;
+  color: #ef4444;
+  margin-top: 4px;
+  display: block;
+}
+
+.asi-toggle-password {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--muted, #64748b);
+  cursor: pointer;
+}
+
+.asi-form-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.asi-remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--muted, #64748b);
+}
+
+.asi-forgot-password {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.asi-login-button {
+  height: 48px;
+  border-radius: 12px;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+  transition: all 0.2s ease;
+}
+
+.asi-login-button:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.asi-separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+  color: var(--muted, #94a3b8);
+  font-size: 0.8rem;
+}
+
+.asi-separator::before,
+.asi-separator::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--border, #e2e8f0);
+}
+
+.asi-separator span {
+  padding: 0 12px;
+}
+
+.asi-social-login {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.asi-social-button {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid var(--border, #e2e8f0);
+  background: var(--surface, #ffffff);
+  color: var(--text, #0f172a);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.asi-social-button:hover {
+  border-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+.asi-signup-prompt {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.88rem;
+  color: var(--muted, #64748b);
+}
+
+.asi-signup-prompt a {
+  color: #2563eb;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* Digital ID Card Component Styles */
+.ccp {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+  color: #ffffff;
+}
+
+.ccp .wrap {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  justify-content: center;
+}
+
+.ccp .card {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.ccp .card__front {
+  width: 100%;
+  max-width: 440px;
+  min-height: 226px;
+  border-radius: 20px;
+  padding: 20px 24px;
+  box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+  color: #fff;
+  overflow: hidden;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ccp .card__gloss {
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.ccp .card__front::before {
+  content: "";
+  position: absolute;
+  border: 20px solid var(--ring1, #2563eb);
+  border-radius: 100%;
+  left: -15%;
+  top: -50px;
+  height: 300px;
+  width: 300px;
+  filter: blur(16px);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.ccp .card__front::after {
+  content: "";
+  position: absolute;
+  border: 20px solid var(--ring2, #10b981);
+  border-radius: 100%;
+  width: 300px;
+  top: 50%;
+  left: -180px;
+  height: 300px;
+  filter: blur(16px);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.ccp .card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+}
+
+.ccp .card__number {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  height: 32px;
+  overflow: hidden;
+  color: #ffffff;
+  margin: 10px 0;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.ccp .card__number .slot {
+  display: inline-flex;
+  margin-right: 0;
+}
+
+.ccp .card__number .slot:nth-child(4n) {
+  margin-right: 8px;
+}
+
+.ccp .card__number .digit {
+  display: flex;
+  flex-direction: column;
+  height: 32px;
+  line-height: 32px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ccp .card__number .digit.filed {
+  transform: translateY(-32px);
+}
+
+.ccp .card__number .row {
+  height: 32px;
+  display: block;
+}
+
+.ccp .card__footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+}
+
+.ccp .card__holder {
+  text-transform: uppercase;
+}
+
+.ccp .card__section__title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-bottom: 3px;
+  letter-spacing: 0.05em;
+}
+
+/* ═══════════════════════════════════
    RESPONSIVE BREAKPOINTS
    ═══════════════════════════════════ */
 @media (max-width: 1024px) {
