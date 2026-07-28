@@ -369,7 +369,7 @@ export default function Home() {
               <h2 className="land-heading" style={{ fontSize: "1.35rem" }}>Frequently Asked Questions</h2>
               <div className="faq-grid-2col">
                 {FAQS.map((faq, idx) => (
-                  <div className="faq-accordion-box" key={idx}>
+                  <div className={`faq-accordion-box ${openFaq === idx ? "open" : ""}`} key={idx}>
                     <button
                       className={`faq-question-btn ${openFaq === idx ? "open" : ""}`}
                       onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
