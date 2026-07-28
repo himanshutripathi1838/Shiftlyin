@@ -67,6 +67,11 @@ export default function Navbar() {
       </button>
 
       <nav className={`nav-actions ${isMenuOpen ? "is-active" : ""}`} style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+        <a href="/#features" onClick={(e) => handleAnchorClick(e, "features")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>Features</a>
+        <a href="/#how-it-works" onClick={(e) => handleAnchorClick(e, "how-it-works")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>How It Works</a>
+        <a href="/#students" onClick={(e) => handleAnchorClick(e, "students")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>For Students</a>
+        <a href="/#businesses" onClick={(e) => handleAnchorClick(e, "businesses")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>For Businesses</a>
+        <a href="/#contact" onClick={(e) => handleAnchorClick(e, "contact")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>Contact</a>
         <NavLink to="/help" style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>Help</NavLink>
         
         <div style={{ display: "flex", gap: "12px", alignItems: "center", marginLeft: "12px" }}>

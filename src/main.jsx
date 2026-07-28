@@ -7,6 +7,7 @@ import "./styles/Auth.css";
 import "./styles/Dashboard.css";
 import "./styles/Cards.css";
 import "./styles/Admin.css";
+import './styles/Landing.css';
 
 const root = createRoot(document.getElementById("root"));
 const loadRoot = import("./App.jsx");
