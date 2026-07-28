@@ -96,6 +96,18 @@ export default function Home() {
   const [openFaq, setOpenFaq] = useState(null);
   const [studentIdx, setStudentIdx] = useState(0);
   const [bizIdx, setBizIdx] = useState(0);
+  const [searchLocation, setSearchLocation] = useState("");
+
+  function detectCurrentLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        () => {
+          setSearchLocation("Nearby (Current GPS)");
+        },
+        () => setSearchLocation("Current Location")
+      );
+    }
+  }
 
   return (
     <main className="landing-page">
@@ -170,14 +182,48 @@ export default function Home() {
             <div className="search-field">
               <input type="text" placeholder="🔍 Search job title or keyword" />
             </div>
-            <div className="search-field">
-              <select defaultValue="">
-                <option value="" disabled>Select Location</option>
-                <option value="delhi">Delhi NCR</option>
-                <option value="mumbai">Mumbai</option>
-                <option value="bangalore">Bangalore</option>
-                <option value="pune">Pune</option>
-              </select>
+            <div className="search-field" style={{ position: "relative" }}>
+              <input
+                type="text"
+                list="location-suggestions"
+                placeholder="📍 Type or Select Location..."
+                value={searchLocation}
+                onChange={(e) => setSearchLocation(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={detectCurrentLocation}
+                title="Use Current GPS Location"
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "13px",
+                  padding: "4px 8px",
+                  color: "#2563eb",
+                  fontWeight: 800,
+                  whiteSpace: "nowrap",
+                  flexShrink: 0
+                }}
+              >
+                📍 GPS
+              </button>
+              <datalist id="location-suggestions">
+                <option value="Delhi NCR" />
+                <option value="Noida" />
+                <option value="Gurgaon" />
+                <option value="Mumbai" />
+                <option value="Bangalore" />
+                <option value="Pune" />
+                <option value="Hyderabad" />
+                <option value="Jaipur" />
+                <option value="Lucknow" />
+                <option value="Indore" />
+                <option value="Chandigarh" />
+                <option value="Kolkata" />
+                <option value="Ahmedabad" />
+                <option value="Patna" />
+              </datalist>
             </div>
             <div className="search-field">
               <select defaultValue="">
