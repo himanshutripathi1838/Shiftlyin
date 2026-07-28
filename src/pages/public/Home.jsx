@@ -2,6 +2,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import heroImage from "../../assets/hustlr-cafe-hero.png";
 import fullLogoImg from "../../assets/shiftlyin-full-logo.png";
+import sLogoImg from "../../assets/shiftlyin-s-logo.png";
+import studentAvatarImg from "../../assets/student-3d-avatar.png";
+import businessAvatarImg from "../../assets/business-3d-avatar.png";
 import LogoCloud from "@/components/ui/logo-cloud-15";
 
 /* ── Scroll Reveal Hook ── */
@@ -59,22 +62,31 @@ const INDIAN_CITIES = [
   "Guwahati", "Dehradun", "Shimla", "Jammu", "Kochi", "Trivandrum", "Raipur", "Goa"
 ];
 
-const STEPS = [
-  { num: "1", icon: "👤", title: "Register", desc: "Sign up as a Student or Business." },
-  { num: "2", icon: "🛡️", title: "Get Verified", desc: "Our team verifies your account." },
-  { num: "3", icon: "💼", title: "Find or Post Jobs", desc: "Students find jobs. Businesses post jobs." },
-  { num: "4", icon: "✈️", title: "Apply & Connect", desc: "Students apply. Businesses review." },
-  { num: "5", icon: "💬", title: "Chat & Coordinate", desc: "Once accepted, chat opens." },
-  { num: "6", icon: "📍", title: "Work & Earn", desc: "Check-in, complete work & get paid." },
+const STUDENT_STEPS = [
+  { num: "1", icon: "👤", title: "Create Account", desc: "Sign up in seconds as a student with your mobile number." },
+  { num: "2", icon: "👤", title: "Complete Profile", desc: "Add your details, verify identity and set your preferences." },
+  { num: "3", icon: "💼", title: "Find Opportunities", desc: "Browse part-time jobs, shifts or internships near you." },
+  { num: "4", icon: "✈️", title: "Apply & Get Matched", desc: "Apply to jobs you like. Our smart matching finds the best fit." },
+  { num: "5", icon: "💬", title: "Connect & Work", desc: "Once accepted, chat with the business and start working." },
+  { num: "6", icon: "👛", title: "Get Paid & Grow", desc: "Complete the work, get paid securely and build your reputation." },
+];
+
+const BUSINESS_STEPS = [
+  { num: "1", icon: "🏪", title: "Create Account", desc: "Sign up as a business with your details." },
+  { num: "2", icon: "📄", title: "Complete Business Profile", desc: "Add your business info, location and verify your identity." },
+  { num: "3", icon: "💼", title: "Post a Job / Shift", desc: "Create job posts or shifts with requirements, timing and pay." },
+  { num: "4", icon: "👥", title: "Review Applicants", desc: "Browse student applications and review profiles." },
+  { num: "5", icon: "💬", title: "Accept & Connect", desc: "Accept the best match, chat and share work details." },
+  { num: "6", icon: "🛡️", title: "Work Completed", desc: "Work gets done, pay securely and build trusted relationships." },
 ];
 
 const WHY_FEATURES = [
-  { icon: "🛡️", title: "Verified Users", desc: "Every student and business is verified." },
-  { icon: "📍", title: "GPS Attendance", desc: "Check-in and check-out with location." },
-  { icon: "💬", title: "Real-time Chat", desc: "Communicate easily within the platform." },
-  { icon: "📌", title: "Nearby Jobs", desc: "Find jobs near your location." },
-  { icon: "⭐", title: "Ratings & Reviews", desc: "Build reputation with ratings." },
-  { icon: "💳", title: "Secure Payments", desc: "Future-ready wallet and payments." },
+  { num: "1", icon: "🛡️", title: "Verified Students", desc: "Every student is verified for authenticity and 18+ safety compliance.", color: "#2563eb", bg: "#eff6ff" },
+  { num: "2", icon: "⚡", title: "Instant Hiring", desc: "Post a job and get matched with eligible students within minutes.", color: "#7c3aed", bg: "#faf5ff" },
+  { num: "3", icon: "📍", title: "Nearby Opportunities", desc: "Find jobs and work opportunities near your location.", color: "#16a34a", bg: "#f0fdf4" },
+  { num: "4", icon: "💳", title: "Secure Payments", desc: "Safe, transparent and on-time payments through our platform.", color: "#d97706", bg: "#fffbeb" },
+  { num: "5", icon: "⭐", title: "Ratings & Reputation", desc: "Build your reputation with ratings and reviews for more opportunities.", color: "#c026d3", bg: "#fdf4ff" },
+  { num: "6", icon: "📈", title: "Career Growth", desc: "Grow your skills and career with part-time and real-world experience.", color: "#059669", bg: "#ecfdf5" },
 ];
 
 const CATEGORIES = [
@@ -341,100 +353,124 @@ export default function Home() {
         </Reveal>
       </section>
 
-      {/* ═══ 4. HOW SHIFTLYIN WORKS (6-STEP ROADMAP) ═══ */}
-      <section className="land-section roadmap-section" id="how-it-works">
+      {/* ═══ 4 & 5. MASTER DUAL PIPELINE: HOW IT WORKS & WHY CHOOSE ═══ */}
+      <section className="land-section showcase-master-section" id="how-it-works">
         <Reveal>
-          <div className="land-center" style={{ marginBottom: "2.5rem" }}>
-            <span className="hero-badge-pill" style={{ background: "rgba(245, 158, 11, 0.12)", color: "#d97706" }}>
-              🗺️ 6-Step Roadmap
+          <div className="land-center" style={{ marginBottom: "3rem" }}>
+            <span className="showcase-top-badge">
+              HOW IT WORKS & WHY CHOOSE SHIFTLYIN
             </span>
-            <h2 className="land-heading" style={{ marginTop: "0.5rem" }}>How Shiftlyin Works?</h2>
-            <p className="land-subhead">Simple step-by-step roadmap for students and business owners.</p>
+            <h1 className="showcase-main-h1">
+              How <span className="highlight-blue">Shiftlyin</span> Works & Why Choose <span className="highlight-blue">Shiftlyin</span>
+            </h1>
+            <p className="showcase-main-sub">
+              One Platform. Endless Opportunities. Trusted by Students & Businesses.
+            </p>
           </div>
         </Reveal>
 
-        {/* Winding Roadmap Container */}
-        <div className="roadmap-wrapper">
-          {/* SVG Road Path (Desktop serpentine road) */}
-          <div className="roadmap-svg-container">
-            <svg viewBox="0 0 1000 180" preserveAspectRatio="none" className="roadmap-svg">
-              {/* Road outer border */}
-              <path
-                d="M 0 90 C 40 40, 60 40, 83 40 C 140 40, 190 140, 250 140 C 310 140, 360 40, 416 40 C 470 40, 520 140, 583 140 C 640 140, 690 40, 750 40 C 810 40, 860 140, 916 140 C 960 140, 980 90, 1000 90"
-                fill="none"
-                stroke="var(--ink)"
-                strokeWidth="38"
-                strokeLinecap="round"
-              />
-              {/* Dashed white center line */}
-              <path
-                d="M 0 90 C 40 40, 60 40, 83 40 C 140 40, 190 140, 250 140 C 310 140, 360 40, 416 40 C 470 40, 520 140, 583 140 C 640 140, 690 40, 750 40 C 810 40, 860 140, 916 140 C 960 140, 980 90, 1000 90"
-                fill="none"
-                stroke="#ffffff"
-                strokeWidth="3.5"
-                strokeDasharray="10 10"
-                opacity="0.95"
-              />
-            </svg>
-          </div>
-
-          {/* 6 Step Nodes */}
-          <div className="roadmap-grid">
-            {STEPS.map((s, i) => {
-              const isTop = i % 2 === 0;
-              return (
-                <Reveal key={s.num} delay={i * 90}>
-                  <div className={`roadmap-node-col ${isTop ? "is-top" : "is-bottom"}`}>
-                    {/* Text Block for TOP nodes */}
-                    {isTop && (
-                      <div className="roadmap-text-box top-box">
-                        <span className="roadmap-step-title">Step {s.num}</span>
-                        <h4 className="roadmap-item-heading">{s.title}</h4>
-                        <p className="roadmap-item-desc">{s.desc}</p>
-                      </div>
-                    )}
-
-                    {/* Circle Node Icon */}
-                    <div className="roadmap-circle-node">
-                      <span className="roadmap-node-icon">{s.icon}</span>
-                    </div>
-
-                    {/* Text Block for BOTTOM nodes */}
-                    {!isTop && (
-                      <div className="roadmap-text-box bottom-box">
-                        <span className="roadmap-step-title">Step {s.num}</span>
-                        <h4 className="roadmap-item-heading">{s.title}</h4>
-                        <p className="roadmap-item-desc">{s.desc}</p>
-                      </div>
-                    )}
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ 5. WHY CHOOSE SHIFTLYIN? ═══ */}
-      <section className="land-section" id="why-choose" style={{ background: "var(--surface-soft)", borderRadius: "24px" }}>
+        {/* ── ROW 1: FOR STUDENTS (BLUE PIPELINE) ── */}
         <Reveal>
-          <div className="land-center">
-            <h2 className="land-heading">Why Choose Shiftlyin?</h2>
-            <p className="land-subhead">Designed with security, speed, and reliability at its core.</p>
+          <div className="pipeline-row student-pipeline">
+            {/* Left 3D Avatar Card */}
+            <div className="avatar-side-card student-card">
+              <span className="side-pill student-pill">For Students</span>
+              <img src={studentAvatarImg} alt="3D Student Avatar" className="avatar-img" />
+            </div>
+
+            {/* Right 6 Horizontal Pipeline Steps */}
+            <div className="pipeline-steps-grid">
+              {STUDENT_STEPS.map((s, i) => (
+                <div key={s.num} className="step-pipeline-card student-card-step">
+                  <div className="step-badge student-step-badge">{s.num}</div>
+                  <div className="step-icon-wrap student-icon-bg">{s.icon}</div>
+                  <h4 className="step-card-title">{s.title}</h4>
+                  <p className="step-card-desc">{s.desc}</p>
+                  {i < 5 && <span className="pipeline-connector-line student-line" />}
+                </div>
+              ))}
+            </div>
           </div>
         </Reveal>
 
-        <div className="why-grid-layout">
-          {WHY_FEATURES.map((f, i) => (
-            <Reveal key={f.title} delay={i * 70}>
-              <div className="why-feature-card">
-                <div className="why-icon-badge">{f.icon}</div>
-                <h4>{f.title}</h4>
-                <p>{f.desc}</p>
+        {/* ── CENTER INTERSECTING CONNECTING CARD ── */}
+        <Reveal>
+          <div className="center-connect-wrapper">
+            <div className="center-connect-card">
+              <div className="center-s-logo">
+                <img src={sLogoImg} alt="Shiftlyin S Logo" style={{ width: "22px", height: "22px" }} />
               </div>
-            </Reveal>
-          ))}
+              <div className="center-connect-text">
+                <strong className="center-connect-heading">Smart Platform That Connects</strong>
+                <p className="center-connect-sub">
+                  We verify, match and empower students and businesses for trusted and seamless collaborations.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* ── ROW 2: FOR BUSINESSES (GREEN PIPELINE) ── */}
+        <Reveal>
+          <div className="pipeline-row business-pipeline">
+            {/* Left 3D Avatar Card */}
+            <div className="avatar-side-card business-card">
+              <span className="side-pill business-pill">For Businesses</span>
+              <img src={businessAvatarImg} alt="3D Business Owner Avatar" className="avatar-img" />
+            </div>
+
+            {/* Right 6 Horizontal Pipeline Steps */}
+            <div className="pipeline-steps-grid">
+              {BUSINESS_STEPS.map((s, i) => (
+                <div key={s.num} className="step-pipeline-card business-card-step">
+                  <div className="step-badge business-step-badge">{s.num}</div>
+                  <div className="step-icon-wrap business-icon-bg">{s.icon}</div>
+                  <h4 className="step-card-title">{s.title}</h4>
+                  <p className="step-card-desc">{s.desc}</p>
+                  {i < 5 && <span className="pipeline-connector-line business-line" />}
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        {/* ── ROW 3: WHY CHOOSE SHIFTLYIN ── */}
+        <div id="why-choose" style={{ paddingTop: "3.5rem" }}>
+          <Reveal>
+            <div className="land-center" style={{ marginBottom: "2.5rem" }}>
+              <h2 className="land-heading" style={{ fontSize: "2rem" }}>
+                Why Choose <span className="highlight-blue">Shiftlyin</span>
+              </h2>
+            </div>
+          </Reveal>
+
+          <Reveal>
+            <div className="why-features-grid-6">
+              {WHY_FEATURES.map((w) => (
+                <div key={w.num} className="why-feature-box" style={{ background: w.bg, borderColor: `${w.color}30` }}>
+                  <div className="why-box-top">
+                    <div className="why-num-badge" style={{ background: w.color }}>{w.num}</div>
+                    <div className="why-icon-circle" style={{ color: w.color }}>{w.icon}</div>
+                  </div>
+                  <h4 className="why-box-title">{w.title}</h4>
+                  <p className="why-box-desc">{w.desc}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
+
+        {/* ── BOTTOM CTA ACTION BUTTONS ── */}
+        <Reveal>
+          <div className="showcase-cta-bar">
+            <Link to="/register" className="btn-primary-blue" style={{ fontSize: "1rem", padding: "14px 34px", borderRadius: "30px" }}>
+              Join Shiftlyin Today →
+            </Link>
+            <a href="#how-it-works" className="btn-outline-dark" style={{ fontSize: "0.92rem", padding: "12px 24px", borderRadius: "30px", display: "inline-flex", alignItems: "center", gap: "8px" }}>
+              <span style={{ fontSize: "0.8rem", background: "#2563eb", color: "#fff", width: "20px", height: "20px", borderRadius: "50%", display: "grid", placeItems: "center" }}>▶</span> Watch How It Works
+            </a>
+          </div>
+        </Reveal>
       </section>
 
       {/* ═══ 6. POPULAR CATEGORIES + IMPACT NUMBERS ═══ */}
