@@ -62,16 +62,19 @@ export default function Home() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Red outline overflow detector hook
+  // Red outline overflow detector hook (runs after data renders)
   useEffect(() => {
-    const docWidth = document.documentElement.clientWidth;
-    document.querySelectorAll("*").forEach((el) => {
-      if (el.scrollWidth > docWidth) {
-        el.style.outline = "3px solid red";
-        console.log("OVERFLOW:", el, "width:", el.scrollWidth, "vs viewport:", docWidth);
-      }
-    });
-  }, []);
+    const timer = setTimeout(() => {
+      const docWidth = document.documentElement.clientWidth;
+      document.querySelectorAll("*").forEach((el) => {
+        if (el.scrollWidth > docWidth) {
+          el.style.outline = "3px solid red";
+          console.log("OVERFLOW:", el, "width:", el.scrollWidth, "vs viewport:", docWidth);
+        }
+      });
+    }, 1500); // 1.5s delay to ensure everything is mounted and rendered
+    return () => clearTimeout(timer);
+  }, [loading, jobs]);
 
   // Search state
   const [searchQuery, setSearchQuery] = useState("");
