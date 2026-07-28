@@ -1,6 +1,6 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { addDoc, collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ImageUploadField from "../../components/ImageUploadField.jsx";
 import CreditCardForm from "../../components/ui/credit-card-form.jsx";

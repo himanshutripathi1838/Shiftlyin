@@ -2,7 +2,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import heroImage from "../../assets/hustlr-cafe-hero.png";
+import { AnimatedSignIn } from "../../components/ui/animated-sign-in.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { checkIfAdmin } from "../../services/admin.js";
 import { auth, db } from "../../services/firebase.js";
@@ -10,7 +10,6 @@ import { auth, db } from "../../services/firebase.js";
 async function getRole(uid) {
   for (let i = 0; i < 4; i++) {
     try {
-      // 1. Try to read from the users collection first (covers 99.9% of user logins)
       const snapshot = await getDoc(doc(db, "users", uid));
       if (snapshot.exists()) {
         const role = snapshot.data().role;
@@ -19,7 +18,6 @@ async function getRole(uid) {
         }
       }
 
-      // 2. If user document does not exist, check if they are in the admins collection
       const isAdmin = await checkIfAdmin(uid);
       if (isAdmin) return "admin";
 
@@ -67,7 +65,6 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [spotlight, setSpotlight] = useState({ x: 50, y: 50 });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -94,80 +91,74 @@ export default function Login() {
     }
   }
 
-  function handlePointerMove(event) {
-    const bounds = event.currentTarget.getBoundingClientRect();
-    setSpotlight({
-      x: ((event.clientX - bounds.left) / bounds.width) * 100,
-      y: ((event.clientY - bounds.top) / bounds.height) * 100
-    });
-  }
-
   return (
-    <main
-      className="auth-page login-page"
-      onPointerMove={handlePointerMove}
-      style={{
-        backgroundImage: `url(${heroImage})`,
-        "--spotlight-x": `${spotlight.x}%`,
-        "--spotlight-y": `${spotlight.y}%`
-      }}
+    <AnimatedSignIn
+      title="Welcome to Shiftlyin"
+      subtitle="Sign in to your student, business, or admin workspace"
     >
-      <section className="login-shell">
-        <div className="login-form-panel">
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="login-heading">
-              <span className="eyebrow">Welcome back</span>
-              <h1>Sign in to Shiftlyin</h1>
-              <p>Continue to your student, restaurant owner, or admin workspace.</p>
-            </div>
+      <form className="asi-login-form" onSubmit={handleSubmit}>
+        {error && <p className="form-error" style={{ color: "#ef4444", fontSize: "0.85rem", margin: 0, padding: "8px 12px", background: "rgba(239,68,68,0.1)", borderRadius: "8px" }} role="alert">{error}</p>}
 
-            {error && <p className="form-error" role="alert">{error}</p>}
-
-            <div className="login-fields">
-              <label>
-                Email address
-                <input
-                  type="email"
-                  autoComplete="email"
-                  placeholder="you@example.com"
-                  required
-                  value={form.email}
-                  onChange={(event) => setForm({ ...form, email: event.target.value.trim() })}
-                />
-              </label>
-              <label>
-                Password
-                <span className="password-field">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    autoComplete="current-password"
-                    placeholder="Enter your password"
-                    required
-                    value={form.password}
-                    onChange={(event) => setForm({ ...form, password: event.target.value })}
-                  />
-                  <button
-                    type="button"
-                    className="password-toggle"
-                    onClick={() => setShowPassword((current) => !current)}
-                    aria-label={showPassword ? "Hide password" : "Show password"}
-                  >
-                    {showPassword ? "Hide" : "Show"}
-                  </button>
-                </span>
-              </label>
-            </div>
-
-            <button className="primary-button full-width login-submit" disabled={loading}>
-              {loading ? "Signing in..." : "Sign in"}
-            </button>
-
-            <p className="auth-footer">
-              New to Shiftlyin? <Link to="/register">Create an account</Link>
-            </p>
-          </form>
+        <div className={`asi-form-field ${form.email ? "active" : ""}`}>
+          <input
+            type="email"
+            id="asi-login-email"
+            autoComplete="email"
+            required
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value.trim() })}
+          />
+          <label htmlFor="asi-login-email">Email Address</label>
         </div>
-      </section>
-    </main>
+
+        <div className={`asi-form-field ${form.password ? "active" : ""}`}>
+          <input
+            type={showPassword ? "text" : "password"}
+            id="asi-login-password"
+            autoComplete="current-password"
+            required
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+          />
+          <label htmlFor="asi-login-password">Password</label>
+          <button
+            type="button"
+            className="asi-toggle-password"
+            onClick={() => setShowPassword(!showPassword)}
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            {showPassword ? "🙈" : "👁️"}
+          </button>
+        </div>
+
+        <div className="asi-form-options">
+          <label className="asi-remember-me">
+            <input type="checkbox" defaultChecked />
+            Remember me
+          </label>
+          <a href="#" className="asi-forgot-password">
+            Forgot Password?
+          </a>
+        </div>
+
+        <button type="submit" className="asi-login-button" disabled={loading}>
+          {loading ? "Signing in..." : "Sign in"}
+        </button>
+
+        <div className="asi-separator">
+          <span>or continue with</span>
+        </div>
+
+        <div className="asi-social-login">
+          <button type="button" className="asi-social-button">🐙</button>
+          <button type="button" className="asi-social-button">🐦</button>
+          <button type="button" className="asi-social-button">💼</button>
+        </div>
+
+        <p className="asi-signup-prompt">
+          New to Shiftlyin? <Link to="/register" style={{ color: "#2563eb", fontWeight: "700" }}>Create an account</Link>
+        </p>
+      </form>
+    </AnimatedSignIn>
   );
 }
