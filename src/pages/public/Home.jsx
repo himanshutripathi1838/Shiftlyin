@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import heroImage from "../../assets/hustlr-cafe-hero.png";
+import fullLogoImg from "../../assets/shiftlyin-full-logo.png";
 import LogoCloud from "@/components/ui/logo-cloud-15";
 
 /* ── Scroll Reveal Hook ── */
@@ -413,8 +414,20 @@ export default function Home() {
         <div className="footer-max-width">
           <div className="footer-grid-layout">
             <div className="footer-brand-info">
-              <strong>SHIFTLYIN</strong>
-              <p>Earn While You Learn. Connecting college students with local businesses for flexible, part-time opportunities.</p>
+              <img
+                src={fullLogoImg}
+                alt="Shiftlyin - Find Jobs. Fit Future."
+                style={{
+                  height: "44px",
+                  objectFit: "contain",
+                  background: "#ffffff",
+                  padding: "5px 12px",
+                  borderRadius: "8px",
+                  marginBottom: "0.85rem",
+                  display: "inline-block"
+                }}
+              />
+              <p>Connecting college students with local businesses for flexible, part-time opportunities.</p>
               <div className="social-icon-row">
                 <a href="#" className="social-icon-btn" aria-label="Facebook">f</a>
                 <a href="#" className="social-icon-btn" aria-label="Instagram">📷</a>

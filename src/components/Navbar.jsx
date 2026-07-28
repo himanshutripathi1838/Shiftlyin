@@ -1,6 +1,7 @@
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
+import sLogoImg from "../assets/shiftlyin-s-logo.png";
 
 export default function Navbar() {
   const { currentUser, profile, logout } = useAuth();
@@ -49,11 +50,11 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <Link className="brand" to="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
-        <div style={{
-          width: "36px", height: "36px", background: "#2563eb", borderRadius: "8px",
-          display: "grid", placeItems: "center", color: "#fff", fontWeight: 900,
-          fontSize: "1.2rem", flexShrink: 0
-        }}>S</div>
+        <img
+          src={sLogoImg}
+          alt="Shiftlyin S Logo"
+          style={{ width: "36px", height: "36px", objectFit: "contain", borderRadius: "8px", flexShrink: 0 }}
+        />
         <strong style={{ color: "var(--text)", fontSize: "1.05rem", letterSpacing: "0.04em" }}>SHIFTLYIN</strong>
       </Link>
 
