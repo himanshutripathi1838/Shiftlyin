@@ -2,22 +2,14 @@ import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 
-import logoImg from "../assets/logo.png";
-
 export default function Navbar() {
   const { currentUser, profile, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
-  });
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem("theme") === "dark");
 
-  useEffect(() => {
-    // Close mobile menu on route change
-    setIsMenuOpen(false);
-  }, [location.pathname]);
+  useEffect(() => { setIsMenuOpen(false); }, [location.pathname]);
 
   useEffect(() => {
     if (darkMode) {
@@ -34,66 +26,110 @@ export default function Navbar() {
     navigate("/");
   }
 
-  function handleAnchorClick(event, anchorId) {
+  function scrollTo(e, id) {
     setIsMenuOpen(false);
     if (location.pathname === "/") {
-      event.preventDefault();
-      const element = document.getElementById(anchorId);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
+      e.preventDefault();
+      if (id === "top") { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
     }
   }
 
+  const NAV_LINKS = [
+    { label: "Home", id: "top", href: "/" },
+    { label: "Jobs", id: "jobs", href: "/#jobs" },
+    { label: "Businesses", id: "trusted", href: "/#trusted" },
+    { label: "About Us", id: "why-choose", href: "/#why-choose" },
+    { label: "How It Works", id: "how-it-works", href: "/#how-it-works" },
+    { label: "Contact", id: "contact", href: "/#contact" },
+    { label: "FAQ", id: "faq", href: "/#faq" },
+  ];
+
   return (
-    <header className="navbar" style={{ padding: "0.75rem 2rem" }}>
-      <Link className="brand" to="/" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <img src={logoImg} alt="Shiftlyin Logo" style={{ width: "36px", height: "36px", objectFit: "contain", borderRadius: "6px" }} />
-        <span>
-          <strong style={{ color: "var(--text)" }}>Shiftlyin</strong>
-          <small>Find Jobs. Fit Future.</small>
-        </span>
+    <header className="navbar">
+      <Link className="brand" to="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
+        <div style={{
+          width: "36px", height: "36px", background: "#2563eb", borderRadius: "8px",
+          display: "grid", placeItems: "center", color: "#fff", fontWeight: 900,
+          fontSize: "1.2rem", flexShrink: 0
+        }}>S</div>
+        <strong style={{ color: "var(--text)", fontSize: "1.05rem", letterSpacing: "0.04em" }}>SHIFTLYIN</strong>
       </Link>
 
-      <button 
+      <button
         type="button"
         className={`hamburger-btn ${isMenuOpen ? "open" : ""}`}
-        onClick={() => setIsMenuOpen((prev) => !prev)}
+        onClick={() => setIsMenuOpen(p => !p)}
         aria-label="Toggle navigation menu"
       >
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
       </button>
 
-      <nav className={`nav-actions ${isMenuOpen ? "is-active" : ""}`} style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-        <a href="/#features" onClick={(e) => handleAnchorClick(e, "features")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>Features</a>
-        <a href="/#how-it-works" onClick={(e) => handleAnchorClick(e, "how-it-works")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>How It Works</a>
-        <a href="/#students" onClick={(e) => handleAnchorClick(e, "students")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>For Students</a>
-        <a href="/#businesses" onClick={(e) => handleAnchorClick(e, "businesses")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>For Businesses</a>
-        <a href="/#contact" onClick={(e) => handleAnchorClick(e, "contact")} style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>Contact</a>
-        <NavLink to="/help" style={{ color: "var(--muted)", fontWeight: "600", fontSize: "13px" }}>Help</NavLink>
-        
-        <div style={{ display: "flex", gap: "12px", alignItems: "center", marginLeft: "12px" }}>
-          <button 
-            type="button" 
-            onClick={() => setDarkMode(!darkMode)} 
+      <nav className={`nav-actions ${isMenuOpen ? "is-active" : ""}`}>
+        <div style={{ display: "flex", gap: "18px", alignItems: "center", flexWrap: "wrap" }}>
+          {NAV_LINKS.map(link => (
+            <a
+              key={link.label}
+              href={link.href}
+              onClick={e => scrollTo(e, link.id)}
+              style={{ color: "var(--muted)", fontWeight: 600, fontSize: "0.82rem", textDecoration: "none", whiteSpace: "nowrap" }}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+
+        <div style={{ display: "flex", gap: "10px", alignItems: "center", marginLeft: "12px" }}>
+          <button
+            type="button"
+            onClick={() => setDarkMode(!darkMode)}
             className="theme-toggle-btn"
             title="Toggle theme"
-            style={{ fontSize: "16px", color: "var(--text)" }}
+            style={{ fontSize: "16px", color: "var(--text)", background: "none", border: "none", cursor: "pointer" }}
           >
             {darkMode ? "☀️" : "🌙"}
           </button>
 
           {currentUser ? (
             <>
-              <NavLink to={`/${profile?.role || "student"}`} className="primary-button" style={{ padding: "6px 12px", fontSize: "13px", minHeight: "36px" }}>Dashboard</NavLink>
-              <button className="ghost-button" onClick={handleLogout} style={{ padding: "6px 12px", fontSize: "13px", minHeight: "36px" }}>Logout</button>
+              <NavLink
+                to={`/${profile?.role || "student"}`}
+                style={{
+                  padding: "7px 16px", fontSize: "0.82rem", fontWeight: 700,
+                  borderRadius: "8px", background: "var(--primary)", color: "#fff",
+                  textDecoration: "none", minHeight: "36px", display: "inline-flex", alignItems: "center"
+                }}
+              >Dashboard</NavLink>
+              <button
+                onClick={handleLogout}
+                style={{
+                  padding: "7px 16px", fontSize: "0.82rem", fontWeight: 700,
+                  borderRadius: "8px", background: "transparent", color: "var(--text)",
+                  border: "1.5px solid var(--border)", cursor: "pointer", minHeight: "36px"
+                }}
+              >Logout</button>
             </>
           ) : (
             <>
-              <NavLink to="/login" style={{ color: "var(--muted)", fontWeight: "600", fontSize: "14px" }}>Login</NavLink>
-              <Link className="primary-button" to="/register" style={{ padding: "6px 12px", fontSize: "13px", minHeight: "36px" }}>Get Started</Link>
+              <NavLink
+                to="/login"
+                style={{
+                  padding: "7px 16px", fontSize: "0.82rem", fontWeight: 700,
+                  borderRadius: "8px", color: "var(--text)", textDecoration: "none",
+                  border: "1.5px solid var(--border)", minHeight: "36px",
+                  display: "inline-flex", alignItems: "center"
+                }}
+              >Login</NavLink>
+              <Link
+                to="/register"
+                style={{
+                  padding: "7px 16px", fontSize: "0.82rem", fontWeight: 700,
+                  borderRadius: "8px", background: "#2563eb", color: "#fff",
+                  textDecoration: "none", minHeight: "36px",
+                  display: "inline-flex", alignItems: "center"
+                }}
+              >Register</Link>
             </>
           )}
         </div>

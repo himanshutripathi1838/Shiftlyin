@@ -1,42 +1,46 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f8fafc;
+  --bg: #ffffff;
   --surface: #ffffff;
-  --surface-soft: #f1f5f9;
-  --text: #111827;
+  --surface-soft: #f8fafc;
+  --text: #0f172a;
   --muted: #64748b;
   --border: #e2e8f0;
   --primary: #2563eb;
   --primary-dark: #1d4ed8;
-  --accent: #10b981;
-  --ink: #0f172a;
+  --accent: #16a34a;
+  --ink: #0b1437;
   --signal: #f59e0b;
-  --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --grid-line: rgba(37, 99, 235, 0.025);
+  --purple: #7c3aed;
+  --star: #fbbf24;
+  --shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --grid-line: rgba(37, 99, 235, 0.02);
   --radius-lg: 16px;
   --radius-xl: 24px;
   color: var(--text);
-  font-family: "Segoe UI", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Inter", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
 
 :root.dark {
-  --bg: #0b1329;
-  --surface: #111b33;
-  --surface-soft: #1e294b;
+  --bg: #0b1437;
+  --surface: #111c44;
+  --surface-soft: #1a2550;
   --text: #f8fafc;
   --muted: #94a3b8;
-  --border: #1e294b;
-  --primary: #3b82f6;
-  --primary-dark: #2563eb;
-  --accent: #10b981;
+  --border: #1e2d52;
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --accent: #16a34a;
   --ink: #020617;
   --signal: #f59e0b;
-  --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
-  --shadow-sm: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  --purple: #7c3aed;
+  --star: #fbbf24;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.3);
   --grid-line: rgba(59, 130, 246, 0.04);
 }
 

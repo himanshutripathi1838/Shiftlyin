@@ -2,15 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import heroImage from "../../assets/hustlr-cafe-hero.png";
 
-/* ── Scroll Reveal ── */
+/* ── Scroll Reveal Hook ── */
 function useScrollReveal() {
   const ref = useRef(null);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } },
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          obs.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -30px 0px" }
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -21,31 +26,35 @@ function useScrollReveal() {
 function Reveal({ children, className = "", delay = 0 }) {
   const ref = useScrollReveal();
   return (
-    <div ref={ref} className={`scroll-reveal ${className}`} style={delay ? { transitionDelay: `${delay}ms` } : undefined}>
+    <div
+      ref={ref}
+      className={`scroll-reveal ${className}`}
+      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+    >
       {children}
     </div>
   );
 }
 
-/* ── Data ── */
+/* ── Static Data ── */
 const BRANDS = ["Café Coffee Day", "Domino's", "Barista", "McDonald's", "Zomato", "Swiggy", "Radisson"];
 
 const STEPS = [
   { num: "1", icon: "👤", title: "Register", desc: "Sign up as a Student or Business." },
-  { num: "2", icon: "✅", title: "Get Verified", desc: "Our team verifies your account." },
-  { num: "3", icon: "📋", title: "Find or Post Jobs", desc: "Students find jobs. Businesses post jobs." },
-  { num: "4", icon: "📨", title: "Apply & Connect", desc: "Students apply. Businesses review." },
+  { num: "2", icon: "🛡️", title: "Get Verified", desc: "Our team verifies your account." },
+  { num: "3", icon: "💼", title: "Find or Post Jobs", desc: "Students find jobs. Businesses post jobs." },
+  { num: "4", icon: "✈️", title: "Apply & Connect", desc: "Students apply. Businesses review." },
   { num: "5", icon: "💬", title: "Chat & Coordinate", desc: "Once accepted, chat opens." },
-  { num: "6", icon: "💰", title: "Work & Earn", desc: "Check-in, complete work & get paid." },
+  { num: "6", icon: "📍", title: "Work & Earn", desc: "Check-in, complete work & get paid." },
 ];
 
-const WHY = [
+const WHY_FEATURES = [
   { icon: "🛡️", title: "Verified Users", desc: "Every student and business is verified." },
   { icon: "📍", title: "GPS Attendance", desc: "Check-in and check-out with location." },
   { icon: "💬", title: "Real-time Chat", desc: "Communicate easily within the platform." },
   { icon: "📌", title: "Nearby Jobs", desc: "Find jobs near your location." },
   { icon: "⭐", title: "Ratings & Reviews", desc: "Build reputation with ratings." },
-  { icon: "💳", title: "Secure Payments", desc: "Future ready wallet and payments." },
+  { icon: "💳", title: "Secure Payments", desc: "Future-ready wallet and payments." },
 ];
 
 const CATEGORIES = [
@@ -60,102 +69,161 @@ const CATEGORIES = [
 ];
 
 const FAQS = [
-  { q: "How do I register on Shiftlyin?", a: "Click 'Get Started', choose your role (Student or Business), fill in the details, upload required documents, and submit. Our team will verify within 24 hours." },
-  { q: "How does GPS attendance work?", a: "When you arrive at the shift location, the app checks your GPS coordinates. You can only clock in if you're within 100 meters of the business location." },
-  { q: "Is Shiftlyin free to use?", a: "Yes! Shiftlyin is completely free for students. Businesses pay a small 10% commission on successful shift completions." },
-  { q: "How will I get paid?", a: "Earnings are deposited to your Shiftlyin digital wallet after shift completion and business confirmation. You can withdraw anytime." },
-  { q: "How does verification work?", a: "We verify Aadhaar, PAN, college ID for students, and business registration documents for businesses. This ensures a safe platform for everyone." },
-  { q: "Can I work in multiple jobs?", a: "Yes! You can apply to multiple shifts as long as they don't overlap in timing. Our system prevents double-booking automatically." },
+  { q: "How do I register on Shiftlyin?", a: "Click 'Register', choose your role (Student or Business), fill in your details and upload verification documents. Our team will verify your profile within 24 hours." },
+  { q: "Is Shiftlyin free to use?", a: "Shiftlyin is 100% free for students! Businesses pay a nominal settlement commission only on completed shifts." },
+  { q: "How does verification work?", a: "We verify student IDs, Aadhaar/PAN, and business licenses via secure admin checks to keep the platform safe." },
+  { q: "How does GPS attendance work?", a: "Students can clock in only when within 100 meters of the shift location verified by real-time geolocation checks." },
+  { q: "How will I get paid?", a: "Earnings are credited directly to your Shiftlyin digital wallet after shift approval, which you can transfer to your bank account anytime." },
+  { q: "Can I work in multiple jobs?", a: "Yes! Students can apply for and work multiple part-time shifts as long as the shift schedules do not overlap." },
 ];
 
-const STUDENT_TESTIMONIAL = {
-  name: "Rohit Sharma", role: "BCA Student", stars: 5, avatar: "RS", color: "#2563eb",
-  quote: "HUSTLR helped me find part-time work that fits my class schedule perfectly. The platform is easy to use and very reliable."
-};
+const STUDENT_REVIEWS = [
+  { name: "Rohit Sharma", title: "BCA Student", rating: 5, avatar: "RS", color: "#2563eb", quote: "Shiftlyin helped me find part-time work that fits my class schedule perfectly. The platform is easy to use and very reliable." },
+  { name: "Priya Patel", title: "MBA Student", rating: 5, avatar: "PP", color: "#7c3aed", quote: "The wallet system and instant shift updates make earning so convenient while managing my studies." },
+];
 
-const BIZ_TESTIMONIAL = {
-  name: "Ankit Verma", role: "Restaurant Owner", stars: 5, avatar: "AV", color: "#f59e0b",
-  quote: "We get verified and hardworking students within minutes. HUSTLR has made hiring so simple and efficient for our restaurant."
-};
+const BUSINESS_REVIEWS = [
+  { name: "Amit Verma", title: "Restaurant Owner", rating: 5, avatar: "AV", color: "#f59e0b", quote: "We get verified and hardworking students within minutes. Shiftlyin has made hiring so simple and efficient for our restaurant." },
+  { name: "Neha Gupta", title: "Retail Store Manager", rating: 5, avatar: "NG", color: "#16a34a", quote: "GPS clock-ins give complete transparency. Finding reliable staff for weekend rushes is now effortless." },
+];
 
 /* ════════════════════════════════════════
    HOME COMPONENT
    ════════════════════════════════════════ */
 export default function Home() {
   const [openFaq, setOpenFaq] = useState(null);
+  const [studentIdx, setStudentIdx] = useState(0);
+  const [bizIdx, setBizIdx] = useState(0);
 
   return (
     <main className="landing-page">
+      {/* ═══ 2. HERO SECTION ═══ */}
+      <section className="hero-wrapper" id="hero">
+        <div className="hero-grid">
+          <div className="hero-text">
+            <span className="hero-badge-pill">🎓 Earn While You Learn</span>
 
-      {/* ═══ HERO ═══ */}
-      <section className="hero-grid">
-        <div className="hero-text">
-          <span className="hero-pill">🎓 Earn While You Learn</span>
-          <h1 className="hero-h1">Find Part-Time Jobs<br />Near You</h1>
-          <p className="hero-p">
-            Shiftlyin connects college students with trusted businesses for flexible, part-time opportunities.
-          </p>
-          <div className="hero-btns">
-            <Link to="/register" className="btn-primary">🔍 Find Jobs Near You</Link>
-            <Link to="/register" className="btn-outline">📋 Post a Job</Link>
+            <h1 className="hero-h1">
+              Find Part-Time Jobs<br />Near You
+            </h1>
+
+            <p className="hero-p">
+              Shiftlyin connects college students with trusted businesses for flexible, part-time opportunities.
+            </p>
+
+            <div className="hero-btns">
+              <Link to="/register" className="btn-primary-blue">
+                🔍 Find Jobs Near You
+              </Link>
+              <Link to="/register" className="btn-outline-dark">
+                💼 Post a Job
+              </Link>
+            </div>
+
+            <div className="hero-trust-row">
+              <span className="trust-item"><span className="trust-check">✓</span> Verified Students</span>
+              <span className="trust-item"><span className="trust-check">✓</span> Trusted Businesses</span>
+              <span className="trust-item"><span className="trust-check">✓</span> Safe & Secure</span>
+            </div>
           </div>
-          <div className="hero-trust">
-            <span>Verified Students</span>
-            <span>Trusted Businesses</span>
-            <span>Safe & Secure</span>
+
+          <div className="hero-visual">
+            <img
+              src={heroImage}
+              alt="College students looking at a phone tablet"
+              className="hero-img"
+              loading="eager"
+            />
+            {/* 3 Cascading Floating Stat Cards */}
+            <div className="float-stat-card students">
+              <div className="float-stat-icon" style={{ background: "#eff6ff", color: "#2563eb" }}>👥</div>
+              <div className="float-stat-info">
+                <strong>5000+</strong>
+                <span>Students</span>
+              </div>
+            </div>
+
+            <div className="float-stat-card jobs">
+              <div className="float-stat-icon" style={{ background: "#f0fdf4", color: "#16a34a" }}>📋</div>
+              <div className="float-stat-info">
+                <strong>1000+</strong>
+                <span>Jobs Posted</span>
+              </div>
+            </div>
+
+            <div className="float-stat-card biz">
+              <div className="float-stat-icon" style={{ background: "#faf5ff", color: "#7c3aed" }}>🏪</div>
+              <div className="float-stat-info">
+                <strong>500+</strong>
+                <span>Businesses</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="hero-img-wrap">
-          <img src={heroImage} alt="Students working at a café" loading="eager" width="500" height="375" />
-          <div className="float-card">
-            <div><strong>5000+</strong><br /><span>Students</span></div>
-          </div>
-          <div className="float-card">
-            <div><strong>1000+</strong><br /><span>Jobs Posted</span></div>
-          </div>
-          <div className="float-card">
-            <div><strong>500+</strong><br /><span>Businesses</span></div>
-          </div>
+
+        {/* Dark Rounded Search Bar */}
+        <div className="hero-search-container" id="jobs">
+          <form className="search-grid" onSubmit={(e) => e.preventDefault()}>
+            <div className="search-field">
+              <input type="text" placeholder="🔍 Search job title or keyword" />
+            </div>
+            <div className="search-field">
+              <select defaultValue="">
+                <option value="" disabled>Select Location</option>
+                <option value="delhi">Delhi NCR</option>
+                <option value="mumbai">Mumbai</option>
+                <option value="bangalore">Bangalore</option>
+                <option value="pune">Pune</option>
+              </select>
+            </div>
+            <div className="search-field">
+              <select defaultValue="">
+                <option value="" disabled>Select Category</option>
+                {CATEGORIES.map((c) => (
+                  <option key={c.label} value={c.label.toLowerCase()}>{c.label}</option>
+                ))}
+              </select>
+            </div>
+            <button type="submit" className="btn-search-blue">
+              Search Jobs →
+            </button>
+          </form>
         </div>
       </section>
 
-      {/* ═══ SEARCH BAR ═══ */}
-      <div className="search-strip">
-        <div className="search-bar">
-          <input type="text" placeholder="🔍 Search job title or keyword" />
-          <select><option>Select Location</option><option>Delhi</option><option>Mumbai</option><option>Bangalore</option></select>
-          <select><option>Select Category</option>{CATEGORIES.map(c => <option key={c.label}>{c.label}</option>)}</select>
-          <button className="search-btn">Search Jobs →</button>
-        </div>
-      </div>
-
-      {/* ═══ TRUSTED BY ═══ */}
-      <section className="land-section">
+      {/* ═══ 3. TRUSTED-BY LOGO STRIP ═══ */}
+      <section className="trusted-strip" id="trusted">
         <Reveal>
-          <div className="land-center">
-            <h2 className="land-heading">Trusted by 500+ Businesses</h2>
+          <div className="land-center" style={{ marginBottom: "1rem" }}>
+            <h2 className="land-heading" style={{ fontSize: "1.25rem" }}>Trusted by 500+ Businesses</h2>
           </div>
-          <div className="brands-row">
-            {BRANDS.map(b => <span key={b}>{b}</span>)}
-            <span style={{ color: "var(--primary)", cursor: "pointer" }}>+ More</span>
+          <div className="brand-pills-row">
+            {BRANDS.map((b) => (
+              <div className="brand-pill" key={b}>
+                <span>🏪</span> {b}
+              </div>
+            ))}
+            <div className="brand-pill more">+ More</div>
           </div>
         </Reveal>
       </section>
 
-      {/* ═══ HOW IT WORKS ═══ */}
+      {/* ═══ 4. HOW SHIFTLYIN WORKS (6-STEP) ═══ */}
       <section className="land-section" id="how-it-works">
         <Reveal>
           <div className="land-center">
             <h2 className="land-heading">How Shiftlyin Works?</h2>
+            <p className="land-subhead">Simple step-by-step process for students and business owners.</p>
           </div>
         </Reveal>
-        <div className="steps-grid">
+
+        <div className="steps-row">
           {STEPS.map((s, i) => (
             <Reveal key={s.num} delay={i * 80}>
-              <div className="step-card">
-                <div className="step-num-row">
-                  <div className="step-num">{s.num}</div>
-                  <span className="step-icon">{s.icon}</span>
+              <div className="step-card-box">
+                <div className="step-header">
+                  <span className="step-badge">{s.num}</span>
+                  <span className="step-icon-emoji">{s.icon}</span>
                 </div>
                 <h4>{s.title}</h4>
                 <p>{s.desc}</p>
@@ -165,150 +233,226 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ WHY CHOOSE ═══ */}
-      <section className="land-section" id="features" style={{ background: "var(--surface-soft)", borderRadius: "24px" }}>
+      {/* ═══ 5. WHY CHOOSE SHIFTLYIN? ═══ */}
+      <section className="land-section" id="why-choose" style={{ background: "var(--surface-soft)", borderRadius: "24px" }}>
         <Reveal>
           <div className="land-center">
             <h2 className="land-heading">Why Choose Shiftlyin?</h2>
+            <p className="land-subhead">Designed with security, speed, and reliability at its core.</p>
           </div>
         </Reveal>
-        <div className="why-grid">
-          {WHY.map((w, i) => (
-            <Reveal key={w.title} delay={i * 70}>
-              <div className="why-item">
-                <div className="why-circle">{w.icon}</div>
-                <h4>{w.title}</h4>
-                <p>{w.desc}</p>
+
+        <div className="why-grid-layout">
+          {WHY_FEATURES.map((f, i) => (
+            <Reveal key={f.title} delay={i * 70}>
+              <div className="why-feature-card">
+                <div className="why-icon-badge">{f.icon}</div>
+                <h4>{f.title}</h4>
+                <p>{f.desc}</p>
               </div>
             </Reveal>
           ))}
         </div>
       </section>
 
-      {/* ═══ CATEGORIES + IMPACT ═══ */}
-      <section className="land-section" id="students">
+      {/* ═══ 6. POPULAR CATEGORIES + IMPACT NUMBERS ═══ */}
+      <section className="land-section">
         <Reveal>
-          <div className="cat-impact-grid">
+          <div className="two-col-layout">
             <div>
-              <h3 className="land-heading" style={{ fontSize: "1.3rem", marginBottom: "1.25rem" }}>Popular Job Categories</h3>
-              <div className="cat-icons">
-                {CATEGORIES.map(c => (
-                  <div className="cat-item" key={c.label}>
-                    <span className="cat-emoji">{c.emoji}</span>
-                    <span className="cat-label">{c.label}</span>
+              <h2 className="land-heading" style={{ fontSize: "1.35rem" }}>Popular Job Categories</h2>
+              <div className="cat-chips-grid">
+                {CATEGORIES.map((c) => (
+                  <div className="cat-chip" key={c.label}>
+                    <span className="cat-chip-icon">{c.emoji}</span>
+                    <span className="cat-chip-name">{c.label}</span>
                   </div>
                 ))}
               </div>
-              <a href="#how-it-works" className="view-all-link">View All Categories →</a>
+              <a href="#jobs" className="view-all-cats-link">View All Categories →</a>
             </div>
+
             <div>
-              <h3 className="land-heading" style={{ fontSize: "1.3rem", marginBottom: "1.25rem" }}>Our Impact in Numbers</h3>
-              <div className="impact-grid">
-                <div className="impact-card"><strong>5000+</strong><span>Students</span></div>
-                <div className="impact-card"><strong>500+</strong><span>Businesses</span></div>
-                <div className="impact-card"><strong>1000+</strong><span>Jobs Posted</span></div>
-                <div className="impact-card"><strong>3000+</strong><span>Successful Hirings</span></div>
+              <h2 className="land-heading" style={{ fontSize: "1.35rem" }}>Our Impact in Numbers</h2>
+              <div className="impact-blocks-grid">
+                <div className="impact-block-card blue">
+                  <strong>5000+</strong>
+                  <span>Students</span>
+                </div>
+                <div className="impact-block-card green">
+                  <strong>500+</strong>
+                  <span>Businesses</span>
+                </div>
+                <div className="impact-block-card purple">
+                  <strong>1000+</strong>
+                  <span>Jobs Posted</span>
+                </div>
+                <div className="impact-block-card amber">
+                  <strong>3000+</strong>
+                  <span>Successful Hirings</span>
+                </div>
               </div>
             </div>
           </div>
         </Reveal>
       </section>
 
-      {/* ═══ TESTIMONIALS ═══ */}
-      <section className="land-section" id="businesses">
+      {/* ═══ 7. TESTIMONIALS (TWO-COLUMN SPLIT) ═══ */}
+      <section className="land-section">
         <Reveal>
-          <div className="test-split">
-            <div className="test-box">
-              <h3>What Students Say</h3>
-              <TestCard t={STUDENT_TESTIMONIAL} />
+          <div className="two-col-layout">
+            {/* Student Testimonial */}
+            <div>
+              <h2 className="land-heading" style={{ fontSize: "1.25rem" }}>What Students Say</h2>
+              <div className="testimonial-card-box">
+                <div className="stars-row">
+                  {"★".repeat(STUDENT_REVIEWS[studentIdx].rating)}
+                </div>
+                <blockquote>"{STUDENT_REVIEWS[studentIdx].quote}"</blockquote>
+                <div className="test-user-row">
+                  <div className="test-user-info">
+                    <div className="test-avatar-circle" style={{ background: STUDENT_REVIEWS[studentIdx].color }}>
+                      {STUDENT_REVIEWS[studentIdx].avatar}
+                    </div>
+                    <div>
+                      <strong>— {STUDENT_REVIEWS[studentIdx].name}</strong>
+                      <span>{STUDENT_REVIEWS[studentIdx].title}</span>
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", gap: "6px" }}>
+                    <button
+                      onClick={() => setStudentIdx((p) => (p === 0 ? STUDENT_REVIEWS.length - 1 : p - 1))}
+                      style={{ background: "var(--surface-soft)", border: "1px solid var(--border)", borderRadius: "6px", cursor: "pointer", width: "30px", height: "30px" }}
+                    >‹</button>
+                    <button
+                      onClick={() => setStudentIdx((p) => (p + 1) % STUDENT_REVIEWS.length)}
+                      style={{ background: "var(--surface-soft)", border: "1px solid var(--border)", borderRadius: "6px", cursor: "pointer", width: "30px", height: "30px" }}
+                    >›</button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="test-box">
-              <h3>What Businesses Say</h3>
-              <TestCard t={BIZ_TESTIMONIAL} />
+
+            {/* Business Testimonial */}
+            <div>
+              <h2 className="land-heading" style={{ fontSize: "1.25rem" }}>What Businesses Say</h2>
+              <div className="testimonial-card-box">
+                <div className="stars-row">
+                  {"★".repeat(BUSINESS_REVIEWS[bizIdx].rating)}
+                </div>
+                <blockquote>"{BUSINESS_REVIEWS[bizIdx].quote}"</blockquote>
+                <div className="test-user-row">
+                  <div className="test-user-info">
+                    <div className="test-avatar-circle" style={{ background: BUSINESS_REVIEWS[bizIdx].color }}>
+                      {BUSINESS_REVIEWS[bizIdx].avatar}
+                    </div>
+                    <div>
+                      <strong>— {BUSINESS_REVIEWS[bizIdx].name}</strong>
+                      <span>{BUSINESS_REVIEWS[bizIdx].title}</span>
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", gap: "6px" }}>
+                    <button
+                      onClick={() => setBizIdx((p) => (p === 0 ? BUSINESS_REVIEWS.length - 1 : p - 1))}
+                      style={{ background: "var(--surface-soft)", border: "1px solid var(--border)", borderRadius: "6px", cursor: "pointer", width: "30px", height: "30px" }}
+                    >‹</button>
+                    <button
+                      onClick={() => setBizIdx((p) => (p + 1) % BUSINESS_REVIEWS.length)}
+                      style={{ background: "var(--surface-soft)", border: "1px solid var(--border)", borderRadius: "6px", cursor: "pointer", width: "30px", height: "30px" }}
+                    >›</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </Reveal>
       </section>
 
-      {/* ═══ FAQ + MOBILE PROMO ═══ */}
+      {/* ═══ 8. FAQ + MOBILE APP TEASER ═══ */}
       <section className="land-section" id="faq">
         <Reveal>
-          <div className="faq-split">
+          <div className="two-col-layout" style={{ gridTemplateColumns: "1.3fr 0.7fr" }}>
             <div>
-              <h3 className="land-heading" style={{ fontSize: "1.3rem", marginBottom: "1.25rem" }}>Frequently Asked Questions</h3>
-              <div className="faq-grid">
-                {FAQS.map((f, i) => (
-                  <div className="faq-item" key={i}>
+              <h2 className="land-heading" style={{ fontSize: "1.35rem" }}>Frequently Asked Questions</h2>
+              <div className="faq-grid-2col">
+                {FAQS.map((faq, idx) => (
+                  <div className="faq-accordion-box" key={idx}>
                     <button
-                      className={`faq-q ${openFaq === i ? "open" : ""}`}
-                      onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                      className={`faq-question-btn ${openFaq === idx ? "open" : ""}`}
+                      onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
                     >
-                      {f.q}
+                      {faq.q}
                     </button>
-                    <div className={`faq-a ${openFaq === i ? "open" : ""}`}>{f.a}</div>
+                    <div className={`faq-answer-text ${openFaq === idx ? "open" : ""}`}>
+                      {faq.a}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="mobile-promo">
-              <div className="phone-mock">📱</div>
-              <h3>Shiftlyin Coming Soon on Mobile</h3>
-              <p>Scan the QR code to get the app when we launch!</p>
+
+            <div>
+              <div className="mobile-teaser-card">
+                <div className="qr-placeholder-box">📱</div>
+                <h4>Shiftlyin Coming Soon on Mobile</h4>
+                <p>Scan the QR code to get the app when we launch!</p>
+              </div>
             </div>
           </div>
         </Reveal>
       </section>
 
-      {/* ═══ CTA ═══ */}
-      <div className="cta-strip">
-        <div className="cta-inner">
-          <h2>Ready to Start Your Journey?</h2>
-          <p>Join thousands of students and businesses already growing with Shiftlyin.</p>
-          <div className="cta-btns">
-            <Link to="/register" className="btn-cta-student">Register as Student</Link>
-            <Link to="/register" className="btn-cta-biz">Register as Business</Link>
+      {/* ═══ 9. FINAL CTA BANNER ═══ */}
+      <section className="final-cta-container">
+        <Reveal>
+          <div className="cta-banner-navy">
+            <h2>Ready to Start Your Journey?</h2>
+            <p>Join thousands of students and businesses already growing with Shiftlyin.</p>
+            <div className="hero-btns" style={{ justifyContent: "center" }}>
+              <Link to="/register" className="cta-btn-white">Register as Student</Link>
+              <Link to="/register" className="btn-primary-blue">Register as Business</Link>
+            </div>
           </div>
-        </div>
-      </div>
+        </Reveal>
+      </section>
 
-      {/* ═══ FOOTER ═══ */}
-      <footer className="land-footer" id="contact">
-        <div className="footer-wrap">
-          <div className="footer-cols">
-            <div className="footer-brand-col">
-              <strong>🏢 Shiftlyin</strong>
-              <p>Connecting students with opportunities and businesses with talent.</p>
-              <div className="social-row">
-                <a href="#" aria-label="Facebook">f</a>
-                <a href="#" aria-label="Instagram">📷</a>
-                <a href="#" aria-label="LinkedIn">in</a>
-                <a href="#" aria-label="YouTube">▶</a>
+      {/* ═══ 10. FOOTER (DARK NAVY #0B1437) ═══ */}
+      <footer className="dark-navy-footer" id="contact">
+        <div className="footer-max-width">
+          <div className="footer-grid-layout">
+            <div className="footer-brand-info">
+              <strong>SHIFTLYIN</strong>
+              <p>Earn While You Learn. Connecting college students with local businesses for flexible, part-time opportunities.</p>
+              <div className="social-icon-row">
+                <a href="#" className="social-icon-btn" aria-label="Facebook">f</a>
+                <a href="#" className="social-icon-btn" aria-label="Instagram">📷</a>
+                <a href="#" className="social-icon-btn" aria-label="LinkedIn">in</a>
+                <a href="#" className="social-icon-btn" aria-label="YouTube">▶</a>
               </div>
             </div>
 
-            <div className="footer-link-col">
+            <div className="footer-nav-col">
               <h4>Quick Links</h4>
               <ul>
                 <li><a href="#hero">Home</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#businesses">Businesses</a></li>
+                <li><a href="#jobs">Jobs</a></li>
+                <li><a href="#trusted">Businesses</a></li>
                 <li><a href="#how-it-works">How It Works</a></li>
                 <li><a href="#contact">Contact</a></li>
               </ul>
             </div>
 
-            <div className="footer-link-col">
+            <div className="footer-nav-col">
               <h4>For Students</h4>
               <ul>
                 <li><Link to="/register">Find Jobs</Link></li>
                 <li><Link to="/login">My Applications</Link></li>
-                <li><Link to="/login">Chat</Link></li>
                 <li><Link to="/login">Profile</Link></li>
                 <li><Link to="/help">Help Center</Link></li>
               </ul>
             </div>
 
-            <div className="footer-link-col">
+            <div className="footer-nav-col">
               <h4>For Businesses</h4>
               <ul>
                 <li><Link to="/register">Post a Job</Link></li>
@@ -319,10 +463,10 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="footer-link-col">
+            <div className="footer-nav-col">
               <h4>Support</h4>
               <ul>
-                <li><Link to="/help">FAQ</Link></li>
+                <li><a href="#faq">FAQ</a></li>
                 <li><a href="#">Privacy Policy</a></li>
                 <li><a href="#">Terms & Conditions</a></li>
                 <li><a href="#">Refund Policy</a></li>
@@ -330,38 +474,21 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="newsletter-col">
+            <div className="newsletter-box-col">
               <h4>Newsletter</h4>
               <p>Subscribe to get latest jobs and updates.</p>
-              <form className="newsletter-form" onSubmit={e => e.preventDefault()}>
+              <form className="newsletter-input-group" onSubmit={(e) => e.preventDefault()}>
                 <input type="email" placeholder="Enter your email" />
                 <button type="submit">Subscribe</button>
               </form>
             </div>
           </div>
 
-          <div className="footer-line">
-            © {new Date().getFullYear()} Shiftlyin. All Rights Reserved.
+          <div className="footer-bottom-bar">
+            © 2026 Shiftlyin. All Rights Reserved.
           </div>
         </div>
       </footer>
     </main>
-  );
-}
-
-/* ── Testimonial Card ── */
-function TestCard({ t }) {
-  return (
-    <div className="test-card">
-      <div className="test-stars">{"★".repeat(t.stars)}</div>
-      <blockquote>{t.quote}</blockquote>
-      <div className="test-author">
-        <div className="test-avatar" style={{ background: t.color }}>{t.avatar}</div>
-        <div>
-          <strong>— {t.name}</strong>
-          <span>{t.role}</span>
-        </div>
-      </div>
-    </div>
   );
 }
