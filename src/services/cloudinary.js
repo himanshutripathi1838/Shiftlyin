@@ -1,4 +1,4 @@
-export async function uploadImageToCloudinary(file, folder = "hustlr") {
+export async function uploadImageToCloudinary(file, folder = "shiftlyin") {
   if (!file) return "";
 
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;

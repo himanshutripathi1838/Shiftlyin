@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import heroImage from "../../assets/hustlr-cafe-hero.png";
+import heroImage from "../../assets/shiftlyin-cafe-hero.png";
 import fullLogoImg from "../../assets/shiftlyin-full-logo.png";
 import sLogoImg from "../../assets/shiftlyin-s-logo.png";
 import studentAvatarImg from "../../assets/student-3d-avatar.png";

@@ -24,7 +24,7 @@ export default function JobCard({ job, distance, onApply, compact = false, appli
         </span>
         <div>
           <h3>{job.title}</h3>
-          <span>{job.businessName || "HUSTLR partner"}</span>
+          <span>{job.businessName || "Shiftlyin partner"}</span>
         </div>
       </div>
       <p>{job.description}</p>

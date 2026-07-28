@@ -1,7 +1,7 @@
 # Shiftlyin
 
 
-HUSTLR is a React + Vite + Firebase job portal for college students and local businesses. Students can discover part-time jobs, apply for shifts, check in with GPS, and build ratings. Restaurant owners and local businesses can post jobs, review applications, accept or reject students, track vacancies, and manage attendance.
+Shiftlyin is a React + Vite + Firebase job portal for college students and local businesses. Students can discover part-time jobs, apply for shifts, check in with GPS, and build ratings. Restaurant owners and local businesses can post jobs, review applications, accept or reject students, track vacancies, and manage attendance.
 
 Tagline: **Earn While You Learn**
 
@@ -74,7 +74,7 @@ In Firebase Console:
 
 ## Cloudinary Setup
 
-HUSTLR uses Cloudinary for image uploads such as student profile photos, college ID photos, restaurant/shop photos, and license photos.
+Shiftlyin uses Cloudinary for image uploads such as student profile photos, college ID photos, restaurant/shop photos, and license photos.
 
 1. Create a Cloudinary account.
 2. Open Cloudinary Dashboard and copy your **Cloud name**.
@@ -193,10 +193,10 @@ npm.cmd run dev
 
 
 
-Build a full React + Vite + Firebase web app named HUSTLR.
+Build a full React + Vite + Firebase web app named Shiftlyin.
 
 Project idea:
-HUSTLR is a college student part-time job portal where verified students can find nearby jobs and local businesses like restaurants, cafes, hotels, shops, and event companies can hire verified students.
+Shiftlyin is a college student part-time job portal where verified students can find nearby jobs and local businesses like restaurants, cafes, hotels, shops, and event companies can hire verified students.
 
 Tagline:
 Earn While You Learn
@@ -396,7 +396,7 @@ Location:
 
 UI requirements:
 - Modern clean startup-style design
-- App name HUSTLR
+- App name Shiftlyin
 - Tagline: Earn While You Learn
 - Responsive layout
 - Separate sidebar/menu for each dashboard

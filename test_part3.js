@@ -23,7 +23,7 @@ const firebaseConfig = {
   appId: env.VITE_FIREBASE_APP_ID
 };
 
-console.log("🚀 Starting HUSTLR Part 3: Re-Apply Firestore Logic Integration Tests...");
+console.log("🚀 Starting Shiftlyin Part 3: Re-Apply Firestore Logic Integration Tests...");
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);

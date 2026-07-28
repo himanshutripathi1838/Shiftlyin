@@ -23,7 +23,7 @@ const firebaseConfig = {
   appId: env.VITE_FIREBASE_APP_ID
 };
 
-console.log("🚀 Starting HUSTLR Part 5: Chat Badges & Seen Receipts Integration Tests...");
+console.log("🚀 Starting Shiftlyin Part 5: Chat Badges & Seen Receipts Integration Tests...");
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);

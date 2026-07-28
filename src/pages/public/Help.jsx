@@ -9,7 +9,7 @@ const languageOptions = ["hinglish", "hi", "en"];
 
 export default function Help() {
   const { currentUser, profile } = useAuth();
-  const [language, setLanguage] = useState(() => localStorage.getItem("hustlr-help-language") || "hinglish");
+  const [language, setLanguage] = useState(() => localStorage.getItem("shiftlyin-help-language") || "hinglish");
   const [search, setSearch] = useState("");
   const [report, setReport] = useState({ reportType: "technical", jobId: "", reason: "" });
   const [notice, setNotice] = useState("");
@@ -18,7 +18,7 @@ export default function Help() {
   const content = helpTranslations[language] || helpTranslations.hinglish;
 
   useEffect(() => {
-    localStorage.setItem("hustlr-help-language", language);
+    localStorage.setItem("shiftlyin-help-language", language);
   }, [language]);
 
   const filteredTopics = useMemo(() => {

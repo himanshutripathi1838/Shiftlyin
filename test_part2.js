@@ -3,7 +3,7 @@ import puppeteer from "puppeteer";
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 (async () => {
-  console.log("🚀 Starting HUSTLR Part 2: Interactive Demos UI Tests...");
+  console.log("🚀 Starting Shiftlyin Part 2: Interactive Demos UI Tests...");
   const browser = await puppeteer.launch({
     headless: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"]

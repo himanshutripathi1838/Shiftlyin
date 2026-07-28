@@ -3,9 +3,9 @@ import { getFirestore, collection, getDocs, doc, getDoc } from "firebase/firesto
 
 const firebaseConfig = {
   apiKey: "AIzaSyDxNruO1bqbHI3_cdCcX0mn-W2u8rELjk4",
-  authDomain: "hustlr-1a51a.firebaseapp.com",
-  projectId: "hustlr-1a51a",
-  storageBucket: "hustlr-1a51a.firebasestorage.app",
+  authDomain: "shiftlyin.firebaseapp.com",
+  projectId: "shiftlyin",
+  storageBucket: "shiftlyin.firebasestorage.app",
   messagingSenderId: "777931477588",
   appId: "1:777931477588:web:6529a54f6d0f1e316cd3c1",
   measurementId: "G-Y39MXMG3L5"

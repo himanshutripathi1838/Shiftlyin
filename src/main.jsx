@@ -25,7 +25,7 @@ loadRoot.then((module) => {
   root.render(
     <main className="page-shell">
       <div className="loading-card">
-        <h1>HUSTLR could not load</h1>
+        <h1>Shiftlyin could not load</h1>
         <p>{error.message}</p>
       </div>
     </main>

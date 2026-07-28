@@ -3,7 +3,7 @@ import puppeteer from "puppeteer";
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 (async () => {
-  console.log("🚀 Starting HUSTLR Automated Landing Page UI Tests...");
+  console.log("🚀 Starting Shiftlyin Automated Landing Page UI Tests...");
   const browser = await puppeteer.launch({
     headless: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"]
@@ -38,8 +38,8 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
     await page.click(".theme-toggle-btn");
     await delay(500);
 
-    // Test 3: How HUSTLR Works Modal Popup
-    console.log("🔍 Testing How HUSTLR Works click interaction...");
+    // Test 3: How Shiftlyin Works Modal Popup
+    console.log("🔍 Testing How Shiftlyin Works click interaction...");
     await page.click(".works-card");
     await delay(1000);
     

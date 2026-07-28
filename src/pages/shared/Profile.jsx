@@ -103,7 +103,7 @@ export default function Profile() {
         const field = isStudent ? "profilePhotoUrl" : "shopPhotoUrl";
         imageUpdates[field] = await uploadImageToCloudinary(
           files.primaryPhoto,
-          isStudent ? "hustlr/students/profile" : "hustlr/businesses/shop"
+          isStudent ? "shiftlyin/students/profile" : "shiftlyin/businesses/shop"
         );
       }
 
@@ -111,7 +111,7 @@ export default function Profile() {
         const field = isStudent ? "collegeIdPhotoUrl" : "licensePhotoUrl";
         imageUpdates[field] = await uploadImageToCloudinary(
           files.documentPhoto,
-          isStudent ? "hustlr/students/college-id" : "hustlr/businesses/license"
+          isStudent ? "shiftlyin/students/college-id" : "shiftlyin/businesses/license"
         );
       }
 
