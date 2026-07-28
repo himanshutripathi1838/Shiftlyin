@@ -271,7 +271,7 @@ const AnimatedSignIn = ({
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .asi-container {
           position: relative;
           min-height: 100vh;
