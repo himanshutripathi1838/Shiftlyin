@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import heroImage from "../../assets/hustlr-cafe-hero.png";
+import GlassCard from "@/components/ui/glass-card";
 
 /* ── Scroll Reveal Hook ── */
 function useScrollReveal() {
@@ -128,12 +129,8 @@ export default function Home() {
           </div>
 
           <div className="hero-visual">
-            <img
-              src={heroImage}
-              alt="College students looking at a phone tablet"
-              className="hero-img"
-              loading="eager"
-            />
+            <GlassCard className="scale-105 shadow-2xl" title="Shiftlyin" subtitle="Earn while you learn with flexible part-time shifts." />
+            
             {/* 3 Cascading Floating Stat Cards */}
             <div className="float-stat-card students">
               <div className="float-stat-icon" style={{ background: "#eff6ff", color: "#2563eb" }}>👥</div>
