@@ -62,6 +62,17 @@ export default function Home() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Red outline overflow detector hook
+  useEffect(() => {
+    const docWidth = document.documentElement.clientWidth;
+    document.querySelectorAll("*").forEach((el) => {
+      if (el.scrollWidth > docWidth) {
+        el.style.outline = "3px solid red";
+        console.log("OVERFLOW:", el, "width:", el.scrollWidth, "vs viewport:", docWidth);
+      }
+    });
+  }, []);
+
   // Search state
   const [searchQuery, setSearchQuery] = useState("");
   const [searchLocation, setSearchLocation] = useState("");
