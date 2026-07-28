@@ -425,46 +425,64 @@ export default function Register() {
             {/* Role Selection */}
             {step === 1 && (
               <fieldset style={{ border: "none", padding: 0, margin: "0 0 28px" }}>
-                <legend style={{ fontSize: "12px", color: "var(--muted)", fontWeight: "800", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "10px" }}>Select Account Type</legend>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                <legend style={{ fontSize: "12px", color: "var(--muted)", fontWeight: "800", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "12px" }}>
+                  SELECT ACCOUNT TYPE
+                </legend>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "16px" }}>
                   <button
                     type="button"
-                    className={`choice-card ${isStudent ? "active" : ""}`}
+                    className={`choice-card ${isStudent ? "active student-choice" : ""}`}
                     onClick={() => { setForm(initialForm); setStep(1); }}
                     style={{ 
-                      border: isStudent ? "2px solid var(--primary)" : "1px solid var(--border)", 
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "14px",
+                      border: isStudent ? "2px solid #2563eb" : "1px solid var(--border)", 
                       borderRadius: "16px", 
                       padding: "18px 20px", 
                       textAlign: "left", 
                       cursor: "pointer", 
                       background: isStudent ? "linear-gradient(135deg, rgba(37,99,235,0.08), rgba(37,99,235,0.02))" : "var(--surface-soft)",
-                      boxShadow: isStudent ? "0 4px 14px rgba(37,99,235,0.12)" : "none",
-                      transition: "all 0.2s ease"
+                      boxShadow: isStudent ? "0 6px 20px rgba(37,99,235,0.12)" : "0 2px 6px rgba(0,0,0,0.02)",
+                      transition: "all 0.25s ease"
                     }}
                   >
-                    <span style={{ fontSize: "24px", display: "block", marginBottom: "4px" }}>🎓</span>
-                    <strong style={{ display: "block", fontSize: "16px", color: "var(--text)" }}>Student</strong>
-                    <small style={{ color: "var(--muted)", fontSize: "12px" }}>Find part-time gigs & earn</small>
+                    <div style={{ width: "46px", height: "46px", borderRadius: "12px", background: isStudent ? "#eff6ff" : "var(--border)", display: "grid", placeItems: "center", fontSize: "24px", flexShrink: 0 }}>
+                      🎓
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <strong style={{ display: "block", fontSize: "16px", fontWeight: "800", color: "var(--text)", marginBottom: "2px" }}>Student</strong>
+                      <small style={{ color: "var(--muted)", fontSize: "12px", fontWeight: "500", display: "block", lineHeight: "1.3" }}>Find part-time gigs & earn</small>
+                    </div>
+                    {isStudent && <span style={{ background: "#2563eb", color: "#fff", width: "22px", height: "22px", borderRadius: "50%", display: "grid", placeItems: "center", fontSize: "12px", fontWeight: "900", flexShrink: 0 }}>✓</span>}
                   </button>
 
                   <button
                     type="button"
-                    className={`choice-card ${!isStudent ? "active" : ""}`}
+                    className={`choice-card ${!isStudent ? "active owner-choice" : ""}`}
                     onClick={() => { setForm({ ...initialForm, role: "business" }); setStep(1); }}
                     style={{ 
-                      border: !isStudent ? "2px solid var(--accent)" : "1px solid var(--border)", 
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "14px",
+                      border: !isStudent ? "2px solid #16a34a" : "1px solid var(--border)", 
                       borderRadius: "16px", 
                       padding: "18px 20px", 
                       textAlign: "left", 
                       cursor: "pointer", 
-                      background: !isStudent ? "linear-gradient(135deg, rgba(16,185,129,0.08), rgba(16,185,129,0.02))" : "var(--surface-soft)",
-                      boxShadow: !isStudent ? "0 4px 14px rgba(16,185,129,0.12)" : "none",
-                      transition: "all 0.2s ease"
+                      background: !isStudent ? "linear-gradient(135deg, rgba(22,163,74,0.08), rgba(22,163,74,0.02))" : "var(--surface-soft)",
+                      boxShadow: !isStudent ? "0 6px 20px rgba(22,163,74,0.12)" : "0 2px 6px rgba(0,0,0,0.02)",
+                      transition: "all 0.25s ease"
                     }}
                   >
-                    <span style={{ fontSize: "24px", display: "block", marginBottom: "4px" }}>🏪</span>
-                    <strong style={{ display: "block", fontSize: "16px", color: "var(--text)" }}>Business Owner</strong>
-                    <small style={{ color: "var(--muted)", fontSize: "12px" }}>Hire verified campus talent</small>
+                    <div style={{ width: "46px", height: "46px", borderRadius: "12px", background: !isStudent ? "#f0fdf4" : "var(--border)", display: "grid", placeItems: "center", fontSize: "24px", flexShrink: 0 }}>
+                      🏪
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <strong style={{ display: "block", fontSize: "16px", fontWeight: "800", color: "var(--text)", marginBottom: "2px" }}>Business Owner</strong>
+                      <small style={{ color: "var(--muted)", fontSize: "12px", fontWeight: "500", display: "block", lineHeight: "1.3" }}>Hire verified campus talent</small>
+                    </div>
+                    {!isStudent && <span style={{ background: "#16a34a", color: "#fff", width: "22px", height: "22px", borderRadius: "50%", display: "grid", placeItems: "center", fontSize: "12px", fontWeight: "900", flexShrink: 0 }}>✓</span>}
                   </button>
                 </div>
               </fieldset>
