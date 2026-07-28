@@ -3,6 +3,7 @@ import { addDoc, collection, doc, serverTimestamp, setDoc } from "firebase/fires
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ImageUploadField from "../../components/ImageUploadField.jsx";
+import CreditCardForm from "../../components/ui/credit-card-form.jsx";
 import { uploadImageToCloudinary } from "../../services/cloudinary.js";
 import { auth, db } from "../../services/firebase.js";
 
@@ -505,6 +506,13 @@ export default function Register() {
                   {/* Step 2: Identity Verification */}
                   {step === 2 && (
                     <div className="form-stack">
+                      {/* Live Animated 3D Digital ID Card Preview */}
+                      <CreditCardForm
+                        docType={form.idDocumentType}
+                        defaultNumber={form.idDocumentNumber}
+                        defaultHolder={form.name || "YOUR FULL NAME"}
+                      />
+
                       <div className="form-grid">
                         <label>Identity Proof Type
                           <select value={form.idDocumentType} onChange={(e) => {
@@ -682,6 +690,12 @@ export default function Register() {
                   {/* Step 3: Identity & Documents */}
                   {step === 3 && (
                     <div className="form-stack">
+                      <CreditCardForm
+                        docType={form.idDocumentType}
+                        defaultNumber={form.idDocumentNumber}
+                        defaultHolder={form.ownerName || form.name || "OWNER NAME"}
+                      />
+
                       <div className="form-grid">
                         <label>Owner Identity Proof
                           <select value={form.idDocumentType} onChange={(e) => updateField("idDocumentType", e.target.value)}>
