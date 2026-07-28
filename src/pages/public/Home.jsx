@@ -45,6 +45,23 @@ export default function Home() {
   const [error, setError] = useState("");
   const now = useCurrentTime();
 
+  // Debug info state for responsive audit
+  const [debugInfo, setDebugInfo] = useState("");
+  useEffect(() => {
+    const handleResize = () => {
+      const heroSplit = document.querySelector(".hero-split");
+      if (heroSplit) {
+        const child1 = heroSplit.children[0];
+        const child2 = heroSplit.children[1];
+        setDebugInfo(`Split: ${heroSplit.offsetWidth}px | C1: ${child1?.offsetWidth}px | C2: ${child2?.offsetWidth}px | View: ${window.innerWidth}px | Body: ${document.body.offsetWidth}px`);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    setTimeout(handleResize, 1000);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   // Search state
   const [searchQuery, setSearchQuery] = useState("");
   const [searchLocation, setSearchLocation] = useState("");
@@ -104,6 +121,11 @@ export default function Home() {
 
   return (
     <main className="home-page" style={{ background: "var(--bg)", color: "var(--text)" }}>
+      {debugInfo && (
+        <div style={{ background: "#ef4444", color: "white", padding: "8px 16px", position: "fixed", bottom: "20px", left: "20px", zIndex: 99999, borderRadius: "8px", fontSize: "12px", fontWeight: "bold", boxShadow: "0 10px 25px rgba(0,0,0,0.3)", pointerEvents: "none" }}>
+          {debugInfo}
+        </div>
+      )}
       
       {/* SECTION 2: Hero Section */}
       <section className="landing-section hero-split bg-gradient-radial" style={{ padding: "clamp(60px, 10vw, 120px) clamp(1rem, 4vw, 2rem) 60px" }}>
@@ -155,7 +177,7 @@ export default function Home() {
           <h2 className="section-title" style={{ fontWeight: "900", marginTop: "8px" }}>Explore Live Opportunities</h2>
         </div>
 
-        <div className="search-bar-container glass-card shadow-premium" style={{ borderRadius: "24px", padding: "24px clamp(16px, 4vw, 32px)", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "16px", alignItems: "end", border: "1px solid rgba(255, 255, 255, 0.8)", marginBottom: "50px" }}>
+        <div className="search-bar-container glass-card shadow-premium" style={{ borderRadius: "24px", padding: "24px clamp(16px, 4vw, 32px)", border: "1px solid rgba(255, 255, 255, 0.8)", marginBottom: "50px" }}>
           <div className="search-input-group">
             <label style={{ fontSize: "11px", fontWeight: "900", textTransform: "uppercase", color: "var(--muted)", marginBottom: "6px", display: "block" }}>Job Title</label>
             <input type="text" placeholder="Barista, Delivery, Clerk..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} style={{ width: "100%", border: "none", borderBottom: "1px solid var(--border)", background: "transparent", padding: "8px 0", fontWeight: "600", fontSize: "14px" }} />
