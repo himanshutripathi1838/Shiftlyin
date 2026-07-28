@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import heroImage from "../../assets/hustlr-cafe-hero.png";
+import LogoCloud from "@/components/ui/logo-cloud-15";
 
 /* ── Scroll Reveal Hook ── */
 function useScrollReveal() {
@@ -193,19 +194,9 @@ export default function Home() {
       </section>
 
       {/* ═══ 3. TRUSTED-BY LOGO STRIP ═══ */}
-      <section className="trusted-strip" id="trusted">
-        <Reveal>
-          <div className="land-center" style={{ marginBottom: "1rem" }}>
-            <h2 className="land-heading" style={{ fontSize: "1.25rem" }}>Trusted by 500+ Businesses</h2>
-          </div>
-          <div className="brand-pills-row">
-            {BRANDS.map((b) => (
-              <div className="brand-pill" key={b}>
-                <span>🏪</span> {b}
-              </div>
-            ))}
-            <div className="brand-pill more">+ More</div>
-          </div>
+      <section id="trusted" className="w-full flex justify-center py-2">
+        <Reveal className="w-full">
+          <LogoCloud />
         </Reveal>
       </section>
 
