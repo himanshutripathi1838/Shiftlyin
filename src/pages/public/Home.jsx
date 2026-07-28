@@ -341,28 +341,77 @@ export default function Home() {
         </Reveal>
       </section>
 
-      {/* ═══ 4. HOW SHIFTLYIN WORKS (6-STEP) ═══ */}
-      <section className="land-section" id="how-it-works">
+      {/* ═══ 4. HOW SHIFTLYIN WORKS (6-STEP ROADMAP) ═══ */}
+      <section className="land-section roadmap-section" id="how-it-works">
         <Reveal>
-          <div className="land-center">
-            <h2 className="land-heading">How Shiftlyin Works?</h2>
-            <p className="land-subhead">Simple step-by-step process for students and business owners.</p>
+          <div className="land-center" style={{ marginBottom: "2.5rem" }}>
+            <span className="hero-badge-pill" style={{ background: "rgba(245, 158, 11, 0.12)", color: "#d97706" }}>
+              🗺️ 6-Step Roadmap
+            </span>
+            <h2 className="land-heading" style={{ marginTop: "0.5rem" }}>How Shiftlyin Works?</h2>
+            <p className="land-subhead">Simple step-by-step roadmap for students and business owners.</p>
           </div>
         </Reveal>
 
-        <div className="steps-row">
-          {STEPS.map((s, i) => (
-            <Reveal key={s.num} delay={i * 80}>
-              <div className="step-card-box">
-                <div className="step-header">
-                  <span className="step-badge">{s.num}</span>
-                  <span className="step-icon-emoji">{s.icon}</span>
-                </div>
-                <h4>{s.title}</h4>
-                <p>{s.desc}</p>
-              </div>
-            </Reveal>
-          ))}
+        {/* Winding Roadmap Container */}
+        <div className="roadmap-wrapper">
+          {/* SVG Road Path (Desktop serpentine road) */}
+          <div className="roadmap-svg-container">
+            <svg viewBox="0 0 1000 180" preserveAspectRatio="none" className="roadmap-svg">
+              {/* Road outer border */}
+              <path
+                d="M 0 90 C 40 40, 60 40, 83 40 C 140 40, 190 140, 250 140 C 310 140, 360 40, 416 40 C 470 40, 520 140, 583 140 C 640 140, 690 40, 750 40 C 810 40, 860 140, 916 140 C 960 140, 980 90, 1000 90"
+                fill="none"
+                stroke="var(--ink)"
+                strokeWidth="38"
+                strokeLinecap="round"
+              />
+              {/* Dashed white center line */}
+              <path
+                d="M 0 90 C 40 40, 60 40, 83 40 C 140 40, 190 140, 250 140 C 310 140, 360 40, 416 40 C 470 40, 520 140, 583 140 C 640 140, 690 40, 750 40 C 810 40, 860 140, 916 140 C 960 140, 980 90, 1000 90"
+                fill="none"
+                stroke="#ffffff"
+                strokeWidth="3.5"
+                strokeDasharray="10 10"
+                opacity="0.95"
+              />
+            </svg>
+          </div>
+
+          {/* 6 Step Nodes */}
+          <div className="roadmap-grid">
+            {STEPS.map((s, i) => {
+              const isTop = i % 2 === 0;
+              return (
+                <Reveal key={s.num} delay={i * 90}>
+                  <div className={`roadmap-node-col ${isTop ? "is-top" : "is-bottom"}`}>
+                    {/* Text Block for TOP nodes */}
+                    {isTop && (
+                      <div className="roadmap-text-box top-box">
+                        <span className="roadmap-step-title">Step {s.num}</span>
+                        <h4 className="roadmap-item-heading">{s.title}</h4>
+                        <p className="roadmap-item-desc">{s.desc}</p>
+                      </div>
+                    )}
+
+                    {/* Circle Node Icon */}
+                    <div className="roadmap-circle-node">
+                      <span className="roadmap-node-icon">{s.icon}</span>
+                    </div>
+
+                    {/* Text Block for BOTTOM nodes */}
+                    {!isTop && (
+                      <div className="roadmap-text-box bottom-box">
+                        <span className="roadmap-step-title">Step {s.num}</span>
+                        <h4 className="roadmap-item-heading">{s.title}</h4>
+                        <p className="roadmap-item-desc">{s.desc}</p>
+                      </div>
+                    )}
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
         </div>
       </section>
 
