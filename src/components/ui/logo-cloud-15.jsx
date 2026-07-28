@@ -61,7 +61,7 @@ const LogoCloud = () => {
   return (
     <div className="flex w-full items-center justify-center px-4 py-8">
       <div
-        className="relative w-full max-w-[1050px] rounded-2xl border border-slate-200 bg-white/70 dark:bg-slate-900/70 dark:border-slate-800 shadow-xl backdrop-blur-md"
+        className="relative w-full max-w-[1050px] rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-xl backdrop-blur-md transition-colors duration-300"
         ref={cardRef}
       >
         <BorderBeam
@@ -72,14 +72,14 @@ const LogoCloud = () => {
 
         <div className="absolute inset-x-0 top-0 flex -translate-y-1/2 items-center justify-center px-6">
           <p
-            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full px-6 py-1.5 text-center font-bold text-slate-800 dark:text-slate-100 text-lg shadow-sm"
+            className="bg-[var(--surface)] border border-[var(--border)] rounded-full px-6 py-1.5 text-center font-bold text-[var(--text)] text-base shadow-md transition-colors duration-300"
             ref={textRef}
           >
             <span
               ref={waveSpanRef}
               style={{
                 backgroundImage:
-                  "linear-gradient(90deg, currentColor 0%, currentColor 45%, #ffaa40 47%, #9c40ff 50%, #ffaa40 53%, currentColor 55%, currentColor 100%)",
+                  "linear-gradient(90deg, currentColor 0%, currentColor 45%, #f59e0b 47%, #3b82f6 50%, #f59e0b 53%, currentColor 55%, currentColor 100%)",
                 backgroundSize: "250% 100%",
                 backgroundRepeat: "no-repeat",
                 backgroundClip: "text",
