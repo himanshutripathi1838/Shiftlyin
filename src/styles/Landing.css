@@ -68,6 +68,28 @@
   border-bottom: 1px solid var(--border);
 }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  flex-wrap: nowrap;
+}
+
+.nav-links-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  flex-wrap: nowrap;
+}
+
+.nav-buttons-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
 /* ═══════════════════════════════════
    2. HERO SECTION
    ═══════════════════════════════════ */

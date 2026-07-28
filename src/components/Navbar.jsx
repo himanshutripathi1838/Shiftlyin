@@ -67,20 +67,20 @@ export default function Navbar() {
       </button>
 
       <nav className={`nav-actions ${isMenuOpen ? "is-active" : ""}`}>
-        <div style={{ display: "flex", gap: "18px", alignItems: "center", flexWrap: "wrap" }}>
+        <div className="nav-links-wrap" style={{ display: "flex", gap: "16px", alignItems: "center", flexWrap: "nowrap" }}>
           {NAV_LINKS.map(link => (
             <a
               key={link.label}
               href={link.href}
               onClick={e => scrollTo(e, link.id)}
-              style={{ color: "var(--muted)", fontWeight: 600, fontSize: "0.82rem", textDecoration: "none", whiteSpace: "nowrap" }}
+              style={{ color: "var(--muted)", fontWeight: 600, fontSize: "0.84rem", textDecoration: "none", whiteSpace: "nowrap" }}
             >
               {link.label}
             </a>
           ))}
         </div>
 
-        <div style={{ display: "flex", gap: "10px", alignItems: "center", marginLeft: "12px" }}>
+        <div className="nav-buttons-wrap" style={{ display: "flex", gap: "10px", alignItems: "center", marginLeft: "12px", flexShrink: 0 }}>
           <button
             type="button"
             onClick={() => setDarkMode(!darkMode)}
@@ -98,7 +98,7 @@ export default function Navbar() {
                 style={{
                   padding: "7px 16px", fontSize: "0.82rem", fontWeight: 700,
                   borderRadius: "8px", background: "var(--primary)", color: "#fff",
-                  textDecoration: "none", minHeight: "36px", display: "inline-flex", alignItems: "center"
+                  textDecoration: "none", minHeight: "36px", display: "inline-flex", alignItems: "center", whiteSpace: "nowrap"
                 }}
               >Dashboard</NavLink>
               <button
@@ -106,7 +106,7 @@ export default function Navbar() {
                 style={{
                   padding: "7px 16px", fontSize: "0.82rem", fontWeight: 700,
                   borderRadius: "8px", background: "transparent", color: "var(--text)",
-                  border: "1.5px solid var(--border)", cursor: "pointer", minHeight: "36px"
+                  border: "1.5px solid var(--border)", cursor: "pointer", minHeight: "36px", whiteSpace: "nowrap"
                 }}
               >Logout</button>
             </>
@@ -118,7 +118,7 @@ export default function Navbar() {
                   padding: "7px 16px", fontSize: "0.82rem", fontWeight: 700,
                   borderRadius: "8px", color: "var(--text)", textDecoration: "none",
                   border: "1.5px solid var(--border)", minHeight: "36px",
-                  display: "inline-flex", alignItems: "center"
+                  display: "inline-flex", alignItems: "center", whiteSpace: "nowrap"
                 }}
               >Login</NavLink>
               <Link
@@ -127,7 +127,7 @@ export default function Navbar() {
                   padding: "7px 16px", fontSize: "0.82rem", fontWeight: 700,
                   borderRadius: "8px", background: "#2563eb", color: "#fff",
                   textDecoration: "none", minHeight: "36px",
-                  display: "inline-flex", alignItems: "center"
+                  display: "inline-flex", alignItems: "center", whiteSpace: "nowrap"
                 }}
               >Register</Link>
             </>
