@@ -2,82 +2,88 @@ import * as React from "react";
 
 export const Logo01 = () => (
   <div className="flex flex-col items-center justify-center gap-1.5 min-w-[140px] px-3">
-    <svg className="h-8 w-auto fill-current text-slate-700 dark:text-slate-200" viewBox="0 0 140 40">
-      <rect x="5" y="5" width="130" height="30" rx="8" fill="none" stroke="currentColor" strokeWidth="2.5" />
-      <text x="70" y="25" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="800" fill="currentColor">
-        CCD
+    <svg className="h-9 w-auto text-red-600 dark:text-red-500" viewBox="0 0 140 40">
+      <rect x="5" y="5" width="130" height="30" rx="8" fill="#dc2626" />
+      <text x="70" y="24" textAnchor="middle" dominantBaseline="middle" fontSize="12" fontWeight="900" fill="#ffffff">
+        CAFÉ COFFEE DAY
       </text>
     </svg>
-    <span className="text-xs font-bold text-slate-700 dark:text-slate-300 tracking-tight">Café Coffee Day</span>
+    <span className="text-xs font-bold text-slate-800 dark:text-slate-200 tracking-tight">Café Coffee Day</span>
   </div>
 );
 
 export const Logo02 = () => (
   <div className="flex flex-col items-center justify-center gap-1.5 min-w-[140px] px-3">
-    <svg className="h-8 w-auto fill-current text-blue-600 dark:text-blue-400" viewBox="0 0 140 40">
-      <polygon points="60,5 75,0 75,30 60,25" fill="currentColor" />
-      <circle cx="67" cy="12" r="2" fill="#fff" />
-      <circle cx="67" cy="20" r="2" fill="#fff" />
+    <svg className="h-9 w-auto" viewBox="0 0 140 40">
+      <polygon points="45,5 65,0 65,35 45,30" fill="#0284c7" />
+      <polygon points="65,0 85,5 85,30 65,35" fill="#e11d48" />
+      <circle cx="55" cy="17" r="3" fill="#ffffff" />
+      <circle cx="75" cy="12" r="3" fill="#ffffff" />
+      <circle cx="75" cy="23" r="3" fill="#ffffff" />
     </svg>
-    <span className="text-xs font-bold text-slate-700 dark:text-slate-300 tracking-tight">Domino's</span>
+    <span className="text-xs font-bold text-slate-800 dark:text-slate-200 tracking-tight">Domino's</span>
   </div>
 );
 
 export const Logo03 = () => (
   <div className="flex flex-col items-center justify-center gap-1.5 min-w-[140px] px-3">
-    <svg className="h-8 w-auto fill-current text-amber-600 dark:text-amber-400" viewBox="0 0 140 40">
-      <circle cx="70" cy="20" r="14" fill="none" stroke="currentColor" strokeWidth="3" />
-      <path d="M63,20 L77,20 M70,13 L70,27" stroke="currentColor" strokeWidth="2.5" />
+    <svg className="h-9 w-auto text-amber-600 dark:text-amber-500" viewBox="0 0 140 40">
+      <rect x="15" y="5" width="110" height="30" rx="6" fill="#fffbe0" stroke="#d97706" strokeWidth="2" />
+      <text x="70" y="24" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="900" fill="#b45309" letterSpacing="1px">
+        BARISTA
+      </text>
     </svg>
-    <span className="text-xs font-bold text-slate-700 dark:text-slate-300 tracking-tight">Barista</span>
+    <span className="text-xs font-bold text-slate-800 dark:text-slate-200 tracking-tight">Barista</span>
   </div>
 );
 
 export const Logo04 = () => (
   <div className="flex flex-col items-center justify-center gap-1.5 min-w-[140px] px-3">
-    <svg className="h-8 w-auto fill-current text-red-500 dark:text-red-400" viewBox="0 0 140 40">
-      <path d="M60,32 C60,14 66,10 70,25 C74,10 80,14 80,32" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+    <svg className="h-9 w-auto" viewBox="0 0 140 40">
+      <path d="M55,32 C55,10 63,6 70,22 C77,6 85,10 85,32" fill="none" stroke="#eab308" strokeWidth="4.5" strokeLinecap="round" />
     </svg>
-    <span className="text-xs font-bold text-slate-700 dark:text-slate-300 tracking-tight">McDonald's</span>
+    <span className="text-xs font-bold text-slate-800 dark:text-slate-200 tracking-tight">McDonald's</span>
   </div>
 );
 
 export const Logo05 = () => (
   <div className="flex flex-col items-center justify-center gap-1.5 min-w-[140px] px-3">
-    <svg className="h-8 w-auto fill-current text-red-600 dark:text-red-500" viewBox="0 0 140 40">
-      <text x="70" y="25" textAnchor="middle" dominantBaseline="middle" fontSize="22" fontWeight="900" fontStyle="italic" fill="currentColor">
+    <svg className="h-9 w-auto text-red-600 dark:text-red-500" viewBox="0 0 140 40">
+      <text x="70" y="25" textAnchor="middle" dominantBaseline="middle" fontSize="24" fontWeight="900" fontStyle="italic" fill="#e11d48">
         zomato
       </text>
     </svg>
-    <span className="text-xs font-bold text-slate-700 dark:text-slate-300 tracking-tight">Zomato</span>
+    <span className="text-xs font-bold text-slate-800 dark:text-slate-200 tracking-tight">Zomato</span>
   </div>
 );
 
 export const Logo06 = () => (
   <div className="flex flex-col items-center justify-center gap-1.5 min-w-[140px] px-3">
-    <svg className="h-8 w-auto fill-current text-orange-500 dark:text-orange-400" viewBox="0 0 140 40">
-      <path d="M65,10 Q75,4 80,16 Q70,30 65,10 Z" fill="currentColor" />
+    <svg className="h-9 w-auto" viewBox="0 0 140 40">
+      <path d="M60,8 C74,2 80,14 82,18 C72,32 60,26 60,8 Z" fill="#fc8019" />
+      <circle cx="70" cy="16" r="2.5" fill="#ffffff" />
     </svg>
-    <span className="text-xs font-bold text-slate-700 dark:text-slate-300 tracking-tight">Swiggy</span>
+    <span className="text-xs font-bold text-slate-800 dark:text-slate-200 tracking-tight">Swiggy</span>
   </div>
 );
 
 export const Logo07 = () => (
   <div className="flex flex-col items-center justify-center gap-1.5 min-w-[140px] px-3">
-    <svg className="h-8 w-auto fill-current text-indigo-600 dark:text-indigo-400" viewBox="0 0 140 40">
-      <rect x="55" y="8" width="30" height="24" rx="4" fill="none" stroke="currentColor" strokeWidth="2.5" />
-      <path d="M62,18 L78,18 M70,12 L70,24" stroke="currentColor" strokeWidth="2" />
+    <svg className="h-9 w-auto text-indigo-700 dark:text-indigo-400" viewBox="0 0 140 40">
+      <text x="70" y="24" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="900" fill="#1e1b4b" letterSpacing="1.5px">
+        Radisson
+      </text>
     </svg>
-    <span className="text-xs font-bold text-slate-700 dark:text-slate-300 tracking-tight">Radisson Hotels</span>
+    <span className="text-xs font-bold text-slate-800 dark:text-slate-200 tracking-tight">Radisson Hotels</span>
   </div>
 );
 
 export const Logo08 = () => (
   <div className="flex flex-col items-center justify-center gap-1.5 min-w-[140px] px-3">
-    <svg className="h-8 w-auto fill-current text-emerald-600 dark:text-emerald-400" viewBox="0 0 140 40">
-      <circle cx="70" cy="20" r="12" fill="currentColor" />
-      <polygon points="70,12 73,18 79,19 74,23 76,29 70,26 64,29 66,23 61,19 67,18" fill="#fff" />
+    <svg className="h-9 w-auto" viewBox="0 0 140 40">
+      <circle cx="70" cy="20" r="14" fill="#059669" />
+      <polygon points="70,11 73,17 79,18 74,22 76,28 70,25 64,28 66,22 61,18 67,17" fill="#ffffff" />
     </svg>
-    <span className="text-xs font-bold text-slate-700 dark:text-slate-300 tracking-tight">Starbucks</span>
+    <span className="text-xs font-bold text-slate-800 dark:text-slate-200 tracking-tight">Starbucks</span>
   </div>
 );
