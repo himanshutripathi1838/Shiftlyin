@@ -97,7 +97,7 @@ const LogoCloud = () => {
         <div className="grid overflow-hidden">
           <div className="flex min-w-0 items-center justify-center gap-x-10 p-6 pt-10">
             <Marquee
-              className="[--duration:25s] [&_svg]:mx-6"
+              className="[--duration:25s]"
               pauseOnHover
             >
               <Logo01 />
