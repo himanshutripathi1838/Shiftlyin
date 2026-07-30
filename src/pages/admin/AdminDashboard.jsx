@@ -64,11 +64,11 @@ export default function AdminDashboard() {
           <AdminStatsCard label="Reports Pending" value={data.reports.filter((item) => item.status !== "resolved").length} tone="danger" />
         </div>
 
-        <div style={{ marginTop: "32px" }}>
+        <div style={{ marginTop: "24px" }}>
           <h3 style={{ fontSize: "1.2rem", fontWeight: "800", marginBottom: "12px", color: "var(--text)" }}>
-            Project Repositories & Contributors Overview
+            Shiftlyin Active Gigs & Team Overview
           </h3>
-          <ContributorsTable />
+          <ContributorsTable items={data.jobs} />
         </div>
       </section>
     </main>

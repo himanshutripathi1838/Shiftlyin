@@ -1,9 +1,12 @@
 .admin-layout {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-columns: 260px minmax(0, 1fr);
   background: #f4f6f8;
   color: #111827;
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
 }
 
 .admin-sidebar {
@@ -16,6 +19,7 @@
   background: #111827;
   color: white;
   padding: 1rem;
+  box-sizing: border-box;
 }
 
 .admin-brand {
@@ -66,10 +70,14 @@
 
 .admin-main {
   min-width: 0;
-  display: grid;
-  align-content: start;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
   gap: 1.25rem;
-  padding: clamp(1rem, 3vw, 2rem);
+  padding: clamp(1rem, 2.5vw, 2rem);
 }
 
 .admin-topbar,
@@ -77,9 +85,11 @@
 .admin-table-wrap,
 .admin-stats-card {
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border-radius: 12px;
   background: white;
   box-shadow: 0 14px 34px rgba(17, 24, 39, 0.06);
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .admin-topbar {
@@ -92,7 +102,7 @@
 
 .admin-topbar h1 {
   margin: 0.2rem 0;
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
 }
 
 .admin-topbar p,
@@ -110,14 +120,17 @@
 
 .admin-stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .admin-stats-card {
   display: grid;
   gap: 0.35rem;
-  padding: 1rem;
+  padding: 1.2rem;
+  min-width: 0;
 }
 
 .admin-stats-card span {

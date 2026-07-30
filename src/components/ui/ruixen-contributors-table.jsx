@@ -27,212 +27,103 @@ import {
 } from "./dropdown-menu.jsx";
 import { Button } from "./button.jsx";
 import { Input } from "./input.jsx";
-import { cn } from "../../lib/utils.js";
 
-const initialData = [
+// Fallback Shiftlyin Platform Data
+const defaultShiftlyinData = [
   {
     id: "1",
-    title: "Shiftlyin Mobile App",
-    repo: "https://github.com/himanshutripathi1838/Shiftlyin",
+    title: "Weekend Barista & Cashier",
+    repo: "Shiftlyin Cafe & Bakery - Sector 62",
     status: "Active",
-    team: "Mobile Guild",
-    tech: "React Native",
-    createdAt: "2024-06-01",
+    team: "Hospitality",
+    tech: "Coffee Brewing, POS",
+    createdAt: "2026-07-28",
     contributors: [
       {
-        name: "Srinath G",
-        email: "srinath@example.com",
-        avatar: "https://github.com/srinath.png",
-        role: "UI Lead",
+        name: "Aman Sharma",
+        email: "aman@shiftlyin.com",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Aman",
+        role: "Student Worker",
       },
       {
-        name: "Kavya M",
-        email: "kavya@example.com",
-        avatar: "https://github.com/kavya.png",
-        role: "Designer",
+        name: "Priya Patel",
+        email: "priya@shiftlyin.com",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya",
+        role: "Verified Student",
       },
     ],
   },
   {
     id: "2",
-    title: "Shiftlyin Components",
-    repo: "https://github.com/himanshutripathi1838/Shiftlyin",
+    title: "Event Ushering Crew",
+    repo: "Tech Expo - Pragati Maidan",
     status: "In Progress",
-    team: "Component Devs",
-    tech: "React",
-    createdAt: "2024-05-22",
+    team: "Events & Exhibitions",
+    tech: "Crowd Control, Ticketing",
+    createdAt: "2026-07-27",
     contributors: [
       {
-        name: "Arjun R",
-        email: "arjun@example.com",
-        avatar: "https://github.com/arjun.png",
-        role: "Developer",
+        name: "Rahul Verma",
+        email: "rahul@shiftlyin.com",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul",
+        role: "Lead Promoter",
       },
       {
-        name: "Divya S",
-        email: "divya@example.com",
-        avatar: "https://github.com/divya.png",
-        role: "QA",
-      },
-      {
-        name: "Nikhil V",
-        email: "nikhil@example.com",
-        avatar: "https://github.com/nikhil.png",
-        role: "UX",
+        name: "Sneha Gupta",
+        email: "sneha@shiftlyin.com",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sneha",
+        role: "Registration Crew",
       },
     ],
   },
   {
     id: "3",
-    title: "CV Jobs Platform",
-    repo: "https://github.com/himanshutripathi1838/Shiftlyin",
+    title: "Retail Store Helper",
+    repo: "Trends Fashion Store - Mall Rd",
     status: "Active",
-    team: "CV Core",
-    tech: "Spring Boot",
-    createdAt: "2024-06-05",
+    team: "Retail & Sales",
+    tech: "Stock Auditing, Sales",
+    createdAt: "2026-07-25",
     contributors: [
       {
-        name: "Manoj T",
-        email: "manoj@example.com",
-        avatar: "https://github.com/manoj.png",
-        role: "Backend Lead",
+        name: "Vikram Singh",
+        email: "vikram@shiftlyin.com",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Vikram",
+        role: "Store Assistant",
       },
     ],
   },
   {
     id: "4",
-    title: "Shiftlyin Docs",
-    repo: "https://github.com/himanshutripathi1838/Shiftlyin",
+    title: "Kitchen Delivery Assistant",
+    repo: "Fresh Bites Cloud Kitchen",
     status: "Active",
-    team: "Tech Writers",
-    tech: "Markdown + Docusaurus",
-    createdAt: "2024-04-19",
+    team: "Logistics",
+    tech: "Packing, Dispatch",
+    createdAt: "2026-07-24",
     contributors: [
       {
-        name: "Sneha R",
-        email: "sneha@example.com",
-        avatar: "https://github.com/sneha.png",
-        role: "Documentation",
-      },
-      {
-        name: "Vinay K",
-        email: "vinay@example.com",
-        avatar: "https://github.com/vinay.png",
-        role: "Maintainer",
+        name: "Neha Joshi",
+        email: "neha@shiftlyin.com",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Neha",
+        role: "Shift Helper",
       },
     ],
   },
   {
     id: "5",
-    title: "Job Portal Analytics",
-    repo: "https://github.com/himanshutripathi1838/Shiftlyin",
+    title: "GPS Attendance Core Engine",
+    repo: "Shiftlyin Platform Tech Stack",
     status: "Active",
-    team: "Data Squad",
-    tech: "Python",
-    createdAt: "2024-03-30",
+    team: "Platform Infra",
+    tech: "React, Firebase, GPS",
+    createdAt: "2026-07-20",
     contributors: [
       {
-        name: "Aarav N",
-        email: "aarav@example.com",
-        avatar: "https://github.com/aarav.png",
-        role: "Data Engineer",
-      },
-    ],
-  },
-  {
-    id: "6",
-    title: "Real-time Chat",
-    repo: "https://github.com/himanshutripathi1838/Shiftlyin",
-    status: "Active",
-    team: "Infra",
-    tech: "Socket.io",
-    createdAt: "2024-06-03",
-    contributors: [
-      {
-        name: "Neha L",
-        email: "neha@example.com",
-        avatar: "https://github.com/neha.png",
-        role: "DevOps",
-      },
-      {
-        name: "Raghav I",
-        email: "raghav@example.com",
-        avatar: "https://github.com/raghav.png",
-        role: "NodeJS Engineer",
-      },
-    ],
-  },
-  {
-    id: "7",
-    title: "Theme Builder",
-    repo: "https://github.com/himanshutripathi1838/Shiftlyin",
-    status: "Active",
-    team: "Design Systems",
-    tech: "Tailwind CSS",
-    createdAt: "2024-05-10",
-    contributors: [
-      {
-        name: "Ishita D",
-        email: "ishita@example.com",
-        avatar: "https://github.com/ishita.png",
-        role: "Design Engineer",
-      },
-    ],
-  },
-  {
-    id: "8",
-    title: "Admin Dashboard",
-    repo: "https://github.com/himanshutripathi1838/Shiftlyin",
-    status: "Active",
-    team: "Dashboard Core",
-    tech: "Remix",
-    createdAt: "2024-05-28",
-    contributors: [
-      {
-        name: "Rahul B",
-        email: "rahul@example.com",
-        avatar: "https://github.com/rahul.png",
-        role: "Fullstack",
-      },
-    ],
-  },
-  {
-    id: "9",
-    title: "Blog Engine",
-    repo: "https://github.com/himanshutripathi1838/Shiftlyin",
-    status: "Active",
-    team: "Platform",
-    tech: "Node.js",
-    createdAt: "2024-01-18",
-    contributors: [
-      {
-        name: "Sanya A",
-        email: "sanya@example.com",
-        avatar: "https://github.com/sanya.png",
-        role: "API Developer",
-      },
-      {
-        name: "Harshit V",
-        email: "harshit@example.com",
-        avatar: "https://github.com/harshit.png",
-        role: "Platform Architect",
-      },
-    ],
-  },
-  {
-    id: "10",
-    title: "Dark Mode Package",
-    repo: "https://github.com/himanshutripathi1838/Shiftlyin",
-    status: "Active",
-    team: "Component Devs",
-    tech: "TypeScript",
-    createdAt: "2024-06-02",
-    contributors: [
-      {
-        name: "Meera C",
-        email: "meera@example.com",
-        avatar: "https://github.com/meera.png",
-        role: "Package Maintainer",
+        name: "Himanshu T",
+        email: "admin@shiftlyin.com",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Admin",
+        role: "Platform Admin",
       },
     ],
   },
@@ -248,15 +139,40 @@ const allColumns = [
   "Status",
 ];
 
-export function ContributorsTable() {
+export function ContributorsTable({ items = [], customData = null }) {
   const [visibleColumns, setVisibleColumns] = useState([...allColumns]);
   const [statusFilter, setStatusFilter] = useState("");
   const [techFilter, setTechFilter] = useState("");
 
-  const filteredData = initialData.filter((project) => {
+  // Map real Firestore jobs/items if provided, else use default dataset
+  const dataset = React.useMemo(() => {
+    if (customData && customData.length > 0) return customData;
+    if (items && items.length > 0) {
+      return items.map((item, idx) => ({
+        id: item.id || String(idx + 1),
+        title: item.title || item.name || "Shift Job #" + (idx + 1),
+        repo: item.businessName || item.location || "Shiftlyin Partner Venue",
+        status: item.status === "active" ? "Active" : item.status === "pending" ? "In Progress" : item.status || "Active",
+        team: item.category || item.role || "General Shift",
+        tech: item.salary ? `₹${item.salary} / shift` : "Part-Time",
+        createdAt: item.createdAt?.toDate ? item.createdAt.toDate().toISOString().split("T")[0] : (item.createdAt || "2026-07-28"),
+        contributors: [
+          {
+            name: item.contactPerson || item.studentName || "Verified Worker",
+            email: item.email || "user@shiftlyin.com",
+            avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${item.id || idx}`,
+            role: item.role || "Applicant",
+          },
+        ],
+      }));
+    }
+    return defaultShiftlyinData;
+  }, [items, customData]);
+
+  const filteredData = dataset.filter((project) => {
     return (
       (!statusFilter || project.status.toLowerCase().includes(statusFilter.toLowerCase())) &&
-      (!techFilter || project.tech.toLowerCase().includes(techFilter.toLowerCase()))
+      (!techFilter || (project.tech && project.tech.toLowerCase().includes(techFilter.toLowerCase())))
     );
   });
 
@@ -269,38 +185,110 @@ export function ContributorsTable() {
   };
 
   return (
-    <div className="container my-6 space-y-4 p-4 border border-border rounded-lg bg-background shadow-sm overflow-x-auto" style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "16px", padding: "20px" }}>
-      <div className="flex flex-wrap gap-4 items-center justify-between mb-6" style={{ display: "flex", flexWrap: "wrap", gap: "16px", justifyContent: "space-between", marginBottom: "20px" }}>
-        <div className="flex gap-2 flex-wrap" style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+    <div
+      style={{
+        background: "var(--surface, #ffffff)",
+        border: "1px solid var(--border, #e5e7eb)",
+        borderRadius: "16px",
+        padding: "clamp(12px, 3vw, 20px)",
+        width: "100%",
+        maxWidth: "100%",
+        boxSizing: "border-box",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
+        overflow: "hidden"
+      }}
+    >
+      {/* Control Header */}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "12px",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "20px",
+          width: "100%"
+        }}
+      >
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", flex: 1, minWidth: "240px" }}>
           <Input
-            placeholder="Filter by technology..."
+            placeholder="Filter by category/tech..."
             value={techFilter}
             onChange={(e) => setTechFilter(e.target.value)}
-            className="w-48"
-            style={{ minWidth: "180px" }}
+            style={{
+              minWidth: "160px",
+              flex: 1,
+              height: "38px",
+              padding: "0 12px",
+              borderRadius: "10px",
+              border: "1px solid var(--border, #e2e8f0)",
+              background: "var(--surface-soft, #f8fafc)",
+              color: "var(--text, #0f172a)",
+              fontSize: "13px"
+            }}
           />
           <Input
             placeholder="Filter by status..."
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-48"
-            style={{ minWidth: "180px" }}
+            style={{
+              minWidth: "160px",
+              flex: 1,
+              height: "38px",
+              padding: "0 12px",
+              borderRadius: "10px",
+              border: "1px solid var(--border, #e2e8f0)",
+              background: "var(--surface-soft, #f8fafc)",
+              color: "var(--text, #0f172a)",
+              fontSize: "13px"
+            }}
           />
         </div>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm">
+            <Button
+              variant="outline"
+              size="sm"
+              style={{
+                height: "38px",
+                padding: "0 16px",
+                borderRadius: "10px",
+                border: "1px solid var(--border, #e2e8f0)",
+                background: "var(--surface, #ffffff)",
+                color: "var(--text, #0f172a)",
+                fontWeight: "700",
+                fontSize: "13px",
+                cursor: "pointer"
+              }}
+            >
               Columns ⚙️
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-48" style={{ background: "var(--surface)", border: "1px solid var(--border)", padding: "8px", borderRadius: "12px", zIndex: 99 }}>
+          <DropdownMenuContent
+            style={{
+              background: "var(--surface, #ffffff)",
+              border: "1px solid var(--border, #e2e8f0)",
+              padding: "8px",
+              borderRadius: "12px",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+              zIndex: 999
+            }}
+          >
             {allColumns.map((col) => (
               <DropdownMenuCheckboxItem
                 key={col}
                 checked={visibleColumns.includes(col)}
                 onCheckedChange={() => toggleColumn(col)}
-                style={{ padding: "6px 12px", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
+                style={{
+                  padding: "8px 12px",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  fontSize: "13px",
+                  color: "var(--text, #0f172a)"
+                }}
               >
                 {col}
               </DropdownMenuCheckboxItem>
@@ -309,97 +297,108 @@ export function ContributorsTable() {
         </DropdownMenu>
       </div>
 
-      <Table className="w-full">
-        <TableHeader>
-          <TableRow>
-            {visibleColumns.includes("Project") && <TableHead className="w-[180px]">Project</TableHead>}
-            {visibleColumns.includes("Repository") && <TableHead className="w-[220px]">Repository</TableHead>}
-            {visibleColumns.includes("Team") && <TableHead className="w-[150px]">Team</TableHead>}
-            {visibleColumns.includes("Tech") && <TableHead className="w-[150px]">Tech</TableHead>}
-            {visibleColumns.includes("Created At") && <TableHead className="w-[120px]">Created At</TableHead>}
-            {visibleColumns.includes("Contributors") && <TableHead className="w-[150px]">Contributors</TableHead>}
-            {visibleColumns.includes("Status") && <TableHead className="w-[100px]">Status</TableHead>}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredData.length ? (
-            filteredData.map((project) => (
-              <TableRow key={project.id}>
-                {visibleColumns.includes("Project") && (
-                  <TableCell className="font-medium whitespace-nowrap">{project.title}</TableCell>
-                )}
-                {visibleColumns.includes("Repository") && (
-                  <TableCell className="whitespace-nowrap">
-                    <a
-                      href={project.repo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 underline"
-                      style={{ color: "#2563eb", textDecoration: "underline" }}
-                    >
-                      {project.repo.replace("https://", "")}
-                    </a>
-                  </TableCell>
-                )}
-                {visibleColumns.includes("Team") && <TableCell className="whitespace-nowrap">{project.team}</TableCell>}
-                {visibleColumns.includes("Tech") && <TableCell className="whitespace-nowrap">{project.tech}</TableCell>}
-                {visibleColumns.includes("Created At") && <TableCell className="whitespace-nowrap">{project.createdAt}</TableCell>}
-                {visibleColumns.includes("Contributors") && (
-                  <TableCell className="min-w-[120px]">
-                    <div className="flex -space-x-2" style={{ display: "flex", gap: "4px" }}>
-                      <TooltipProvider>
-                        {project.contributors.map((contributor, idx) => (
-                          <Tooltip key={idx}>
-                            <TooltipTrigger asChild>
-                              <Avatar className="h-8 w-8 ring-2 ring-white hover:z-10" style={{ width: "32px", height: "32px" }}>
-                                <AvatarImage src={contributor.avatar} alt={contributor.name} />
-                                <AvatarFallback>{contributor.name[0]}</AvatarFallback>
-                              </Avatar>
-                            </TooltipTrigger>
-                            <TooltipContent className="text-sm">
-                              <p className="font-semibold">{contributor.name}</p>
-                              <p className="text-xs text-muted-foreground">{contributor.email}</p>
-                              <p className="text-xs italic">{contributor.role}</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        ))}
-                      </TooltipProvider>
-                    </div>
-                  </TableCell>
-                )}
-                {visibleColumns.includes("Status") && (
-                  <TableCell className="whitespace-nowrap">
-                    <Badge
-                      className={cn(
-                        "whitespace-nowrap",
-                        project.status === "Active" && "bg-green-500 text-white",
-                        project.status === "Inactive" && "bg-gray-400 text-white",
-                        project.status === "In Progress" && "bg-yellow-500 text-white",
-                      )}
-                      style={{
-                        padding: "4px 10px",
-                        borderRadius: "12px",
-                        fontWeight: "700",
-                        fontSize: "12px",
-                        color: "#fff",
-                        background: project.status === "Active" ? "#16a34a" : project.status === "In Progress" ? "#d97706" : "#6b7280"
-                      }}
-                    >
-                      {project.status}
-                    </Badge>
-                  </TableCell>
-                )}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={visibleColumns.length} className="text-center py-6">
-                No results found.
-              </TableCell>
+      {/* Scrollable Responsive Table Wrapper */}
+      <div style={{ width: "100%", overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+        <Table style={{ width: "100%", minWidth: "680px", borderCollapse: "collapse" }}>
+          <TableHeader>
+            <TableRow style={{ borderBottom: "1px solid var(--border, #e2e8f0)" }}>
+              {visibleColumns.includes("Project") && <TableHead style={{ padding: "12px 14px", textAlign: "left", fontSize: "12px", fontWeight: "800", color: "var(--muted, #64748b)" }}>PROJECT / JOB</TableHead>}
+              {visibleColumns.includes("Repository") && <TableHead style={{ padding: "12px 14px", textAlign: "left", fontSize: "12px", fontWeight: "800", color: "var(--muted, #64748b)" }}>VENUE / DETAILS</TableHead>}
+              {visibleColumns.includes("Team") && <TableHead style={{ padding: "12px 14px", textAlign: "left", fontSize: "12px", fontWeight: "800", color: "var(--muted, #64748b)" }}>CATEGORY</TableHead>}
+              {visibleColumns.includes("Tech") && <TableHead style={{ padding: "12px 14px", textAlign: "left", fontSize: "12px", fontWeight: "800", color: "var(--muted, #64748b)" }}>PAY / TECH</TableHead>}
+              {visibleColumns.includes("Created At") && <TableHead style={{ padding: "12px 14px", textAlign: "left", fontSize: "12px", fontWeight: "800", color: "var(--muted, #64748b)" }}>DATE</TableHead>}
+              {visibleColumns.includes("Contributors") && <TableHead style={{ padding: "12px 14px", textAlign: "left", fontSize: "12px", fontWeight: "800", color: "var(--muted, #64748b)" }}>TEAM / WORKERS</TableHead>}
+              {visibleColumns.includes("Status") && <TableHead style={{ padding: "12px 14px", textAlign: "left", fontSize: "12px", fontWeight: "800", color: "var(--muted, #64748b)" }}>STATUS</TableHead>}
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {filteredData.length ? (
+              filteredData.map((project) => (
+                <TableRow key={project.id} style={{ borderBottom: "1px solid var(--border, #f1f5f9)" }}>
+                  {visibleColumns.includes("Project") && (
+                    <TableCell style={{ padding: "14px", fontWeight: "700", color: "var(--text, #0f172a)", whiteSpace: "nowrap" }}>
+                      {project.title}
+                    </TableCell>
+                  )}
+                  {visibleColumns.includes("Repository") && (
+                    <TableCell style={{ padding: "14px", whiteSpace: "nowrap" }}>
+                      <span style={{ color: "var(--primary, #2563eb)", fontWeight: "600", fontSize: "13px" }}>
+                        {project.repo}
+                      </span>
+                    </TableCell>
+                  )}
+                  {visibleColumns.includes("Team") && (
+                    <TableCell style={{ padding: "14px", color: "var(--text, #334155)", fontSize: "13px", whiteSpace: "nowrap" }}>
+                      {project.team}
+                    </TableCell>
+                  )}
+                  {visibleColumns.includes("Tech") && (
+                    <TableCell style={{ padding: "14px", color: "var(--muted, #64748b)", fontSize: "13px", whiteSpace: "nowrap" }}>
+                      {project.tech}
+                    </TableCell>
+                  )}
+                  {visibleColumns.includes("Created At") && (
+                    <TableCell style={{ padding: "14px", color: "var(--muted, #64748b)", fontSize: "13px", whiteSpace: "nowrap" }}>
+                      {project.createdAt}
+                    </TableCell>
+                  )}
+                  {visibleColumns.includes("Contributors") && (
+                    <TableCell style={{ padding: "14px", minWidth: "120px" }}>
+                      <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+                        <TooltipProvider>
+                          {project.contributors && project.contributors.map((contributor, idx) => (
+                            <Tooltip key={idx}>
+                              <TooltipTrigger asChild>
+                                <Avatar style={{ width: "32px", height: "32px", border: "2px solid #ffffff", borderRadius: "50%", background: "#e2e8f0" }}>
+                                  <AvatarImage src={contributor.avatar} alt={contributor.name} />
+                                  <AvatarFallback>{contributor.name ? contributor.name[0] : "W"}</AvatarFallback>
+                                </Avatar>
+                              </TooltipTrigger>
+                              <TooltipContent style={{ background: "#0f172a", color: "#ffffff", padding: "6px 10px", borderRadius: "8px", fontSize: "12px", zIndex: 999 }}>
+                                <p style={{ fontWeight: "700", margin: 0 }}>{contributor.name}</p>
+                                <p style={{ fontSize: "11px", opacity: 0.8, margin: 0 }}>{contributor.email}</p>
+                                <p style={{ fontSize: "11px", fontStyle: "italic", margin: 0 }}>{contributor.role}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          ))}
+                        </TooltipProvider>
+                      </div>
+                    </TableCell>
+                  )}
+                  {visibleColumns.includes("Status") && (
+                    <TableCell style={{ padding: "14px", whiteSpace: "nowrap" }}>
+                      <Badge
+                        style={{
+                          padding: "4px 10px",
+                          borderRadius: "12px",
+                          fontWeight: "700",
+                          fontSize: "12px",
+                          color: "#ffffff",
+                          display: "inline-block",
+                          background:
+                            project.status === "Active"
+                              ? "#16a34a"
+                              : project.status === "In Progress"
+                              ? "#d97706"
+                              : "#6b7280"
+                        }}
+                      >
+                        {project.status}
+                      </Badge>
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={visibleColumns.length} style={{ textAlign: "center", padding: "24px", color: "var(--muted, #64748b)" }}>
+                  No results found.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }
