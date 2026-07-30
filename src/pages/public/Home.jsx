@@ -6,6 +6,7 @@ import sLogoImg from "../../assets/shiftlyin-s-logo.png";
 import studentAvatarImg from "../../assets/student-3d-avatar.png";
 import businessAvatarImg from "../../assets/business-3d-avatar.png";
 import LogoCloud from "@/components/ui/logo-cloud-15";
+import TestimonialCarousel from "@/components/ui/testimonial";
 import SeoHead from "../../components/seo/SeoHead.jsx";
 
 /* ── Scroll Reveal Hook ── */
@@ -523,72 +524,72 @@ export default function Home() {
         </Reveal>
       </section>
 
-      {/* ═══ 7. TESTIMONIALS (TWO-COLUMN SPLIT) ═══ */}
+      {/* ═══ 7. TESTIMONIALS (TWO-COLUMN SPLIT WITH SHADCN TESTIMONIAL CAROUSEL) ═══ */}
       <section className="land-section">
         <Reveal>
           <div className="two-col-layout">
-            {/* Student Testimonial */}
+            {/* Student Testimonial Carousel */}
             <div>
-              <h2 className="land-heading" style={{ fontSize: "1.25rem" }}>What Students Say</h2>
-              <div className="testimonial-card-box">
-                <div className="stars-row">
-                  {"★".repeat(STUDENT_REVIEWS[studentIdx].rating)}
-                </div>
-                <blockquote>"{STUDENT_REVIEWS[studentIdx].quote}"</blockquote>
-                <div className="test-user-row">
-                  <div className="test-user-info">
-                    <div className="test-avatar-circle" style={{ background: STUDENT_REVIEWS[studentIdx].color }}>
-                      {STUDENT_REVIEWS[studentIdx].avatar}
-                    </div>
-                    <div>
-                      <strong>— {STUDENT_REVIEWS[studentIdx].name}</strong>
-                      <span>{STUDENT_REVIEWS[studentIdx].title}</span>
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", gap: "6px" }}>
-                    <button
-                      onClick={() => setStudentIdx((p) => (p === 0 ? STUDENT_REVIEWS.length - 1 : p - 1))}
-                      style={{ background: "var(--surface-soft)", border: "1px solid var(--border)", borderRadius: "6px", cursor: "pointer", width: "30px", height: "30px" }}
-                    >‹</button>
-                    <button
-                      onClick={() => setStudentIdx((p) => (p + 1) % STUDENT_REVIEWS.length)}
-                      style={{ background: "var(--surface-soft)", border: "1px solid var(--border)", borderRadius: "6px", cursor: "pointer", width: "30px", height: "30px" }}
-                    >›</button>
-                  </div>
-                </div>
-              </div>
+              <h2 className="land-heading" style={{ fontSize: "1.3rem", marginBottom: "16px" }}>What Students Say</h2>
+              <TestimonialCarousel
+                items={[
+                  {
+                    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=160&q=80",
+                    name: "Rohan Sharma",
+                    role: "B.Tech CSE Student @ Amity",
+                    accent: "#2563eb",
+                    quote: "Found part-time shift jobs at a nearby cafe that perfectly match my college timetable. Earned ₹8,000 this month while keeping up my 8.5 CGPA!",
+                  },
+                  {
+                    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=160&q=80",
+                    name: "Priya Patel",
+                    role: "Design Student @ NIFT Delhi",
+                    accent: "#16a34a",
+                    quote: "Escrow wallet payments give total peace of mind. Every shift payout lands in my UPI right after my manager confirms my GPS checkout!",
+                  },
+                  {
+                    avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=160&q=80",
+                    name: "Aman Gupta",
+                    role: "B.Com Student @ DU",
+                    accent: "#7c3aed",
+                    quote: "Shiftlyin made finding weekend event ushering gigs so easy. Verified campus profile helped me get hired in under 3 hours!",
+                  },
+                ]}
+                autoplay
+                autoplayMs={5000}
+              />
             </div>
 
-            {/* Business Testimonial */}
+            {/* Business Testimonial Carousel */}
             <div>
-              <h2 className="land-heading" style={{ fontSize: "1.25rem" }}>What Businesses Say</h2>
-              <div className="testimonial-card-box">
-                <div className="stars-row">
-                  {"★".repeat(BUSINESS_REVIEWS[bizIdx].rating)}
-                </div>
-                <blockquote>"{BUSINESS_REVIEWS[bizIdx].quote}"</blockquote>
-                <div className="test-user-row">
-                  <div className="test-user-info">
-                    <div className="test-avatar-circle" style={{ background: BUSINESS_REVIEWS[bizIdx].color }}>
-                      {BUSINESS_REVIEWS[bizIdx].avatar}
-                    </div>
-                    <div>
-                      <strong>— {BUSINESS_REVIEWS[bizIdx].name}</strong>
-                      <span>{BUSINESS_REVIEWS[bizIdx].title}</span>
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", gap: "6px" }}>
-                    <button
-                      onClick={() => setBizIdx((p) => (p === 0 ? BUSINESS_REVIEWS.length - 1 : p - 1))}
-                      style={{ background: "var(--surface-soft)", border: "1px solid var(--border)", borderRadius: "6px", cursor: "pointer", width: "30px", height: "30px" }}
-                    >‹</button>
-                    <button
-                      onClick={() => setBizIdx((p) => (p + 1) % BUSINESS_REVIEWS.length)}
-                      style={{ background: "var(--surface-soft)", border: "1px solid var(--border)", borderRadius: "6px", cursor: "pointer", width: "30px", height: "30px" }}
-                    >›</button>
-                  </div>
-                </div>
-              </div>
+              <h2 className="land-heading" style={{ fontSize: "1.3rem", marginBottom: "16px" }}>What Businesses Say</h2>
+              <TestimonialCarousel
+                items={[
+                  {
+                    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=160&q=80",
+                    name: "Rajesh Kumar",
+                    role: "Manager @ Hustlr Cafe Sector 62",
+                    accent: "#f59e0b",
+                    quote: "Hired 4 reliable student baristas in 2 hours for our weekend rush. The GPS geofenced attendance system ensures zero absenteeism!",
+                  },
+                  {
+                    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=160&q=80",
+                    name: "Ananya Mehta",
+                    role: "Event Director @ Nexus Exhibitions",
+                    accent: "#0284c7",
+                    quote: "Needed 15 verified ushering staff for a 3-day tech summit in Greater Noida. Shiftlyin delivered top-tier student promoters hassle-free.",
+                  },
+                  {
+                    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&q=80",
+                    name: "Vikram Malhotra",
+                    role: "Owner @ Trends Fashion Outlet",
+                    accent: "#ec4899",
+                    quote: "No long recruitment cycles. We post shift requirements and get pre-verified student applicants ready to start the same afternoon.",
+                  },
+                ]}
+                autoplay
+                autoplayMs={5000}
+              />
             </div>
           </div>
         </Reveal>
