@@ -404,4 +404,8 @@ export function ContributorsTable() {
   );
 }
 
+export const DemoOne = () => {
+  return <ContributorsTable />;
+};
+
 export default ContributorsTable;
