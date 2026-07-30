@@ -1,0 +1,107 @@
+.dot-card-outer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 1.5px;
+  background: var(--border, #e2e8f0);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dot-card-outer:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.12);
+}
+
+.dot-card-ray {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, var(--accent-glow, #2563eb) 0%, transparent 70%);
+  opacity: 0.6;
+  animation: dotRayRotate 4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes dotRayRotate {
+  0% {
+    top: -40px;
+    left: -40px;
+  }
+  25% {
+    top: -40px;
+    left: calc(100% - 80px);
+  }
+  50% {
+    top: calc(100% - 80px);
+    left: calc(100% - 80px);
+  }
+  75% {
+    top: calc(100% - 80px);
+    left: -40px;
+  }
+  100% {
+    top: -40px;
+    left: -40px;
+  }
+}
+
+.dot-card-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background: var(--surface, #ffffff);
+  border-radius: 14.5px;
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.dot-card-text {
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--accent-glow, #2563eb);
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.dot-card-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--muted, #64748b);
+  letter-spacing: 0.02em;
+}
+
+.dot-card-dot {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-glow, #2563eb);
+  box-shadow: 0 0 10px var(--accent-glow, #2563eb);
+  animation: dotPulse 2s infinite ease-in-out;
+}
+
+@keyframes dotPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 1;
+  }
+}

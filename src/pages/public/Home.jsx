@@ -7,6 +7,7 @@ import studentAvatarImg from "../../assets/student-3d-avatar.png";
 import businessAvatarImg from "../../assets/business-3d-avatar.png";
 import LogoCloud from "@/components/ui/logo-cloud-15";
 import TestimonialCarousel from "@/components/ui/testimonial";
+import DotCard from "@/components/ui/moving-dot-card";
 import SeoHead from "../../components/seo/SeoHead.jsx";
 
 /* ── Scroll Reveal Hook ── */
@@ -502,22 +503,10 @@ export default function Home() {
             <div>
               <h2 className="land-heading" style={{ fontSize: "1.35rem" }}>Our Impact in Numbers</h2>
               <div className="impact-blocks-grid">
-                <div className="impact-block-card blue">
-                  <strong>5000+</strong>
-                  <span>Students</span>
-                </div>
-                <div className="impact-block-card green">
-                  <strong>500+</strong>
-                  <span>Businesses</span>
-                </div>
-                <div className="impact-block-card purple">
-                  <strong>1000+</strong>
-                  <span>Jobs Posted</span>
-                </div>
-                <div className="impact-block-card amber">
-                  <strong>3000+</strong>
-                  <span>Successful Hirings</span>
-                </div>
+                <DotCard target={5000} label="Students" color="#2563eb" duration={2000} />
+                <DotCard target={500} label="Businesses" color="#16a34a" duration={2000} />
+                <DotCard target={1000} label="Jobs Posted" color="#7c3aed" duration={2000} />
+                <DotCard target={3000} label="Successful Hirings" color="#f59e0b" duration={2000} />
               </div>
             </div>
           </div>
