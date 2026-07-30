@@ -17,7 +17,6 @@ import { initAnalytics, trackPageView } from "./utils/analytics.js";
 const ServicePage = lazy(() => import("./pages/public/ServicePage.jsx"));
 const Privacy = lazy(() => import("./pages/public/Privacy.jsx"));
 const Terms = lazy(() => import("./pages/public/Terms.jsx"));
-const DemoTablePage = lazy(() => import("./pages/public/DemoTablePage.jsx"));
 const JobDetails = lazy(() => import("./pages/public/JobDetails.jsx"));
 const StudentDashboard = lazy(() => import("./pages/student/StudentDashboard.jsx"));
 const BusinessDashboard = lazy(() => import("./pages/business/BusinessDashboard.jsx"));
@@ -34,7 +33,6 @@ const AdminDashboard = lazy(() => import("./pages/AdminDashboard.jsx"));
 const AdminStudents = lazy(() => import("./pages/admin/AdminStudents.jsx"));
 const AdminBusinesses = lazy(() => import("./pages/admin/AdminBusinesses.jsx"));
 const AdminJobs = lazy(() => import("./pages/admin/AdminJobs.jsx"));
-const AdminProjects = lazy(() => import("./pages/admin/AdminProjects.jsx"));
 const AdminReports = lazy(() => import("./pages/admin/AdminReports.jsx"));
 const AdminSettlements = lazy(() => import("./pages/admin/AdminSettlements.jsx"));
 const AdminPayments = lazy(() => import("./pages/admin/AdminPayments.jsx"));
@@ -77,7 +75,6 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
-          <Route path="/demo-table" element={<DemoTablePage />} />
           <Route path="/services/:slug" element={<ServicePage />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
 
@@ -134,7 +131,6 @@ export default function App() {
           <Route path="/admin/students" element={<AdminRoute><AdminStudents /></AdminRoute>} />
           <Route path="/admin/businesses" element={<AdminRoute><AdminBusinesses /></AdminRoute>} />
           <Route path="/admin/jobs" element={<AdminRoute><AdminJobs /></AdminRoute>} />
-          <Route path="/admin/projects" element={<AdminRoute><AdminProjects /></AdminRoute>} />
           <Route path="/admin/reports" element={<AdminRoute><AdminReports /></AdminRoute>} />
           <Route path="/admin/settlements" element={<AdminRoute><AdminSettlements /></AdminRoute>} />
           <Route path="/admin/payments" element={<AdminRoute><AdminPayments /></AdminRoute>} />
