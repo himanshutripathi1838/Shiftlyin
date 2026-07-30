@@ -6,6 +6,7 @@ const menu = [
   ["Student Verification", "/admin/students"],
   ["Business Verification", "/admin/businesses"],
   ["Job Management", "/admin/jobs"],
+  ["Project Repos & Team", "/admin/projects"],
   ["Reports", "/admin/reports"],
   ["Settlements", "/admin/settlements"],
   ["Payments", "/admin/payments"],

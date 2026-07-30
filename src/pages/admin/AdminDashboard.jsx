@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import AdminSidebar from "../../components/admin/AdminSidebar.jsx";
 import AdminStatsCard from "../../components/admin/AdminStatsCard.jsx";
 import AdminTopbar from "../../components/admin/AdminTopbar.jsx";
+import ContributorsTable from "../../components/ui/ruixen-contributors-table.jsx";
 import { getAdminProfile } from "../../services/admin.js";
 import { auth, db } from "../../services/firebase.js";
 
@@ -61,6 +62,13 @@ export default function AdminDashboard() {
           <AdminStatsCard label="Active Jobs" value={data.jobs.filter((item) => item.status === "active").length} tone="success" />
           <AdminStatsCard label="Urgent Jobs" value={data.jobs.filter((item) => item.urgentHiring || item.urgency === "urgent").length} tone="danger" />
           <AdminStatsCard label="Reports Pending" value={data.reports.filter((item) => item.status !== "resolved").length} tone="danger" />
+        </div>
+
+        <div style={{ marginTop: "32px" }}>
+          <h3 style={{ fontSize: "1.2rem", fontWeight: "800", marginBottom: "12px", color: "var(--text)" }}>
+            Project Repositories & Contributors Overview
+          </h3>
+          <ContributorsTable />
         </div>
       </section>
     </main>
