@@ -6,6 +6,9 @@ import { AnimatedSignIn } from "../../components/ui/animated-sign-in.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { checkIfAdmin } from "../../services/admin.js";
 import { auth, db } from "../../services/firebase.js";
+import SeoHead from "../../components/seo/SeoHead.jsx";
+import { checkRateLimit, isHoneypotTriggered } from "../../utils/security.js";
+import { AnalyticsEvents } from "../../utils/analytics.js";
 
 async function getRole(uid) {
   for (let i = 0; i < 4; i++) {
@@ -61,7 +64,7 @@ function getLoginErrorMessage(error) {
 
 export default function Login() {
   const { currentUser, profile, loading: authLoading } = useAuth();
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "", website_hp: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -75,6 +78,24 @@ export default function Login() {
   async function handleSubmit(event) {
     event.preventDefault();
     setError("");
+
+    // 1. Honeypot Bot Trap Check
+    if (isHoneypotTriggered(form)) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        setError("Invalid submission detected.");
+      }, 1000);
+      return;
+    }
+
+    // 2. Client-side Rate Limiting / Brute Force Protection
+    const rateCheck = checkRateLimit(`login_${form.email.toLowerCase()}`, 5, 60000);
+    if (!rateCheck.allowed) {
+      setError(`Too many login attempts. Please wait ${Math.ceil(rateCheck.resetMs / 1000)} seconds.`);
+      return;
+    }
+
     setLoading(true);
     try {
       const credential = await signInWithEmailAndPassword(auth, form.email, form.password);
@@ -83,6 +104,7 @@ export default function Login() {
         setError("User profile was not found in Firestore.");
         return;
       }
+      AnalyticsEvents.userLoggedIn(role);
       navigate(`/${role}`);
     } catch (err) {
       setError(getLoginErrorMessage(err));
@@ -92,11 +114,28 @@ export default function Login() {
   }
 
   return (
-    <AnimatedSignIn
-      title="Welcome to Shiftlyin"
-      subtitle="Sign in to your student, business, or admin workspace"
-    >
-      <form className="asi-login-form" onSubmit={handleSubmit}>
+    <>
+      <SeoHead
+        title="Sign In | Shiftlyin Student & Business Workspace"
+        description="Sign in to your Shiftlyin student or business workspace to manage shift applications, GPS check-ins, job postings, and wallet payouts."
+        keywords="shiftlyin login, student login, business login, shift portal sign in"
+        canonical="/login"
+      />
+      <AnimatedSignIn
+        title="Welcome to Shiftlyin"
+        subtitle="Sign in to your student, business, or admin workspace"
+      >
+        <form className="asi-login-form" onSubmit={handleSubmit}>
+          {/* Invisible Honeypot Spam Bot Trap */}
+          <input
+            type="text"
+            name="website_hp"
+            style={{ display: "none" }}
+            tabIndex={-1}
+            autoComplete="off"
+            value={form.website_hp}
+            onChange={(e) => setForm({ ...form, website_hp: e.target.value })}
+          />
         {error && <p className="form-error" style={{ color: "#ef4444", fontSize: "0.85rem", margin: 0, padding: "8px 12px", background: "rgba(239,68,68,0.1)", borderRadius: "8px" }} role="alert">{error}</p>}
 
         <div className={`asi-form-field ${form.email ? "active" : ""}`}>
@@ -150,5 +189,6 @@ export default function Login() {
         </p>
       </form>
     </AnimatedSignIn>
+    </>
   );
 }

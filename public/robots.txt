@@ -1,0 +1,40 @@
+# Shiftlyin Robots.txt
+User-agent: *
+Allow: /
+Allow: /services/
+Allow: /help
+Allow: /login
+Allow: /register
+Allow: /privacy
+Allow: /terms
+Allow: /assets/
+
+# Disallow Private User & Admin Console Routes
+Disallow: /admin/
+Disallow: /student/
+Disallow: /business/
+Disallow: /chat
+Disallow: /applications
+Disallow: /attendance
+Disallow: /payments
+Disallow: /profile
+Disallow: /unauthorized
+
+# AI Search Engine Crawlers - Allowed for Public Indexing
+User-agent: GPTBot
+Allow: /
+Allow: /services/
+Allow: /help
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /services/
+Allow: /help
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /services/
+Allow: /help
+
+# Sitemap URL
+Sitemap: https://shiftlyin.com/sitemap.xml

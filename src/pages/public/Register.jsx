@@ -7,6 +7,8 @@ import CreditCardForm from "../../components/ui/credit-card-form.jsx";
 import { Checkbox } from "../../components/ui/signup.jsx";
 import { uploadImageToCloudinary } from "../../services/cloudinary.js";
 import { auth, db } from "../../services/firebase.js";
+import SeoHead from "../../components/seo/SeoHead.jsx";
+import { AnalyticsEvents } from "../../utils/analytics.js";
 
 // Validation Regex Helpers
 const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -379,7 +381,14 @@ export default function Register() {
   const totalSteps = 3;
 
   return (
-    <main style={{ position: "relative", background: "var(--bg)", minHeight: "100vh", padding: "60px 1rem", display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" }}>
+    <>
+      <SeoHead
+        title="Create Account | Join Shiftlyin as Student or Business"
+        description="Register for a Shiftlyin account. Students find flexible part-time shift jobs. Businesses hire verified local campus talent instantly with 18+ identity checks."
+        keywords="register shiftlyin, student registration, business sign up, campus hiring account"
+        canonical="/register"
+      />
+      <main style={{ position: "relative", background: "var(--bg)", minHeight: "100vh", padding: "60px 1rem", display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" }}>
       <canvas id="register-particles-canvas" style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 1 }} />
       <section className="panel auth-panel" style={{ 
         position: "relative",
@@ -873,5 +882,6 @@ export default function Register() {
         )}
       </section>
     </main>
+    </>
   );
 }

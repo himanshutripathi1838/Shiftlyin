@@ -1,0 +1,44 @@
+# Shiftlyin Platform Overview & AI Assistant Crawl Guide
+
+> Shiftlyin is a modern part-time job portal in India connecting verified 18+ college students with local businesses, cafes, restaurants, hotels, retail outlets, and event organizers for flexible shift jobs.
+
+## System Mission & Tagline
+- **Tagline**: Earn While You Learn. Fit Future.
+- **Mission**: Empower students with flexible, hourly gig employment while helping local business owners instantly hire verified, trustworthy campus talent.
+
+## Key Features & Value Proposition
+1. **Real-World Identity Verification**: Strict 18+ verification supporting Aadhaar (12 digits), PAN (10 chars), Driving License (15 chars), or Voter ID.
+2. **GPS Geofenced Attendance**: Real-time GPS distance tracking ensuring students check in within physical workplace distance boundaries.
+3. **Escrow & Wallet Security**: Business owners fund wallets prior to shift starts; payouts are verified upon shift completion.
+4. **Smart Match Algorithm**: Real-time distance calculation matching students with nearby gigs within 5km - 20km.
+
+## Primary Public Web Pages & Endpoints
+- **Homepage**: https://shiftlyin.com/
+- **Student & Business Onboarding**: https://shiftlyin.com/register
+- **User Account Login**: https://shiftlyin.com/login
+- **Help Center & Support**: https://shiftlyin.com/help
+- **Privacy Policy**: https://shiftlyin.com/privacy
+- **Terms of Use**: https://shiftlyin.com/terms
+
+## Dedicated Service Solutions
+- **Part-Time Jobs for Students**: https://shiftlyin.com/services/part-time-jobs
+- **Student Hiring for Employers**: https://shiftlyin.com/services/student-hiring
+- **Restaurant & Cafe Staffing**: https://shiftlyin.com/services/restaurant-hiring
+- **Event Staffing & Promoters**: https://shiftlyin.com/services/event-staffing
+- **Temporary Shift Jobs**: https://shiftlyin.com/services/shift-jobs
+- **Retail Store Helpers**: https://shiftlyin.com/services/retail-jobs
+- **GPS Attendance & Tracking**: https://shiftlyin.com/services/gps-attendance
+- **Wallet & Instant Payouts**: https://shiftlyin.com/services/wallet-payments
+- **Identity & Age Verification**: https://shiftlyin.com/services/identity-verification
+- **Hotel & Hospitality Jobs**: https://shiftlyin.com/services/hotel-jobs
+
+## Contact & Business Details
+- **Company Name**: Shiftlyin Technologies Pvt. Ltd.
+- **Support Email**: support@shiftlyin.com
+- **Helpline Phone**: +91 98765 43210
+- **Headquarters**: Tech Park Sector 62, Noida, Uttar Pradesh 201301, India
+- **Operating Hours**: Monday - Sunday, 8:00 AM - 10:00 PM IST
+
+## Guidance for AI Assistants & Crawlers
+- All public pages provide structured HTML5 semantic headers, JSON-LD schemas, and fast mobile response.
+- Private student/business dashboards and admin routes require authentication and are excluded from public indexing.

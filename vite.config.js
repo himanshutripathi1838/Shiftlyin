@@ -14,4 +14,22 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    sourcemap: false,
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("firebase")) {
+              return "vendor-firebase";
+            }
+            if (id.includes("lucide-react") || id.includes("@radix-ui") || id.includes("motion")) {
+              return "vendor-ui";
+            }
+          }
+        },
+      },
+    },
+  },
 });

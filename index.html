@@ -3,64 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#2563eb" />
     
-    <!-- Google Search Console Verification -->
-    <meta name="google-site-verification" content="%VITE_GOOGLE_SITE_VERIFICATION%" />
-
-    <!-- Google Analytics (gtag.js) & Google Tag Manager -->
-    <script>
-      (function() {
-        const gaId = "%VITE_GA_MEASUREMENT_ID%";
-        const gtmId = "%VITE_GTM_ID%";
-
-        if (gaId && gaId !== "%" + "VITE_GA_MEASUREMENT_ID%" && gaId.trim() !== "") {
-          const script = document.createElement("script");
-          script.async = true;
-          script.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
-          document.head.appendChild(script);
-
-          window.dataLayer = window.dataLayer || [];
-          function gtag() { dataLayer.push(arguments); }
-          window.gtag = gtag;
-          gtag("js", new Date());
-          gtag("config", gaId);
-        }
-
-        if (gtmId && gtmId !== "%" + "VITE_GTM_ID%" && gtmId.trim() !== "") {
-          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer',gtmId);
-        }
-      })();
-    </script>
-    
+    <!-- Primary Preconnects for Core Web Vitals -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <title>Shiftlyin | Find Jobs. Fit Future.</title>
+
+    <!-- Primary Fallback SEO Meta -->
+    <title>Shiftlyin | Find Part-Time Student Jobs & Campus Hiring</title>
+    <meta name="description" content="Shiftlyin connects verified college students with local cafes, restaurants, hotels, shops, and events for flexible part-time shift jobs. Earn while you learn with instant GPS check-ins." />
+    <meta name="keywords" content="student part-time jobs, campus hiring, restaurant shift jobs, cafe jobs, event staffing, shiftlyin" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="author" content="Shiftlyin Technologies" />
+
+    <!-- Open Graph & Social Cards -->
+    <meta property="og:title" content="Shiftlyin | Find Part-Time Student Jobs & Campus Hiring" />
+    <meta property="og:description" content="Shiftlyin connects verified college students with local cafes, restaurants, hotels, shops, and events for flexible part-time shift jobs." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Shiftlyin" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Shiftlyin | Find Part-Time Student Jobs & Campus Hiring" />
+    <meta name="twitter:description" content="Shiftlyin connects verified college students with local cafes, restaurants, hotels, shops, and events for flexible part-time shift jobs." />
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <script>
-      (function() {
-        const gtmId = "%VITE_GTM_ID%";
-        if (gtmId && gtmId !== "%" + "VITE_GTM_ID%" && gtmId.trim() !== "") {
-          const iframe = document.createElement("iframe");
-          iframe.src = "https://www.googletagmanager.com/ns.html?id=" + gtmId;
-          iframe.height = "0";
-          iframe.width = "0";
-          iframe.style.display = "none";
-          iframe.style.visibility = "hidden";
-          
-          const noscript = document.createElement("noscript");
-          noscript.appendChild(iframe);
-          document.body.insertBefore(noscript, document.body.firstChild);
-        }
-      })();
-    </script>
-
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

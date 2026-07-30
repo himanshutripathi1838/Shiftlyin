@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { helpTranslations } from "../../data/helpTranslations.js";
 import { db } from "../../services/firebase.js";
+import SeoHead from "../../components/seo/SeoHead.jsx";
 
 const languageOptions = ["hinglish", "hi", "en"];
 
@@ -77,7 +78,22 @@ export default function Help() {
   const dashboardPath = profile?.role === "business" ? "/business" : "/student";
 
   return (
-    <main className="help-page" lang={language === "hi" ? "hi" : "en"}>
+    <>
+      <SeoHead
+        title="Help & Support Center | Shiftlyin Student & Business FAQs"
+        description="Get instant help, read FAQs, and submit support tickets for Shiftlyin student shift jobs, business hiring, GPS attendance, and wallet payouts."
+        keywords="shiftlyin help center, student support, business helpline, shift portal faq"
+        canonical="/help"
+        schemaType="FAQPage"
+        schemaData={{
+          faqs: [
+            { q: "How do I register as a student?", a: "Go to Register, choose Student, submit your government ID details for 18+ verification, and start applying for local shifts." },
+            { q: "How do businesses post a shift job?", a: "Business owners register their shop details, add funds to their escrow wallet, and post shifts specifying timings and hourly wages." },
+            { q: "How does GPS attendance work?", a: "Students click Check-In on their smartphone when physically present at the workplace location to verify shift start." }
+          ]
+        }}
+      />
+      <main className="help-page" lang={language === "hi" ? "hi" : "en"}>
       <section className="help-hero">
         <div>
           <span className="eyebrow">{content.support}</span>
@@ -198,5 +214,6 @@ export default function Help() {
         </section>
       </section>
     </main>
+    </>
   );
 }

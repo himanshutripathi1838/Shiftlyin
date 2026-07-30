@@ -6,6 +6,7 @@ import sLogoImg from "../../assets/shiftlyin-s-logo.png";
 import studentAvatarImg from "../../assets/student-3d-avatar.png";
 import businessAvatarImg from "../../assets/business-3d-avatar.png";
 import LogoCloud from "@/components/ui/logo-cloud-15";
+import SeoHead from "../../components/seo/SeoHead.jsx";
 
 /* ── Scroll Reveal Hook ── */
 function useScrollReveal() {
@@ -158,7 +159,14 @@ export default function Home() {
   }
 
   return (
-    <main className="landing-page">
+    <>
+      <SeoHead
+        title="Shiftlyin | Find Part-Time Student Jobs & Local Campus Hiring"
+        description="Shiftlyin connects verified 18+ college students with local cafes, restaurants, hotels, shops, and event organizers for flexible part-time shift jobs in India."
+        keywords="student part-time jobs, campus hiring, restaurant shift jobs, cafe jobs, event staffing, shiftlyin"
+        canonical="/"
+      />
+      <main className="landing-page">
       {/* ═══ 2. HERO SECTION ═══ */}
       <section className="hero-wrapper" id="hero">
         <div className="hero-grid">
@@ -694,13 +702,23 @@ export default function Home() {
             </div>
 
             <div className="footer-nav-col">
-              <h4>Support</h4>
+              <h4>Services</h4>
+              <ul>
+                <li><Link to="/services/part-time-jobs">Part-Time Jobs</Link></li>
+                <li><Link to="/services/student-hiring">Student Hiring</Link></li>
+                <li><Link to="/services/restaurant-hiring">Restaurant Staffing</Link></li>
+                <li><Link to="/services/event-staffing">Event Staffing</Link></li>
+                <li><Link to="/services/gps-attendance">GPS Attendance</Link></li>
+              </ul>
+            </div>
+
+            <div className="footer-nav-col">
+              <h4>Support & Legal</h4>
               <ul>
                 <li><a href="#faq">FAQ</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms & Conditions</a></li>
-                <li><a href="#">Refund Policy</a></li>
-                <li><a href="#contact">Contact Us</a></li>
+                <li><Link to="/privacy">Privacy Policy</Link></li>
+                <li><Link to="/terms">Terms of Use</Link></li>
+                <li><Link to="/help">Contact Us</Link></li>
               </ul>
             </div>
 
@@ -708,17 +726,32 @@ export default function Home() {
               <h4>Newsletter</h4>
               <p>Subscribe to get latest jobs and updates.</p>
               <form className="newsletter-input-group" onSubmit={(e) => e.preventDefault()}>
-                <input type="email" placeholder="Enter your email" />
+                <input type="email" placeholder="Enter your email" aria-label="Subscribe email" />
                 <button type="submit">Subscribe</button>
               </form>
             </div>
           </div>
 
-          <div className="footer-bottom-bar">
-            © 2026 Shiftlyin. All Rights Reserved.
+          <div className="footer-bottom-bar" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+            <span>© 2026 Shiftlyin Technologies. All Rights Reserved.</span>
+            {(import.meta.env.VITE_GBP_CID_URL || import.meta.env.VITE_GBP_REVIEW_URL) && (
+              <div style={{ display: "flex", gap: "14px" }}>
+                {import.meta.env.VITE_GBP_CID_URL && (
+                  <a href={import.meta.env.VITE_GBP_CID_URL} target="_blank" rel="noopener noreferrer" style={{ color: "#3b82f6", textDecoration: "none", fontWeight: "700", fontSize: "13px" }}>
+                    📍 View on Google
+                  </a>
+                )}
+                {import.meta.env.VITE_GBP_REVIEW_URL && (
+                  <a href={import.meta.env.VITE_GBP_REVIEW_URL} target="_blank" rel="noopener noreferrer" style={{ color: "#10b981", textDecoration: "none", fontWeight: "700", fontSize: "13px" }}>
+                    ⭐ Leave a Review
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </footer>
     </main>
+    </>
   );
 }
