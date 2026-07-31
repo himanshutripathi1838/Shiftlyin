@@ -18,6 +18,7 @@ const ServicePage = lazy(() => import("./pages/public/ServicePage.jsx"));
 const Privacy = lazy(() => import("./pages/public/Privacy.jsx"));
 const Terms = lazy(() => import("./pages/public/Terms.jsx"));
 const Contact = lazy(() => import("./pages/public/Contact.jsx"));
+const NotFoundPage = lazy(() => import("./components/ui/page-not-found.jsx"));
 const JobDetails = lazy(() => import("./pages/public/JobDetails.jsx"));
 const StudentDashboard = lazy(() => import("./pages/student/StudentDashboard.jsx"));
 const BusinessDashboard = lazy(() => import("./pages/business/BusinessDashboard.jsx"));
@@ -139,8 +140,8 @@ export default function App() {
           <Route path="/admin/settings" element={<AdminRoute><AdminSettings /></AdminRoute>} />
           <Route path="/admin/audit-logs" element={<AdminRoute><AdminAuditLogs /></AdminRoute>} />
 
-          {/* Catch-all Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          {/* Catch-all 404 Fallback Route */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </AuthProvider>
