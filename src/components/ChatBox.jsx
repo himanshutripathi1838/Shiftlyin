@@ -15,6 +15,7 @@ import {
   Brush,
   Camera,
   ChartBarIncreasing,
+  Check,
   File,
   FileText,
   Image,
@@ -47,20 +48,25 @@ export default function ChatBox({ chat, onBack }) {
   const [jobDetails, setJobDetails] = useState(null);
   const [counterparty, setCounterparty] = useState(null);
 
-  // Search, Dictation, TTS, Attachment States
+  // Search, Dictation, Voice Recording, TTS, Attachment States
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isListening, setIsListening] = useState(false);
+  const [isRecordingAudio, setIsRecordingAudio] = useState(false);
+  const [recordingSeconds, setRecordingSeconds] = useState(0);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showAttachments, setShowAttachments] = useState(false);
   const [showMobileJobSidebar, setShowMobileJobSidebar] = useState(false);
   const [speakingMsgId, setSpeakingMsgId] = useState(null);
 
-  // Hidden File Input Refs
+  // Hidden Refs & Audio Objects
   const photoInputRef = useRef(null);
   const cameraInputRef = useRef(null);
   const docInputRef = useRef(null);
   const recognitionRef = useRef(null);
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
+  const timerIntervalRef = useRef(null);
 
   useEffect(() => {
     if (!chat?.id) return undefined;
@@ -114,7 +120,9 @@ export default function ChatBox({ chat, onBack }) {
     }
 
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(messageContent);
+    // Strip image/audio tags for TTS
+    const cleanText = messageContent.replace(/\[IMAGE\]:.*|\[VIDEO\]:.*|\[AUDIO\]:.*|\[DOCUMENT\]:.*/g, "Media Attachment");
+    const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.lang = "hi-IN";
     utterance.rate = 0.95;
 
@@ -125,7 +133,67 @@ export default function ChatBox({ chat, onBack }) {
     window.speechSynthesis.speak(utterance);
   }
 
-  // Voice Dictation (Speech Recognition)
+  // Voice Note Microphone Recording (MediaRecorder API)
+  async function startAudioRecording() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioChunksRef.current = [];
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: "audio/webm" });
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+          const base64Audio = reader.result;
+          await sendMediaMessage("audio", base64Audio, "Voice Note");
+        };
+        reader.readAsDataURL(audioBlob);
+
+        stream.getTracks().forEach((track) => track.stop());
+      };
+
+      mediaRecorder.start();
+      setIsRecordingAudio(true);
+      setRecordingSeconds(0);
+
+      timerIntervalRef.current = setInterval(() => {
+        setRecordingSeconds((prev) => prev + 1);
+      }, 1000);
+    } catch (err) {
+      console.warn("Microphone direct recording unavailable, starting speech dictation:", err);
+      toggleSpeechRecognition();
+    }
+  }
+
+  function stopAndSendAudioRecording() {
+    if (mediaRecorderRef.current && isRecordingAudio) {
+      mediaRecorderRef.current.stop();
+      setIsRecordingAudio(false);
+      clearInterval(timerIntervalRef.current);
+    }
+  }
+
+  function cancelAudioRecording() {
+    if (mediaRecorderRef.current && isRecordingAudio) {
+      try {
+        mediaRecorderRef.current.stream.getTracks().forEach((track) => track.stop());
+      } catch (e) {
+        console.error(e);
+      }
+      setIsRecordingAudio(false);
+      clearInterval(timerIntervalRef.current);
+      audioChunksRef.current = [];
+    }
+  }
+
+  // Speech Recognition (Dictation)
   function toggleSpeechRecognition() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -200,6 +268,7 @@ export default function ChatBox({ chat, onBack }) {
     let textMsg = payload;
     if (mediaType === "image") textMsg = `[IMAGE]:${payload}`;
     else if (mediaType === "video") textMsg = `[VIDEO]:${payload}`;
+    else if (mediaType === "audio") textMsg = `[AUDIO]:${payload}`;
     else if (mediaType === "document") textMsg = `[DOCUMENT]:${payload}`;
 
     await addDoc(collection(db, "chats", chat.id, "messages"), {
@@ -435,6 +504,7 @@ export default function ChatBox({ chat, onBack }) {
               // Render media content if applicable
               const isImage = message.message.startsWith("[IMAGE]:");
               const isVideo = message.message.startsWith("[VIDEO]:");
+              const isAudio = message.message.startsWith("[AUDIO]:");
               const isDoc = message.message.startsWith("[DOCUMENT]:");
 
               return (
@@ -456,6 +526,11 @@ export default function ChatBox({ chat, onBack }) {
                         <img src={message.message.replace("[IMAGE]:", "")} alt="Attachment" style={{ maxWidth: "240px", borderRadius: "8px", display: "block" }} />
                       ) : isVideo ? (
                         <video src={message.message.replace("[VIDEO]:", "")} controls style={{ maxWidth: "240px", borderRadius: "8px", display: "block" }} />
+                      ) : isAudio ? (
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <span style={{ fontSize: "12px", fontWeight: 700, color: isMine ? "#fff" : "var(--primary)" }}>🎙️ Voice Note</span>
+                          <audio src={message.message.replace("[AUDIO]:", "")} controls style={{ maxWidth: "220px", height: "36px" }} />
+                        </div>
                       ) : isDoc ? (
                         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                           <FileText style={{ width: "20px", height: "20px" }} />
@@ -651,58 +726,82 @@ export default function ChatBox({ chat, onBack }) {
             <Paperclip style={{ width: "20px", height: "20px" }} />
           </Button>
 
-          <Input
-            value={text}
-            onChange={(event) => setText(event.target.value)}
-            placeholder={isListening ? "🔴 Dictating... Speak now" : isExpired ? "Session expired. Chat is disabled." : "Type a message..."}
-            disabled={isExpired}
-            style={{
-              flex: 1,
-              border: "none",
-              background: "transparent",
-              outline: "none",
-              boxShadow: "none",
-              fontSize: "0.88rem",
-              color: "var(--text)"
-            }}
-          />
+          {/* Input field or Audio Voice Note Recording Bar */}
+          {isRecordingAudio ? (
+            <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(239, 68, 68, 0.1)", padding: "6px 14px", borderRadius: "20px", border: "1px solid rgba(239,68,68,0.3)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#ef4444", display: "inline-block" }} />
+                <span style={{ fontSize: "0.84rem", fontWeight: 700, color: "#ef4444" }}>
+                  🎙️ Recording: {Math.floor(recordingSeconds / 60)}:{String(recordingSeconds % 60).padStart(2, "0")}
+                </span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <Button type="button" variant="ghost" size="icon" onClick={cancelAudioRecording} title="Cancel recording" style={{ width: "28px", height: "28px" }}>
+                  <X style={{ width: "16px", height: "16px", color: "var(--muted)" }} />
+                </Button>
+                <Button type="button" size="icon" onClick={stopAndSendAudioRecording} title="Send voice note" style={{ width: "30px", height: "30px", borderRadius: "50%", background: "#10b981", color: "#fff", border: "none" }}>
+                  <Check style={{ width: "16px", height: "16px" }} />
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <Input
+              value={text}
+              onChange={(event) => setText(event.target.value)}
+              placeholder={isListening ? "🔴 Dictating... Speak now" : isExpired ? "Session expired. Chat is disabled." : "Type a message..."}
+              disabled={isExpired}
+              style={{
+                flex: 1,
+                border: "none",
+                background: "transparent",
+                outline: "none",
+                boxShadow: "none",
+                fontSize: "0.88rem",
+                color: "var(--text)"
+              }}
+            />
+          )}
 
-          {/* Voice Dictation Speaker/Mic Button */}
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            onClick={toggleSpeechRecognition}
-            title={isListening ? "Listening... Click to stop" : "Speak to type"}
-            style={{
-              color: isListening ? "#ef4444" : "var(--muted)",
-              background: isListening ? "rgba(239, 68, 68, 0.15)" : "transparent",
-              borderRadius: "50%"
-            }}
-          >
-            {isListening ? <MicOff style={{ width: "20px", height: "20px", color: "#ef4444" }} /> : <Mic style={{ width: "20px", height: "20px" }} />}
-          </Button>
+          {/* Microphone Voice Note & Dictation Button */}
+          {!isRecordingAudio && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={startAudioRecording}
+              title="Click to Record Voice Note or Dictate Speech"
+              style={{
+                color: isListening ? "#ef4444" : "var(--muted)",
+                background: isListening ? "rgba(239, 68, 68, 0.15)" : "transparent",
+                borderRadius: "50%"
+              }}
+            >
+              {isListening ? <MicOff style={{ width: "20px", height: "20px", color: "#ef4444" }} /> : <Mic style={{ width: "20px", height: "20px" }} />}
+            </Button>
+          )}
 
           {/* Send Button */}
-          <Button
-            type="submit"
-            disabled={isExpired || !text.trim()}
-            size="icon"
-            style={{
-              borderRadius: "50%",
-              width: "36px",
-              height: "36px",
-              background: "#2563eb",
-              color: "#ffffff",
-              display: "grid",
-              placeItems: "center",
-              border: "none",
-              cursor: "pointer",
-              boxShadow: "0 4px 12px rgba(37, 99, 235, 0.3)"
-            }}
-          >
-            <Send style={{ width: "16px", height: "16px" }} />
-          </Button>
+          {!isRecordingAudio && (
+            <Button
+              type="submit"
+              disabled={isExpired || !text.trim()}
+              size="icon"
+              style={{
+                borderRadius: "50%",
+                width: "36px",
+                height: "36px",
+                background: "#2563eb",
+                color: "#ffffff",
+                display: "grid",
+                placeItems: "center",
+                border: "none",
+                cursor: "pointer",
+                boxShadow: "0 4px 12px rgba(37, 99, 235, 0.3)"
+              }}
+            >
+              <Send style={{ width: "16px", height: "16px" }} />
+            </Button>
+          )}
         </form>
       </section>
 
