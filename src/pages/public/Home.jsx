@@ -804,7 +804,20 @@ export default function Home() {
               <p>Connecting college students with local businesses for flexible, part-time opportunities.</p>
               <div className="social-icon-row">
                 <a href="#" className="social-icon-btn" aria-label="Facebook">f</a>
-                <a href="#" className="social-icon-btn" aria-label="Instagram">📷</a>
+                <a
+                  href="https://www.instagram.com/shiftlyin/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-icon-btn"
+                  aria-label="Instagram"
+                  title="Follow Shiftlyin on Instagram"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: "middle" }}>
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </a>
                 <a href="#" className="social-icon-btn" aria-label="LinkedIn">in</a>
                 <a href="#" className="social-icon-btn" aria-label="YouTube">▶</a>
               </div>
