@@ -27,12 +27,15 @@ export default function Navbar() {
     navigate("/");
   }
 
-  function scrollTo(e, id) {
+  function handleNavClick(e, link) {
     setIsMenuOpen(false);
+    if (link.isPageLink) {
+      return; // Handled by React Router Link
+    }
     if (location.pathname === "/") {
       e.preventDefault();
-      if (id === "top") { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
-      const el = document.getElementById(id);
+      if (link.id === "top") { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+      const el = document.getElementById(link.id);
       if (el) el.scrollIntoView({ behavior: "smooth" });
     }
   }
@@ -43,7 +46,7 @@ export default function Navbar() {
     { label: "Businesses", id: "trusted", href: "/#trusted" },
     { label: "About Us", id: "why-choose", href: "/#why-choose" },
     { label: "How It Works", id: "how-it-works", href: "/#how-it-works" },
-    { label: "Contact", id: "contact", href: "/contact" },
+    { label: "Contact", href: "/contact", isPageLink: true },
     { label: "FAQ", id: "faq", href: "/#faq" },
   ];
 
@@ -70,14 +73,31 @@ export default function Navbar() {
       <nav className={`nav-actions ${isMenuOpen ? "is-active" : ""}`}>
         <div className="nav-links-wrap" style={{ display: "flex", gap: "16px", alignItems: "center", flexWrap: "nowrap" }}>
           {NAV_LINKS.map(link => (
-            <a
-              key={link.label}
-              href={link.href}
-              onClick={e => scrollTo(e, link.id)}
-              style={{ color: "var(--muted)", fontWeight: 600, fontSize: "0.84rem", textDecoration: "none", whiteSpace: "nowrap" }}
-            >
-              {link.label}
-            </a>
+            link.isPageLink ? (
+              <Link
+                key={link.label}
+                to={link.href}
+                onClick={e => handleNavClick(e, link)}
+                style={{
+                  color: location.pathname === link.href ? "var(--primary)" : "var(--muted)",
+                  fontWeight: location.pathname === link.href ? 800 : 600,
+                  fontSize: "0.84rem",
+                  textDecoration: "none",
+                  whiteSpace: "nowrap"
+                }}
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.label}
+                href={link.href}
+                onClick={e => handleNavClick(e, link)}
+                style={{ color: "var(--muted)", fontWeight: 600, fontSize: "0.84rem", textDecoration: "none", whiteSpace: "nowrap" }}
+              >
+                {link.label}
+              </a>
+            )
           ))}
         </div>
 
