@@ -390,13 +390,19 @@ export default function Home() {
             {/* Right 6 Horizontal Pipeline Steps */}
             <div className="pipeline-steps-grid">
               {STUDENT_STEPS.map((s, i) => (
-                <div key={s.num} className="step-pipeline-card student-card-step">
+                <motion.div
+                  key={s.num}
+                  className="step-pipeline-card student-card-step"
+                  whileHover={{ y: -7, scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <div className="step-badge student-step-badge">{s.num}</div>
                   <div className="step-icon-wrap student-icon-bg">{s.icon}</div>
                   <h4 className="step-card-title">{s.title}</h4>
                   <p className="step-card-desc">{s.desc}</p>
                   {i < 5 && <span className="pipeline-connector-line student-line" />}
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -405,7 +411,11 @@ export default function Home() {
         {/* ── CENTER INTERSECTING CONNECTING CARD ── */}
         <Reveal>
           <div className="center-connect-wrapper">
-            <div className="center-connect-card">
+            <motion.div
+              className="center-connect-card"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+            >
               <div className="center-s-logo">
                 <img src={sLogoImg} alt="Shiftlyin S Logo" style={{ width: "22px", height: "22px" }} />
               </div>
@@ -415,7 +425,7 @@ export default function Home() {
                   We verify, match and empower students and businesses for trusted and seamless collaborations.
                 </p>
               </div>
-            </div>
+            </motion.div>
           </div>
         </Reveal>
 
@@ -431,13 +441,19 @@ export default function Home() {
             {/* Right 6 Horizontal Pipeline Steps */}
             <div className="pipeline-steps-grid">
               {BUSINESS_STEPS.map((s, i) => (
-                <div key={s.num} className="step-pipeline-card business-card-step">
+                <motion.div
+                  key={s.num}
+                  className="step-pipeline-card business-card-step"
+                  whileHover={{ y: -7, scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <div className="step-badge business-step-badge">{s.num}</div>
                   <div className="step-icon-wrap business-icon-bg">{s.icon}</div>
                   <h4 className="step-card-title">{s.title}</h4>
                   <p className="step-card-desc">{s.desc}</p>
                   {i < 5 && <span className="pipeline-connector-line business-line" />}
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -456,14 +472,21 @@ export default function Home() {
           <Reveal>
             <div className="why-features-grid-6">
               {WHY_FEATURES.map((w) => (
-                <div key={w.num} className="why-feature-box" style={{ background: w.bg, borderColor: `${w.color}30` }}>
+                <motion.div
+                  key={w.num}
+                  className="why-feature-box"
+                  style={{ background: w.bg, borderColor: `${w.color}30` }}
+                  whileHover={{ y: -7, scale: 1.04 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <div className="why-box-top">
                     <div className="why-num-badge" style={{ background: w.color }}>{w.num}</div>
                     <div className="why-icon-circle" style={{ color: w.color }}>{w.icon}</div>
                   </div>
                   <h4 className="why-box-title">{w.title}</h4>
                   <p className="why-box-desc">{w.desc}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </Reveal>
@@ -472,12 +495,16 @@ export default function Home() {
         {/* ── BOTTOM CTA ACTION BUTTONS ── */}
         <Reveal>
           <div className="showcase-cta-bar">
-            <Link to="/register" className="btn-primary-blue" style={{ fontSize: "1rem", padding: "14px 34px", borderRadius: "30px" }}>
-              Join Shiftlyin Today →
-            </Link>
-            <a href="#how-it-works" className="btn-outline-dark" style={{ fontSize: "0.92rem", padding: "12px 24px", borderRadius: "30px", display: "inline-flex", alignItems: "center", gap: "8px" }}>
-              <span style={{ fontSize: "0.8rem", background: "#2563eb", color: "#fff", width: "20px", height: "20px", borderRadius: "50%", display: "grid", placeItems: "center" }}>▶</span> Watch How It Works
-            </a>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}>
+              <Link to="/register" className="btn-primary-blue" style={{ fontSize: "1rem", padding: "14px 34px", borderRadius: "30px" }}>
+                Join Shiftlyin Today →
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}>
+              <a href="#how-it-works" className="btn-outline-dark" style={{ fontSize: "0.92rem", padding: "12px 24px", borderRadius: "30px", display: "inline-flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ fontSize: "0.8rem", background: "#2563eb", color: "#fff", width: "20px", height: "20px", borderRadius: "50%", display: "grid", placeItems: "center" }}>▶</span> Watch How It Works
+              </a>
+            </motion.div>
           </div>
         </Reveal>
       </section>
@@ -490,10 +517,16 @@ export default function Home() {
               <h2 className="land-heading" style={{ fontSize: "1.35rem" }}>Popular Job Categories</h2>
               <div className="cat-chips-grid">
                 {CATEGORIES.map((c) => (
-                  <div className="cat-chip" key={c.label}>
+                  <motion.div
+                    className="cat-chip"
+                    key={c.label}
+                    whileHover={{ scale: 1.08, y: -4 }}
+                    whileTap={{ scale: 0.94 }}
+                    transition={{ duration: 0.2 }}
+                  >
                     <span className="cat-chip-icon">{c.emoji}</span>
                     <span className="cat-chip-name">{c.label}</span>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
               <a href="#jobs" className="view-all-cats-link">View All Categories →</a>
@@ -607,11 +640,15 @@ export default function Home() {
             </div>
 
             <div>
-              <div className="mobile-teaser-card">
+              <motion.div
+                className="mobile-teaser-card"
+                whileHover={{ y: -6, scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
                 <div className="qr-placeholder-box">📱</div>
                 <h4>Shiftlyin Coming Soon on Mobile</h4>
                 <p>Scan the QR code to get the app when we launch!</p>
-              </div>
+              </motion.div>
             </div>
           </div>
         </Reveal>
@@ -620,14 +657,22 @@ export default function Home() {
       {/* ═══ 9. FINAL CTA BANNER ═══ */}
       <section className="final-cta-container">
         <Reveal>
-          <div className="cta-banner-navy">
+          <motion.div
+            className="cta-banner-navy"
+            whileHover={{ scale: 1.01 }}
+            transition={{ duration: 0.3 }}
+          >
             <h2>Ready to Start Your Journey?</h2>
             <p>Join thousands of students and businesses already growing with Shiftlyin.</p>
             <div className="hero-btns" style={{ justifyContent: "center" }}>
-              <Link to="/register" className="cta-btn-white">Register as Student</Link>
-              <Link to="/register" className="btn-primary-blue">Register as Business</Link>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}>
+                <Link to="/register" className="cta-btn-white">Register as Student</Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}>
+                <Link to="/register" className="btn-primary-blue">Register as Business</Link>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </Reveal>
       </section>
 
