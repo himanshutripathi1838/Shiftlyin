@@ -4,6 +4,34 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { db } from "../services/firebase.js";
 
+// ** UI & Lucide Icons **
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { CardDescription, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Brush,
+  Camera,
+  ChartBarIncreasing,
+  File,
+  Image,
+  Mic,
+  Paperclip,
+  Phone,
+  Search,
+  Send,
+  Smile,
+  UserRound,
+  Video,
+} from "lucide-react";
+
 export default function ChatBox({ chat, onBack }) {
   const { currentUser, profile } = useAuth();
   const [messages, setMessages] = useState([]);
@@ -51,7 +79,7 @@ export default function ChatBox({ chat, onBack }) {
   }, [chat?.id, chat?.jobId, chat?.studentId, chat?.businessId, currentUser.uid]);
 
   async function sendMessage(event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
     if (!text.trim() || !chat?.id) return;
 
     const messageText = text.trim();
@@ -87,120 +115,156 @@ export default function ChatBox({ chat, onBack }) {
   const lastSentMessageId = lastSentMessageIndex !== -1 ? messages[messages.length - 1 - lastSentMessageIndex].id : null;
 
   return (
-    <div className="chat-box-container" style={{ display: "flex", width: "100%", height: "100%", gap: "20px", alignItems: "stretch" }}>
-      <section className="chat-box" style={{ flex: 1, display: "flex", flexDirection: "column", height: "100%" }}>
-        <div className="chat-header" style={{ padding: "12px 16px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", background: "var(--surface-soft)", borderRadius: "8px 8px 0 0" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+    <div className="chat-box-container" style={{ display: "flex", width: "100%", height: "100%", gap: "16px", alignItems: "stretch" }}>
+      <section className="chat-box flex flex-col h-full flex-1 border rounded-xl overflow-hidden bg-background">
+        {/* Chat Header */}
+        <div className="h-16 border-b flex items-center justify-between px-4 bg-muted/30">
+          <div className="flex items-center gap-3">
             {onBack && (
-              <button 
-                onClick={onBack} 
-                className="chat-back-btn" 
-                style={{ 
-                  background: "none", 
-                  border: "none", 
-                  cursor: "pointer", 
-                  fontSize: "18px", 
-                  padding: "0 8px 0 0", 
-                  color: "var(--primary)", 
-                  fontWeight: "900"
-                }}
-                aria-label="Back to chat list"
-              >
+              <Button onClick={onBack} variant="ghost" size="icon" className="md:hidden">
                 ←
-              </button>
+              </Button>
             )}
+            <Avatar className="size-10">
+              <AvatarImage src={counterparty?.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${counterparty?.name}`} />
+              <AvatarFallback>{counterparty?.name?.[0] || "U"}</AvatarFallback>
+            </Avatar>
             <div>
-              <h3 style={{ margin: 0, fontSize: "16px", fontWeight: "600" }}>{counterparty?.name || "Loading..."}</h3>
-              <span style={{ fontSize: "12px", color: "var(--muted)" }}>
-                {counterparty?.role === "business" ? "Business Owner" : "Student"}
-              </span>
+              <CardTitle className="text-base font-semibold">{counterparty?.name || "Loading..."}</CardTitle>
+              <CardDescription className="text-xs">
+                {counterparty?.role === "business" ? "Business Owner" : "Verified Student"}
+              </CardDescription>
             </div>
           </div>
-          {counterparty?.phone && (
-            <a 
-              href={`tel:${counterparty.phone}`} 
-              className="primary-button" 
-              style={{ 
-                padding: "8px 14px", 
-                fontSize: "12px", 
-                background: "#10b981", 
-                borderColor: "#10b981", 
-                textDecoration: "none", 
-                color: "white", 
-                borderRadius: "6px",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-                fontWeight: "600",
-                boxShadow: "0 2px 4px rgba(16,185,129,0.15)"
-              }}
-            >
-              📞 Call {counterparty.phone}
-            </a>
-          )}
+          <div className="flex items-center gap-2">
+            {counterparty?.phone && (
+              <a href={`tel:${counterparty.phone}`}>
+                <Button variant="outline" size="sm" className="gap-1.5 text-xs text-emerald-600 border-emerald-600/30 hover:bg-emerald-50">
+                  <Phone className="w-3.5 h-3.5" /> Call
+                </Button>
+              </a>
+            )}
+            <Button variant="ghost" size="icon" title="Video call">
+              <Video className="w-4 h-4" />
+            </Button>
+            <Button variant="ghost" size="icon" title="Search message">
+              <Search className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
 
-        <div className="messages" style={{ flex: 1, overflowY: "auto", padding: "16px" }}>
-          {messages.map((message) => {
-            const isMine = message.senderId === currentUser.uid;
-            const isLastSent = message.id === lastSentMessageId;
-            return (
-              <div key={message.id} style={{ display: "flex", flexDirection: "column", alignItems: isMine ? "flex-end" : "flex-start", width: "100%", margin: "2px 0" }}>
-                <p className={isMine ? "mine" : ""} style={{ margin: 0 }}>
-                  {message.message}
-                </p>
-                {isMine && isLastSent && message.isRead && (
-                  <span className="seen-receipt" style={{ display: "block", fontSize: "10px", color: "var(--muted)", marginTop: "2px", marginRight: "4px" }}>
-                    Seen
-                  </span>
-                )}
-              </div>
-            );
-          })}
-          {messages.length === 0 && <p className="empty-state" style={{ margin: "auto" }}>No messages yet. Say hello!</p>}
-        </div>
-        <form onSubmit={sendMessage} className="chat-form" style={{ padding: "16px", borderTop: "1px solid var(--border)" }}>
-          <input 
-            value={text} 
-            onChange={(event) => setText(event.target.value)} 
-            placeholder={isExpired ? "Session expired. Chat is disabled." : "Type a message"} 
+        {/* Messages Feed */}
+        <ScrollArea className="flex-1 p-4">
+          <div className="flex flex-col gap-3 min-h-[300px]">
+            {messages.map((message) => {
+              const isMine = message.senderId === currentUser.uid;
+              const isLastSent = message.id === lastSentMessageId;
+              return (
+                <div key={message.id} className={`flex flex-col ${isMine ? "items-end" : "items-start"} w-full`}>
+                  <div className={`max-w-[75%] px-4 py-2.5 rounded-2xl text-sm ${
+                    isMine 
+                      ? "bg-primary color-white text-primary-foreground rounded-br-xs" 
+                      : "bg-secondary text-secondary-foreground rounded-bl-xs"
+                  }`}>
+                    {message.message}
+                  </div>
+                  {isMine && isLastSent && message.isRead && (
+                    <span className="text-[10px] text-muted-foreground mt-1 mr-1">
+                      Seen
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+            {messages.length === 0 && (
+              <p className="empty-state text-center my-auto text-sm text-muted-foreground">
+                No messages yet. Say hello to get started!
+              </p>
+            )}
+          </div>
+        </ScrollArea>
+
+        {/* Chat Input Bar */}
+        <form onSubmit={sendMessage} className="flex h-14 border-t px-3 items-center gap-1.5 bg-background">
+          <Button type="button" variant="ghost" size="icon">
+            <Smile className="w-5 h-5 text-muted-foreground" />
+          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button type="button" variant="ghost" size="icon">
+                <Paperclip className="w-5 h-5 text-muted-foreground" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="top" align="start">
+              <DropdownMenuItem>
+                <Image className="w-4 h-4 mr-2" /> Photos & Videos
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Camera className="w-4 h-4 mr-2" /> Camera
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <File className="w-4 h-4 mr-2" /> Document
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <UserRound className="w-4 h-4 mr-2" /> Contact
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <ChartBarIncreasing className="w-4 h-4 mr-2" /> Poll
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Brush className="w-4 h-4 mr-2" /> Drawing
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <Input
+            value={text}
+            onChange={(event) => setText(event.target.value)}
+            placeholder={isExpired ? "Session expired. Chat is disabled." : "Type a message..."}
             disabled={isExpired}
+            className="flex-1 border-0 focus-visible:ring-0 text-sm shadow-none"
           />
-          <button className="primary-button" disabled={isExpired}>Send</button>
+
+          <Button type="submit" disabled={isExpired || !text.trim()} size="icon" className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Send className="w-4 h-4" />
+          </Button>
+          <Button type="button" variant="ghost" size="icon">
+            <Mic className="w-5 h-5 text-muted-foreground" />
+          </Button>
         </form>
       </section>
 
       {jobDetails && (
-        <aside className="chat-job-sidebar" style={{ width: "300px", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "8px", padding: "20px", display: "flex", flexDirection: "column", gap: "16px", alignSelf: "stretch" }}>
-          <div style={{ borderBottom: "1px solid var(--border)", paddingBottom: "12px" }}>
-            <span className="eyebrow" style={{ fontSize: "10px", letterSpacing: "0.05em", textTransform: "uppercase" }}>Job Profile</span>
-            <h3 style={{ margin: "4px 0", fontSize: "18px", color: "var(--primary)", fontWeight: "700" }}>{jobDetails.title}</h3>
-            <p style={{ margin: 0, fontSize: "14px", fontWeight: "600", color: "var(--text)" }}>{jobDetails.businessName}</p>
+        <aside className="chat-job-sidebar hidden lg:flex w-[280px] bg-card border rounded-xl p-4 flex-col gap-4">
+          <div className="border-b pb-3">
+            <span className="text-[10px] tracking-wider uppercase text-muted-foreground font-semibold">Job Profile</span>
+            <h3 className="text-base font-bold text-primary mt-1">{jobDetails.title}</h3>
+            <p className="text-xs font-semibold text-foreground">{jobDetails.businessName}</p>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px", fontSize: "13px" }}>
+          <div className="flex flex-col gap-3 text-xs">
             <div>
-              <span style={{ color: "var(--muted)", display: "block", fontSize: "11px", fontWeight: "600", textTransform: "uppercase", marginBottom: "2px" }}>Salary</span>
-              <strong style={{ fontSize: "14px", color: "var(--text)" }}>₹{jobDetails.salaryAmount} ({jobDetails.salaryType})</strong>
+              <span className="text-muted-foreground block text-[10px] font-semibold uppercase mb-0.5">Salary</span>
+              <strong className="text-sm text-foreground">₹{jobDetails.salaryAmount} ({jobDetails.salaryType})</strong>
             </div>
             <div>
-              <span style={{ color: "var(--muted)", display: "block", fontSize: "11px", fontWeight: "600", textTransform: "uppercase", marginBottom: "2px" }}>Shift Start</span>
-              <span style={{ color: "var(--text)" }}>{new Date(jobDetails.shiftStartsAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</span>
+              <span className="text-muted-foreground block text-[10px] font-semibold uppercase mb-0.5">Shift Start</span>
+              <span className="text-foreground">{new Date(jobDetails.shiftStartsAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</span>
             </div>
             <div>
-              <span style={{ color: "var(--muted)", display: "block", fontSize: "11px", fontWeight: "600", textTransform: "uppercase", marginBottom: "2px" }}>Shift End</span>
-              <span style={{ color: "var(--text)" }}>{new Date(jobDetails.shiftEndsAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</span>
+              <span className="text-muted-foreground block text-[10px] font-semibold uppercase mb-0.5">Shift End</span>
+              <span className="text-foreground">{new Date(jobDetails.shiftEndsAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</span>
             </div>
             <div>
-              <span style={{ color: "var(--muted)", display: "block", fontSize: "11px", fontWeight: "600", textTransform: "uppercase", marginBottom: "2px" }}>Location</span>
-              <strong style={{ color: "var(--text)" }}>{jobDetails.location}</strong>
+              <span className="text-muted-foreground block text-[10px] font-semibold uppercase mb-0.5">Location</span>
+              <strong className="text-foreground">{jobDetails.location}</strong>
             </div>
           </div>
 
           {jobDetails.description && (
-            <div style={{ marginTop: "auto", borderTop: "1px solid var(--border)", paddingTop: "12px" }}>
-              <span style={{ color: "var(--muted)", display: "block", fontSize: "11px", fontWeight: "600", textTransform: "uppercase", marginBottom: "4px" }}>Shift Description</span>
-              <p style={{ margin: 0, fontSize: "12px", lineHeight: "1.5", maxHeight: "120px", overflowY: "auto", color: "var(--muted)" }}>
+            <div className="mt-auto border-t pt-3">
+              <span className="text-muted-foreground block text-[10px] font-semibold uppercase mb-1">Shift Description</span>
+              <p className="text-xs leading-relaxed max-h-[100px] overflow-y-auto text-muted-foreground">
                 {jobDetails.description}
               </p>
             </div>
