@@ -46,7 +46,6 @@ export default function ChatBox({ chat, onBack }) {
       const msgs = snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
       setMessages(msgs);
 
-      // Mark received messages as read
       const unreadMsgs = snapshot.docs.filter((docSnap) => {
         const data = docSnap.data();
         return data.senderId !== currentUser.uid && !data.isRead;
@@ -116,12 +115,34 @@ export default function ChatBox({ chat, onBack }) {
 
   return (
     <div className="chat-box-container" style={{ display: "flex", width: "100%", height: "100%", gap: "16px", alignItems: "stretch" }}>
-      <section className="chat-box flex flex-col h-full flex-1 border rounded-xl overflow-hidden bg-background">
+      <section
+        className="chat-box"
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+          background: "var(--surface)",
+          border: "1px solid var(--border)",
+          borderRadius: "16px",
+          overflow: "hidden"
+        }}
+      >
         {/* Chat Header */}
-        <div className="h-16 border-b flex items-center justify-between px-4 bg-muted/30">
-          <div className="flex items-center gap-3">
+        <div
+          style={{
+            height: "64px",
+            padding: "0 16px",
+            borderBottom: "1px solid var(--border)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            background: "var(--surface-soft)"
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             {onBack && (
-              <Button onClick={onBack} variant="ghost" size="icon" className="md:hidden">
+              <Button onClick={onBack} variant="ghost" size="icon" style={{ padding: 0, width: "32px", height: "32px" }}>
                 ←
               </Button>
             )}
@@ -130,54 +151,78 @@ export default function ChatBox({ chat, onBack }) {
               <AvatarFallback>{counterparty?.name?.[0] || "U"}</AvatarFallback>
             </Avatar>
             <div>
-              <CardTitle className="text-base font-semibold">{counterparty?.name || "Loading..."}</CardTitle>
-              <CardDescription className="text-xs">
+              <CardTitle style={{ margin: 0, fontSize: "0.95rem", fontWeight: 700, color: "var(--text)" }}>
+                {counterparty?.name || "Loading..."}
+              </CardTitle>
+              <CardDescription style={{ margin: 0, fontSize: "0.76rem", color: "var(--muted)" }}>
                 {counterparty?.role === "business" ? "Business Owner" : "Verified Student"}
               </CardDescription>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             {counterparty?.phone && (
-              <a href={`tel:${counterparty.phone}`}>
-                <Button variant="outline" size="sm" className="gap-1.5 text-xs text-emerald-600 border-emerald-600/30 hover:bg-emerald-50">
-                  <Phone className="w-3.5 h-3.5" /> Call
+              <a href={`tel:${counterparty.phone}`} style={{ textDecoration: "none" }}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    fontSize: "0.78rem",
+                    fontWeight: 700,
+                    color: "#10b981",
+                    borderColor: "rgba(16, 185, 129, 0.3)",
+                    background: "rgba(16, 185, 129, 0.08)"
+                  }}
+                >
+                  <Phone style={{ width: "14px", height: "14px" }} /> Call
                 </Button>
               </a>
             )}
-            <Button variant="ghost" size="icon" title="Video call">
-              <Video className="w-4 h-4" />
+            <Button variant="ghost" size="icon" title="Video call" style={{ color: "var(--muted)" }}>
+              <Video style={{ width: "18px", height: "18px" }} />
             </Button>
-            <Button variant="ghost" size="icon" title="Search message">
-              <Search className="w-4 h-4" />
+            <Button variant="ghost" size="icon" title="Search message" style={{ color: "var(--muted)" }}>
+              <Search style={{ width: "18px", height: "18px" }} />
             </Button>
           </div>
         </div>
 
         {/* Messages Feed */}
-        <ScrollArea className="flex-1 p-4">
-          <div className="flex flex-col gap-3 min-h-[300px]">
+        <ScrollArea style={{ flex: 1, padding: "16px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px", minHeight: "260px" }}>
             {messages.map((message) => {
               const isMine = message.senderId === currentUser.uid;
               const isLastSent = message.id === lastSentMessageId;
               return (
-                <div key={message.id} className={`flex flex-col ${isMine ? "items-end" : "items-start"} w-full`}>
-                  <div className={`max-w-[75%] px-4 py-2.5 rounded-2xl text-sm ${
-                    isMine 
-                      ? "bg-primary color-white text-primary-foreground rounded-br-xs" 
-                      : "bg-secondary text-secondary-foreground rounded-bl-xs"
-                  }`}>
+                <div key={message.id} style={{ display: "flex", flexDirection: "column", alignItems: isMine ? "flex-end" : "flex-start", width: "100%" }}>
+                  <div
+                    style={{
+                      maxWidth: "75%",
+                      padding: "10px 16px",
+                      borderRadius: isMine ? "16px 16px 4px 16px" : "16px 16px 16px 4px",
+                      fontSize: "0.88rem",
+                      lineHeight: "1.45",
+                      background: isMine ? "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)" : "var(--surface-soft)",
+                      color: isMine ? "#ffffff" : "var(--text)",
+                      border: isMine ? "none" : "1px solid var(--border)",
+                      boxShadow: isMine ? "0 4px 12px rgba(37, 99, 235, 0.2)" : "var(--shadow-sm)"
+                    }}
+                  >
                     {message.message}
                   </div>
                   {isMine && isLastSent && message.isRead && (
-                    <span className="text-[10px] text-muted-foreground mt-1 mr-1">
-                      Seen
+                    <span style={{ fontSize: "10px", color: "var(--muted)", marginTop: "3px", marginRight: "4px" }}>
+                      Seen ✓✓
                     </span>
                   )}
                 </div>
               );
             })}
             {messages.length === 0 && (
-              <p className="empty-state text-center my-auto text-sm text-muted-foreground">
+              <p className="empty-state" style={{ margin: "auto", textAlign: "center", color: "var(--muted)", fontSize: "0.88rem" }}>
                 No messages yet. Say hello to get started!
               </p>
             )}
@@ -185,34 +230,46 @@ export default function ChatBox({ chat, onBack }) {
         </ScrollArea>
 
         {/* Chat Input Bar */}
-        <form onSubmit={sendMessage} className="flex h-14 border-t px-3 items-center gap-1.5 bg-background">
-          <Button type="button" variant="ghost" size="icon">
-            <Smile className="w-5 h-5 text-muted-foreground" />
+        <form
+          onSubmit={sendMessage}
+          style={{
+            height: "60px",
+            padding: "0 12px",
+            borderTop: "1px solid var(--border)",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            background: "var(--surface)"
+          }}
+        >
+          <Button type="button" variant="ghost" size="icon" style={{ color: "var(--muted)" }}>
+            <Smile style={{ width: "20px", height: "20px" }} />
           </Button>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button type="button" variant="ghost" size="icon">
-                <Paperclip className="w-5 h-5 text-muted-foreground" />
+              <Button type="button" variant="ghost" size="icon" style={{ color: "var(--muted)" }}>
+                <Paperclip style={{ width: "20px", height: "20px" }} />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent side="top" align="start">
               <DropdownMenuItem>
-                <Image className="w-4 h-4 mr-2" /> Photos & Videos
+                <Image style={{ width: "16px", height: "16px", marginRight: "8px" }} /> Photos & Videos
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Camera className="w-4 h-4 mr-2" /> Camera
+                <Camera style={{ width: "16px", height: "16px", marginRight: "8px" }} /> Camera
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <File className="w-4 h-4 mr-2" /> Document
+                <File style={{ width: "16px", height: "16px", marginRight: "8px" }} /> Document
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <UserRound className="w-4 h-4 mr-2" /> Contact
+                <UserRound style={{ width: "16px", height: "16px", marginRight: "8px" }} /> Contact
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <ChartBarIncreasing className="w-4 h-4 mr-2" /> Poll
+                <ChartBarIncreasing style={{ width: "16px", height: "16px", marginRight: "8px" }} /> Poll
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Brush className="w-4 h-4 mr-2" /> Drawing
+                <Brush style={{ width: "16px", height: "16px", marginRight: "8px" }} /> Drawing
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -222,49 +279,114 @@ export default function ChatBox({ chat, onBack }) {
             onChange={(event) => setText(event.target.value)}
             placeholder={isExpired ? "Session expired. Chat is disabled." : "Type a message..."}
             disabled={isExpired}
-            className="flex-1 border-0 focus-visible:ring-0 text-sm shadow-none"
+            style={{
+              flex: 1,
+              border: "none",
+              background: "transparent",
+              outline: "none",
+              boxShadow: "none",
+              fontSize: "0.88rem",
+              color: "var(--text)"
+            }}
           />
 
-          <Button type="submit" disabled={isExpired || !text.trim()} size="icon" className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
-            <Send className="w-4 h-4" />
+          <Button
+            type="submit"
+            disabled={isExpired || !text.trim()}
+            size="icon"
+            style={{
+              borderRadius: "50%",
+              width: "36px",
+              height: "36px",
+              background: "#2563eb",
+              color: "#ffffff",
+              display: "grid",
+              placeItems: "center",
+              border: "none",
+              cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(37, 99, 235, 0.3)"
+            }}
+          >
+            <Send style={{ width: "16px", height: "16px" }} />
           </Button>
-          <Button type="button" variant="ghost" size="icon">
-            <Mic className="w-5 h-5 text-muted-foreground" />
+
+          <Button type="button" variant="ghost" size="icon" style={{ color: "var(--muted)" }}>
+            <Mic style={{ width: "20px", height: "20px" }} />
           </Button>
         </form>
       </section>
 
+      {/* Right Shift Profile Sidebar */}
       {jobDetails && (
-        <aside className="chat-job-sidebar hidden lg:flex w-[280px] bg-card border rounded-xl p-4 flex-col gap-4">
-          <div className="border-b pb-3">
-            <span className="text-[10px] tracking-wider uppercase text-muted-foreground font-semibold">Job Profile</span>
-            <h3 className="text-base font-bold text-primary mt-1">{jobDetails.title}</h3>
-            <p className="text-xs font-semibold text-foreground">{jobDetails.businessName}</p>
+        <aside
+          className="chat-job-sidebar"
+          style={{
+            width: "280px",
+            background: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: "16px",
+            padding: "16px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "14px"
+          }}
+        >
+          <div style={{ borderBottom: "1px solid var(--border)", paddingBottom: "12px" }}>
+            <span style={{ fontSize: "10px", letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--muted)", fontWeight: 700 }}>
+              Shift Profile
+            </span>
+            <h3 style={{ margin: "4px 0 2px", fontSize: "1.05rem", color: "var(--primary)", fontWeight: 800 }}>
+              {jobDetails.title}
+            </h3>
+            <p style={{ margin: 0, fontSize: "0.84rem", fontWeight: 700, color: "var(--text)" }}>
+              {jobDetails.businessName}
+            </p>
           </div>
 
-          <div className="flex flex-col gap-3 text-xs">
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "0.82rem" }}>
             <div>
-              <span className="text-muted-foreground block text-[10px] font-semibold uppercase mb-0.5">Salary</span>
-              <strong className="text-sm text-foreground">₹{jobDetails.salaryAmount} ({jobDetails.salaryType})</strong>
+              <span style={{ color: "var(--muted)", display: "block", fontSize: "10px", fontWeight: 700, textTransform: "uppercase", marginBottom: "2px" }}>
+                Salary
+              </span>
+              <strong style={{ fontSize: "0.92rem", color: "#16a34a" }}>
+                ₹{jobDetails.salaryAmount} ({jobDetails.salaryType})
+              </strong>
             </div>
+
             <div>
-              <span className="text-muted-foreground block text-[10px] font-semibold uppercase mb-0.5">Shift Start</span>
-              <span className="text-foreground">{new Date(jobDetails.shiftStartsAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</span>
+              <span style={{ color: "var(--muted)", display: "block", fontSize: "10px", fontWeight: 700, textTransform: "uppercase", marginBottom: "2px" }}>
+                Shift Start
+              </span>
+              <span style={{ color: "var(--text)", fontWeight: 600 }}>
+                {new Date(jobDetails.shiftStartsAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}
+              </span>
             </div>
+
             <div>
-              <span className="text-muted-foreground block text-[10px] font-semibold uppercase mb-0.5">Shift End</span>
-              <span className="text-foreground">{new Date(jobDetails.shiftEndsAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</span>
+              <span style={{ color: "var(--muted)", display: "block", fontSize: "10px", fontWeight: 700, textTransform: "uppercase", marginBottom: "2px" }}>
+                Shift End
+              </span>
+              <span style={{ color: "var(--text)", fontWeight: 600 }}>
+                {new Date(jobDetails.shiftEndsAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}
+              </span>
             </div>
+
             <div>
-              <span className="text-muted-foreground block text-[10px] font-semibold uppercase mb-0.5">Location</span>
-              <strong className="text-foreground">{jobDetails.location}</strong>
+              <span style={{ color: "var(--muted)", display: "block", fontSize: "10px", fontWeight: 700, textTransform: "uppercase", marginBottom: "2px" }}>
+                Location
+              </span>
+              <strong style={{ color: "var(--text)" }}>
+                📍 {jobDetails.location}
+              </strong>
             </div>
           </div>
 
           {jobDetails.description && (
-            <div className="mt-auto border-t pt-3">
-              <span className="text-muted-foreground block text-[10px] font-semibold uppercase mb-1">Shift Description</span>
-              <p className="text-xs leading-relaxed max-h-[100px] overflow-y-auto text-muted-foreground">
+            <div style={{ marginTop: "auto", borderTop: "1px solid var(--border)", paddingTop: "10px" }}>
+              <span style={{ color: "var(--muted)", display: "block", fontSize: "10px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
+                Shift Description
+              </span>
+              <p style={{ margin: 0, fontSize: "0.78rem", lineHeight: "1.45", maxHeight: "100px", overflowY: "auto", color: "var(--muted)" }}>
                 {jobDetails.description}
               </p>
             </div>
