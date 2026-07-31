@@ -304,33 +304,6 @@ export const Home = () => {
                 <Button variant="ghost" size="icon">
                   <Smile />
                 </Button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <Paperclip />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem>
-                      <Image /> Photos & Videos
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Camera /> Camera
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <File /> Document
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <UserRound /> Contact
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <ChartBarIncreasing /> Poll
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Brush /> Drawing
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
                 <Input
                   className="flex-grow border-0 focus-visible:ring-0"
                   placeholder="Type a message"
