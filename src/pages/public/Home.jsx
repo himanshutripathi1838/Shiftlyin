@@ -805,7 +805,7 @@ export default function Home() {
                 <li><a href="#jobs">Jobs</a></li>
                 <li><a href="#trusted">Businesses</a></li>
                 <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><Link to="/contact">Contact</Link></li>
               </ul>
             </div>
 
