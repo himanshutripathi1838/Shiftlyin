@@ -12,36 +12,17 @@ import DotCard from "@/components/ui/moving-dot-card";
 import SeoHead from "../../components/seo/SeoHead.jsx";
 
 /* ── Scroll Reveal Hook ── */
-function useScrollReveal() {
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          obs.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.08, rootMargin: "0px 0px -30px 0px" }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return ref;
-}
-
 function Reveal({ children, className = "", delay = 0 }) {
-  const ref = useScrollReveal();
   return (
-    <div
-      ref={ref}
-      className={`scroll-reveal ${className}`}
-      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 36, scale: 0.97 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.7, delay: delay / 1000, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
 

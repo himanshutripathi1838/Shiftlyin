@@ -471,7 +471,17 @@
 }
 
 .highlight-blue {
-  color: #2563eb;
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #16a34a 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientTextFlow 4s ease infinite alternate;
+  display: inline-block;
+}
+
+@keyframes gradientTextFlow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 
 .showcase-main-sub {
