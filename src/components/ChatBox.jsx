@@ -16,7 +16,9 @@ import {
   Camera,
   ChartBarIncreasing,
   File,
+  FileText,
   Image,
+  Info,
   Mic,
   MicOff,
   Paperclip,
@@ -26,6 +28,8 @@ import {
   Smile,
   UserRound,
   Video,
+  Volume2,
+  VolumeX,
   X,
 } from "lucide-react";
 
@@ -43,12 +47,19 @@ export default function ChatBox({ chat, onBack }) {
   const [jobDetails, setJobDetails] = useState(null);
   const [counterparty, setCounterparty] = useState(null);
 
-  // Reusable UI Popover States
+  // Search, Dictation, TTS, Attachment States
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showAttachments, setShowAttachments] = useState(false);
+  const [showMobileJobSidebar, setShowMobileJobSidebar] = useState(false);
+  const [speakingMsgId, setSpeakingMsgId] = useState(null);
+
+  // Hidden File Input Refs
+  const photoInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
+  const docInputRef = useRef(null);
   const recognitionRef = useRef(null);
 
   useEffect(() => {
@@ -88,6 +99,31 @@ export default function ChatBox({ chat, onBack }) {
       }
     });
   }, [chat?.id, chat?.jobId, chat?.studentId, chat?.businessId, currentUser.uid]);
+
+  // Speaker / Text-to-Speech (TTS) Read-Aloud
+  function toggleSpeechSynthesis(msgId, messageContent) {
+    if (!("speechSynthesis" in window)) {
+      alert("Text-to-speech is not supported in this browser.");
+      return;
+    }
+
+    if (speakingMsgId === msgId) {
+      window.speechSynthesis.cancel();
+      setSpeakingMsgId(null);
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(messageContent);
+    utterance.lang = "hi-IN";
+    utterance.rate = 0.95;
+
+    utterance.onend = () => setSpeakingMsgId(null);
+    utterance.onerror = () => setSpeakingMsgId(null);
+
+    setSpeakingMsgId(msgId);
+    window.speechSynthesis.speak(utterance);
+  }
 
   // Voice Dictation (Speech Recognition)
   function toggleSpeechRecognition() {
@@ -130,6 +166,87 @@ export default function ChatBox({ chat, onBack }) {
     }
   }
 
+  // File Upload Handlers (Photos, Videos, Documents)
+  function handleFileSelect(event, type) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const fileData = e.target.result;
+      let messageType = "text";
+      let payload = "";
+
+      if (type === "photo") {
+        messageType = file.type.startsWith("video/") ? "video" : "image";
+        payload = fileData;
+      } else if (type === "doc") {
+        messageType = "document";
+        payload = JSON.stringify({ name: file.name, size: (file.size / 1024).toFixed(1) + " KB", url: fileData });
+      }
+
+      await sendMediaMessage(messageType, payload, file.name);
+    };
+    reader.readAsDataURL(file);
+    event.target.value = "";
+    setShowAttachments(false);
+  }
+
+  // Send Custom Media / Attachment Message
+  async function sendMediaMessage(mediaType, payload, fileName = "") {
+    if (!chat?.id) return;
+    const receiverId = currentUser.uid === chat.studentId ? chat.businessId : chat.studentId;
+
+    let textMsg = payload;
+    if (mediaType === "image") textMsg = `[IMAGE]:${payload}`;
+    else if (mediaType === "video") textMsg = `[VIDEO]:${payload}`;
+    else if (mediaType === "document") textMsg = `[DOCUMENT]:${payload}`;
+
+    await addDoc(collection(db, "chats", chat.id, "messages"), {
+      senderId: currentUser.uid,
+      receiverId,
+      message: textMsg,
+      mediaType,
+      fileName,
+      createdAt: serverTimestamp(),
+      isRead: false
+    });
+
+    const senderName = profile?.name || "User";
+    await addDoc(collection(db, "notifications"), {
+      userId: receiverId,
+      title: "New chat attachment",
+      message: `${senderName} ne attachment bheja: ${fileName || mediaType}`,
+      type: "chat_message",
+      relatedChatId: chat.id,
+      isRead: false,
+      createdAt: serverTimestamp()
+    });
+  }
+
+  // Attachment Quick Handlers
+  function handleAttachmentClick(action) {
+    if (action === "photo") {
+      photoInputRef.current?.click();
+    } else if (action === "camera") {
+      cameraInputRef.current?.click();
+    } else if (action === "doc") {
+      docInputRef.current?.click();
+    } else if (action === "contact") {
+      const contactInfo = counterparty ? `📱 Contact Card:\nName: ${counterparty.name}\nPhone: ${counterparty.phone || "N/A"}` : "📱 Shared Contact Info";
+      setText((prev) => (prev ? `${prev}\n${contactInfo}` : contactInfo));
+      setShowAttachments(false);
+    } else if (action === "poll") {
+      const pollText = `📊 Quick Poll:\nQuestion: Are you ready for this shift?\nOptions: [1] Yes, ready!  [2] Need 10 mins`;
+      setText((prev) => (prev ? `${prev}\n${pollText}` : pollText));
+      setShowAttachments(false);
+    } else if (action === "drawing") {
+      const drawingText = `🎨 [Canvas Sketch / Drawing Attachment]`;
+      setText((prev) => (prev ? `${prev}\n${drawingText}` : drawingText));
+      setShowAttachments(false);
+    }
+  }
+
   async function sendMessage(event) {
     if (event) event.preventDefault();
     if (!text.trim() || !chat?.id) return;
@@ -168,13 +285,17 @@ export default function ChatBox({ chat, onBack }) {
   const lastSentMessageIndex = [...messages].reverse().findIndex((m) => m.senderId === currentUser.uid);
   const lastSentMessageId = lastSentMessageIndex !== -1 ? messages[messages.length - 1 - lastSentMessageIndex].id : null;
 
-  // Filtered messages for search
   const filteredMessages = searchQuery.trim()
     ? messages.filter((m) => m.message.toLowerCase().includes(searchQuery.toLowerCase().trim()))
     : messages;
 
   return (
-    <div className="chat-box-container" style={{ display: "flex", width: "100%", height: "100%", gap: "16px", alignItems: "stretch" }}>
+    <div className="chat-box-container" style={{ display: "flex", width: "100%", height: "100%", gap: "16px", alignItems: "stretch", position: "relative" }}>
+      {/* Hidden File Inputs */}
+      <input type="file" ref={photoInputRef} accept="image/*,video/*" style={{ display: "none" }} onChange={(e) => handleFileSelect(e, "photo")} />
+      <input type="file" ref={cameraInputRef} accept="image/*" capture="environment" style={{ display: "none" }} onChange={(e) => handleFileSelect(e, "photo")} />
+      <input type="file" ref={docInputRef} accept=".pdf,.doc,.docx,.txt" style={{ display: "none" }} onChange={(e) => handleFileSelect(e, "doc")} />
+
       <section
         className="chat-box"
         style={{
@@ -201,7 +322,7 @@ export default function ChatBox({ chat, onBack }) {
             background: "var(--surface-soft)"
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             {onBack && (
               <Button onClick={onBack} variant="ghost" size="icon" style={{ padding: 0, width: "32px", height: "32px" }}>
                 ←
@@ -221,7 +342,7 @@ export default function ChatBox({ chat, onBack }) {
             </div>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
             {counterparty?.phone && (
               <a href={`tel:${counterparty.phone}`} style={{ textDecoration: "none" }}>
                 <Button
@@ -242,9 +363,18 @@ export default function ChatBox({ chat, onBack }) {
                 </Button>
               </a>
             )}
-            <Button variant="ghost" size="icon" title="Video call" style={{ color: "var(--muted)" }}>
-              <Video style={{ width: "18px", height: "18px" }} />
+
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Toggle Shift Info Profile"
+              onClick={() => setShowMobileJobSidebar(!showMobileJobSidebar)}
+              className="lg:hidden"
+              style={{ color: showMobileJobSidebar ? "#2563eb" : "var(--muted)" }}
+            >
+              <Info style={{ width: "18px", height: "18px" }} />
             </Button>
+
             <Button
               variant="ghost"
               size="icon"
@@ -300,23 +430,59 @@ export default function ChatBox({ chat, onBack }) {
             {filteredMessages.map((message) => {
               const isMine = message.senderId === currentUser.uid;
               const isLastSent = message.id === lastSentMessageId;
+              const isSpeaking = speakingMsgId === message.id;
+
+              // Render media content if applicable
+              const isImage = message.message.startsWith("[IMAGE]:");
+              const isVideo = message.message.startsWith("[VIDEO]:");
+              const isDoc = message.message.startsWith("[DOCUMENT]:");
+
               return (
                 <div key={message.id} style={{ display: "flex", flexDirection: "column", alignItems: isMine ? "flex-end" : "flex-start", width: "100%" }}>
-                  <div
-                    style={{
-                      maxWidth: "75%",
-                      padding: "10px 16px",
-                      borderRadius: isMine ? "16px 16px 4px 16px" : "16px 16px 16px 4px",
-                      fontSize: "0.88rem",
-                      lineHeight: "1.45",
-                      background: isMine ? "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)" : "var(--surface-soft)",
-                      color: isMine ? "#ffffff" : "var(--text)",
-                      border: isMine ? "none" : "1px solid var(--border)",
-                      boxShadow: isMine ? "0 4px 12px rgba(37, 99, 235, 0.2)" : "var(--shadow-sm)"
-                    }}
-                  >
-                    {message.message}
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", maxWidth: "85%", flexDirection: isMine ? "row-reverse" : "row" }}>
+                    <div
+                      style={{
+                        padding: "10px 16px",
+                        borderRadius: isMine ? "16px 16px 4px 16px" : "16px 16px 16px 4px",
+                        fontSize: "0.88rem",
+                        lineHeight: "1.45",
+                        background: isMine ? "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)" : "var(--surface-soft)",
+                        color: isMine ? "#ffffff" : "var(--text)",
+                        border: isMine ? "none" : "1px solid var(--border)",
+                        boxShadow: isMine ? "0 4px 12px rgba(37, 99, 235, 0.2)" : "var(--shadow-sm)"
+                      }}
+                    >
+                      {isImage ? (
+                        <img src={message.message.replace("[IMAGE]:", "")} alt="Attachment" style={{ maxWidth: "240px", borderRadius: "8px", display: "block" }} />
+                      ) : isVideo ? (
+                        <video src={message.message.replace("[VIDEO]:", "")} controls style={{ maxWidth: "240px", borderRadius: "8px", display: "block" }} />
+                      ) : isDoc ? (
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <FileText style={{ width: "20px", height: "20px" }} />
+                          <span>Document Attachment ({message.fileName || "File"})</span>
+                        </div>
+                      ) : (
+                        message.message
+                      )}
+                    </div>
+
+                    {/* Speaker Read-Aloud Icon Button */}
+                    <button
+                      type="button"
+                      onClick={() => toggleSpeechSynthesis(message.id, message.message)}
+                      title={isSpeaking ? "Stop listening" : "Listen to message"}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: isSpeaking ? "#2563eb" : "var(--muted)",
+                        padding: "4px"
+                      }}
+                    >
+                      {isSpeaking ? <VolumeX style={{ width: "16px", height: "16px", color: "#ef4444" }} /> : <Volume2 style={{ width: "16px", height: "16px" }} />}
+                    </button>
                   </div>
+
                   {isMine && isLastSent && message.isRead && (
                     <span style={{ fontSize: "10px", color: "var(--muted)", marginTop: "3px", marginRight: "4px" }}>
                       Seen ✓✓
@@ -407,20 +573,17 @@ export default function ChatBox({ chat, onBack }) {
             }}
           >
             {[
-              { icon: Image, label: "Photos & Videos" },
-              { icon: Camera, label: "Camera" },
-              { icon: File, label: "Document" },
-              { icon: UserRound, label: "Contact" },
-              { icon: ChartBarIncreasing, label: "Poll" },
-              { icon: Brush, label: "Drawing" }
+              { icon: Image, label: "Photos & Videos", action: "photo" },
+              { icon: Camera, label: "Camera", action: "camera" },
+              { icon: File, label: "Document", action: "doc" },
+              { icon: UserRound, label: "Contact", action: "contact" },
+              { icon: ChartBarIncreasing, label: "Poll", action: "poll" },
+              { icon: Brush, label: "Drawing", action: "drawing" }
             ].map((item) => (
               <button
                 key={item.label}
                 type="button"
-                onClick={() => {
-                  setText((prev) => (prev ? `${prev} [Attached ${item.label}]` : `[Attached ${item.label}]`));
-                  setShowAttachments(false);
-                }}
+                onClick={() => handleAttachmentClick(item.action)}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -439,7 +602,7 @@ export default function ChatBox({ chat, onBack }) {
                 onMouseEnter={(e) => (e.target.style.background = "var(--surface-soft)")}
                 onMouseLeave={(e) => (e.target.style.background = "transparent")}
               >
-                <item.icon style={{ width: "16px", height: "16px", color: "var(--primary)" }} />
+                <item.icon style={{ width: "16px", height: "16px", color: "#2563eb" }} />
                 <span>{item.label}</span>
               </button>
             ))}
@@ -491,7 +654,7 @@ export default function ChatBox({ chat, onBack }) {
           <Input
             value={text}
             onChange={(event) => setText(event.target.value)}
-            placeholder={isListening ? "🔴 Listening... Speak now" : isExpired ? "Session expired. Chat is disabled." : "Type a message..."}
+            placeholder={isListening ? "🔴 Dictating... Speak now" : isExpired ? "Session expired. Chat is disabled." : "Type a message..."}
             disabled={isExpired}
             style={{
               flex: 1,
@@ -543,10 +706,10 @@ export default function ChatBox({ chat, onBack }) {
         </form>
       </section>
 
-      {/* Right Shift Profile Sidebar */}
+      {/* Right Shift Profile Sidebar (Responsive) */}
       {jobDetails && (
         <aside
-          className="chat-job-sidebar"
+          className={`chat-job-sidebar ${showMobileJobSidebar ? "flex-mobile-drawer" : "hidden-mobile"}`}
           style={{
             width: "280px",
             background: "var(--surface)",
@@ -558,16 +721,23 @@ export default function ChatBox({ chat, onBack }) {
             gap: "14px"
           }}
         >
-          <div style={{ borderBottom: "1px solid var(--border)", paddingBottom: "12px" }}>
-            <span style={{ fontSize: "10px", letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--muted)", fontWeight: 700 }}>
-              Shift Profile
-            </span>
-            <h3 style={{ margin: "4px 0 2px", fontSize: "1.05rem", color: "var(--primary)", fontWeight: 800 }}>
-              {jobDetails.title}
-            </h3>
-            <p style={{ margin: 0, fontSize: "0.84rem", fontWeight: 700, color: "var(--text)" }}>
-              {jobDetails.businessName}
-            </p>
+          <div style={{ borderBottom: "1px solid var(--border)", paddingBottom: "12px", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <div>
+              <span style={{ fontSize: "10px", letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--muted)", fontWeight: 700 }}>
+                Shift Profile
+              </span>
+              <h3 style={{ margin: "4px 0 2px", fontSize: "1.05rem", color: "var(--primary)", fontWeight: 800 }}>
+                {jobDetails.title}
+              </h3>
+              <p style={{ margin: 0, fontSize: "0.84rem", fontWeight: 700, color: "var(--text)" }}>
+                {jobDetails.businessName}
+              </p>
+            </div>
+            {showMobileJobSidebar && (
+              <Button variant="ghost" size="icon" onClick={() => setShowMobileJobSidebar(false)} className="lg:hidden">
+                <X style={{ width: "16px", height: "16px" }} />
+              </Button>
+            )}
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "0.82rem" }}>
