@@ -127,6 +127,18 @@ export default function Home() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (window.location.hash) {
+      const targetId = window.location.hash.replace("#", "");
+      const el = document.getElementById(targetId);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth" });
+        }, 300);
+      }
+    }
+  }, []);
+
   const filteredCities = useMemo(() => {
     const term = searchLocation.trim().toLowerCase();
     if (!term) return INDIAN_CITIES;
