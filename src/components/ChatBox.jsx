@@ -12,25 +12,16 @@ import { CardDescription, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import {
-  Brush,
-  Camera,
-  ChartBarIncreasing,
   Check,
-  File,
   FileText,
-  Image,
   Info,
   Mic,
   MicOff,
-  Paperclip,
   Phone,
   Search,
   Send,
   Smile,
-  UserRound,
   Video,
-  Volume2,
-  VolumeX,
   X,
 } from "lucide-react";
 
@@ -48,21 +39,16 @@ export default function ChatBox({ chat, onBack }) {
   const [jobDetails, setJobDetails] = useState(null);
   const [counterparty, setCounterparty] = useState(null);
 
-  // Search, Dictation, Voice Recording, TTS, Attachment States
+  // Search, Dictation, Voice Recording & UI States
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [isRecordingAudio, setIsRecordingAudio] = useState(false);
   const [recordingSeconds, setRecordingSeconds] = useState(0);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [showAttachments, setShowAttachments] = useState(false);
   const [showMobileJobSidebar, setShowMobileJobSidebar] = useState(false);
-  const [speakingMsgId, setSpeakingMsgId] = useState(null);
 
-  // Hidden Refs & Audio Objects
-  const photoInputRef = useRef(null);
-  const cameraInputRef = useRef(null);
-  const docInputRef = useRef(null);
+  // Audio & Speech Recognition Refs
   const recognitionRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -105,33 +91,6 @@ export default function ChatBox({ chat, onBack }) {
       }
     });
   }, [chat?.id, chat?.jobId, chat?.studentId, chat?.businessId, currentUser.uid]);
-
-  // Speaker / Text-to-Speech (TTS) Read-Aloud
-  function toggleSpeechSynthesis(msgId, messageContent) {
-    if (!("speechSynthesis" in window)) {
-      alert("Text-to-speech is not supported in this browser.");
-      return;
-    }
-
-    if (speakingMsgId === msgId) {
-      window.speechSynthesis.cancel();
-      setSpeakingMsgId(null);
-      return;
-    }
-
-    window.speechSynthesis.cancel();
-    // Strip image/audio tags for TTS
-    const cleanText = messageContent.replace(/\[IMAGE\]:.*|\[VIDEO\]:.*|\[AUDIO\]:.*|\[DOCUMENT\]:.*/g, "Media Attachment");
-    const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.lang = "hi-IN";
-    utterance.rate = 0.95;
-
-    utterance.onend = () => setSpeakingMsgId(null);
-    utterance.onerror = () => setSpeakingMsgId(null);
-
-    setSpeakingMsgId(msgId);
-    window.speechSynthesis.speak(utterance);
-  }
 
   // Voice Note Microphone Recording (MediaRecorder API)
   async function startAudioRecording() {
@@ -234,42 +193,13 @@ export default function ChatBox({ chat, onBack }) {
     }
   }
 
-  // File Upload Handlers (Photos, Videos, Documents)
-  function handleFileSelect(event, type) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const fileData = e.target.result;
-      let messageType = "text";
-      let payload = "";
-
-      if (type === "photo") {
-        messageType = file.type.startsWith("video/") ? "video" : "image";
-        payload = fileData;
-      } else if (type === "doc") {
-        messageType = "document";
-        payload = JSON.stringify({ name: file.name, size: (file.size / 1024).toFixed(1) + " KB", url: fileData });
-      }
-
-      await sendMediaMessage(messageType, payload, file.name);
-    };
-    reader.readAsDataURL(file);
-    event.target.value = "";
-    setShowAttachments(false);
-  }
-
   // Send Custom Media / Attachment Message
   async function sendMediaMessage(mediaType, payload, fileName = "") {
     if (!chat?.id) return;
     const receiverId = currentUser.uid === chat.studentId ? chat.businessId : chat.studentId;
 
     let textMsg = payload;
-    if (mediaType === "image") textMsg = `[IMAGE]:${payload}`;
-    else if (mediaType === "video") textMsg = `[VIDEO]:${payload}`;
-    else if (mediaType === "audio") textMsg = `[AUDIO]:${payload}`;
-    else if (mediaType === "document") textMsg = `[DOCUMENT]:${payload}`;
+    if (mediaType === "audio") textMsg = `[AUDIO]:${payload}`;
 
     await addDoc(collection(db, "chats", chat.id, "messages"), {
       senderId: currentUser.uid,
@@ -284,36 +214,13 @@ export default function ChatBox({ chat, onBack }) {
     const senderName = profile?.name || "User";
     await addDoc(collection(db, "notifications"), {
       userId: receiverId,
-      title: "New chat attachment",
-      message: `${senderName} ne attachment bheja: ${fileName || mediaType}`,
+      title: "New voice message",
+      message: `${senderName} ne voice note bheja.`,
       type: "chat_message",
       relatedChatId: chat.id,
       isRead: false,
       createdAt: serverTimestamp()
     });
-  }
-
-  // Attachment Quick Handlers
-  function handleAttachmentClick(action) {
-    if (action === "photo") {
-      photoInputRef.current?.click();
-    } else if (action === "camera") {
-      cameraInputRef.current?.click();
-    } else if (action === "doc") {
-      docInputRef.current?.click();
-    } else if (action === "contact") {
-      const contactInfo = counterparty ? `📱 Contact Card:\nName: ${counterparty.name}\nPhone: ${counterparty.phone || "N/A"}` : "📱 Shared Contact Info";
-      setText((prev) => (prev ? `${prev}\n${contactInfo}` : contactInfo));
-      setShowAttachments(false);
-    } else if (action === "poll") {
-      const pollText = `📊 Quick Poll:\nQuestion: Are you ready for this shift?\nOptions: [1] Yes, ready!  [2] Need 10 mins`;
-      setText((prev) => (prev ? `${prev}\n${pollText}` : pollText));
-      setShowAttachments(false);
-    } else if (action === "drawing") {
-      const drawingText = `🎨 [Canvas Sketch / Drawing Attachment]`;
-      setText((prev) => (prev ? `${prev}\n${drawingText}` : drawingText));
-      setShowAttachments(false);
-    }
   }
 
   async function sendMessage(event) {
@@ -345,7 +252,6 @@ export default function ChatBox({ chat, onBack }) {
 
     setText("");
     setShowEmojiPicker(false);
-    setShowAttachments(false);
   }
 
   if (!chat) return <div className="empty-state">Chat unlocks after an application is accepted.</div>;
@@ -360,11 +266,6 @@ export default function ChatBox({ chat, onBack }) {
 
   return (
     <div className="chat-box-container" style={{ display: "flex", width: "100%", height: "100%", gap: "16px", alignItems: "stretch", position: "relative" }}>
-      {/* Hidden File Inputs */}
-      <input type="file" ref={photoInputRef} accept="image/*,video/*" style={{ display: "none" }} onChange={(e) => handleFileSelect(e, "photo")} />
-      <input type="file" ref={cameraInputRef} accept="image/*" capture="environment" style={{ display: "none" }} onChange={(e) => handleFileSelect(e, "photo")} />
-      <input type="file" ref={docInputRef} accept=".pdf,.doc,.docx,.txt" style={{ display: "none" }} onChange={(e) => handleFileSelect(e, "doc")} />
-
       <section
         className="chat-box"
         style={{
@@ -499,7 +400,6 @@ export default function ChatBox({ chat, onBack }) {
             {filteredMessages.map((message) => {
               const isMine = message.senderId === currentUser.uid;
               const isLastSent = message.id === lastSentMessageId;
-              const isSpeaking = speakingMsgId === message.id;
 
               // Render media content if applicable
               const isImage = message.message.startsWith("[IMAGE]:");
@@ -540,22 +440,6 @@ export default function ChatBox({ chat, onBack }) {
                         message.message
                       )}
                     </div>
-
-                    {/* Speaker Read-Aloud Icon Button */}
-                    <button
-                      type="button"
-                      onClick={() => toggleSpeechSynthesis(message.id, message.message)}
-                      title={isSpeaking ? "Stop listening" : "Listen to message"}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        color: isSpeaking ? "#2563eb" : "var(--muted)",
-                        padding: "4px"
-                      }}
-                    >
-                      {isSpeaking ? <VolumeX style={{ width: "16px", height: "16px", color: "#ef4444" }} /> : <Volume2 style={{ width: "16px", height: "16px" }} />}
-                    </button>
                   </div>
 
                   {isMine && isLastSent && message.isRead && (
@@ -628,62 +512,6 @@ export default function ChatBox({ chat, onBack }) {
           </div>
         )}
 
-        {/* Attachment Options Popover */}
-        {showAttachments && (
-          <div
-            style={{
-              position: "absolute",
-              bottom: "68px",
-              left: "48px",
-              zIndex: 999999,
-              background: "var(--surface)",
-              border: "1px solid var(--border)",
-              boxShadow: "0 14px 40px rgba(0, 0, 0, 0.3)",
-              borderRadius: "16px",
-              padding: "8px",
-              width: "210px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "4px"
-            }}
-          >
-            {[
-              { icon: Image, label: "Photos & Videos", action: "photo" },
-              { icon: Camera, label: "Camera", action: "camera" },
-              { icon: File, label: "Document", action: "doc" },
-              { icon: UserRound, label: "Contact", action: "contact" },
-              { icon: ChartBarIncreasing, label: "Poll", action: "poll" },
-              { icon: Brush, label: "Drawing", action: "drawing" }
-            ].map((item) => (
-              <button
-                key={item.label}
-                type="button"
-                onClick={() => handleAttachmentClick(item.action)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  padding: "8px 12px",
-                  fontSize: "0.84rem",
-                  fontWeight: 600,
-                  color: "var(--text)",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  borderRadius: "8px",
-                  textAlign: "left",
-                  transition: "background 0.15s"
-                }}
-                onMouseEnter={(e) => (e.target.style.background = "var(--surface-soft)")}
-                onMouseLeave={(e) => (e.target.style.background = "transparent")}
-              >
-                <item.icon style={{ width: "16px", height: "16px", color: "#2563eb" }} />
-                <span>{item.label}</span>
-              </button>
-            ))}
-          </div>
-        )}
-
         {/* Chat Input Bar */}
         <form
           onSubmit={sendMessage}
@@ -703,27 +531,10 @@ export default function ChatBox({ chat, onBack }) {
             type="button"
             variant="ghost"
             size="icon"
-            onClick={() => {
-              setShowEmojiPicker(!showEmojiPicker);
-              setShowAttachments(false);
-            }}
+            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
             style={{ color: showEmojiPicker ? "#2563eb" : "var(--muted)" }}
           >
             <Smile style={{ width: "20px", height: "20px" }} />
-          </Button>
-
-          {/* Paperclip Attachments Button */}
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            onClick={() => {
-              setShowAttachments(!showAttachments);
-              setShowEmojiPicker(false);
-            }}
-            style={{ color: showAttachments ? "#2563eb" : "var(--muted)" }}
-          >
-            <Paperclip style={{ width: "20px", height: "20px" }} />
           </Button>
 
           {/* Input field or Audio Voice Note Recording Bar */}
