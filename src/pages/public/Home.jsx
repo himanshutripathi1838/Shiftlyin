@@ -10,6 +10,8 @@ import LogoCloud from "@/components/ui/logo-cloud-15";
 import TestimonialCarousel from "@/components/ui/testimonial";
 import DotCard from "@/components/ui/moving-dot-card";
 import SeoHead from "../../components/seo/SeoHead.jsx";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../../services/firebase.js";
 
 /* ── Scroll Reveal Hook ── */
 function Reveal({ children, className = "", delay = 0 }) {
@@ -657,8 +659,120 @@ export default function Home() {
         </Reveal>
       </section>
 
-      {/* ═══ 10. FOOTER (DARK NAVY #0B1437) ═══ */}
-      <footer className="dark-navy-footer" id="contact">
+      {/* ═══ 10. DEDICATED CONTACT US SECTION ═══ */}
+      <section className="contact-home-section" id="contact" style={{ padding: "80px 20px", background: "var(--surface-soft)", borderTop: "1px solid var(--border)" }}>
+        <div style={{ maxWidth: "1050px", margin: "0 auto" }}>
+          <Reveal>
+            <div style={{ textAlign: "center", marginBottom: "40px" }}>
+              <span className="eyebrow-pill">📩 Get in Touch</span>
+              <h2 style={{ fontSize: "2.2rem", fontWeight: 900, margin: "10px 0 8px", color: "var(--text)" }}>
+                Contact Shiftlyin Support
+              </h2>
+              <p style={{ color: "var(--muted)", fontSize: "1rem", maxWidth: "600px", margin: "0 auto" }}>
+                Have questions or need assistance? Email us directly at <strong style={{ color: "var(--primary)" }}>shiftlyin@gmail.com</strong> or fill out the quick form below.
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={150}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "24px", alignItems: "stretch" }}>
+              
+              {/* Contact Info Cards */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px", justifyContent: "center" }}>
+                <div style={{ background: "var(--surface)", border: "1.5px solid var(--border)", borderRadius: "16px", padding: "20px", display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: "rgba(37,99,235,0.1)", color: "var(--primary)", display: "grid", placeItems: "center", fontSize: "1.2rem" }}>✉️</div>
+                  <div>
+                    <span style={{ fontSize: "0.75rem", fontWeight: 800, textTransform: "uppercase", color: "var(--muted)" }}>Direct Email</span>
+                    <h4 style={{ margin: "2px 0 0", fontSize: "1rem", fontWeight: 800 }}>
+                      <a href="mailto:shiftlyin@gmail.com" style={{ color: "var(--primary)", textDecoration: "none" }}>shiftlyin@gmail.com</a>
+                    </h4>
+                  </div>
+                </div>
+
+                <div style={{ background: "var(--surface)", border: "1.5px solid var(--border)", borderRadius: "16px", padding: "20px", display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: "rgba(16,185,129,0.1)", color: "#10b981", display: "grid", placeItems: "center", fontSize: "1.2rem" }}>📞</div>
+                  <div>
+                    <span style={{ fontSize: "0.75rem", fontWeight: 800, textTransform: "uppercase", color: "var(--muted)" }}>Phone Support</span>
+                    <h4 style={{ margin: "2px 0 0", fontSize: "1rem", fontWeight: 800, color: "var(--text)" }}>+91 98765 43210</h4>
+                  </div>
+                </div>
+
+                <div style={{ background: "var(--surface)", border: "1.5px solid var(--border)", borderRadius: "16px", padding: "20px", display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: "rgba(245,158,11,0.1)", color: "#f59e0b", display: "grid", placeItems: "center", fontSize: "1.2rem" }}>🌐</div>
+                  <div>
+                    <span style={{ fontSize: "0.75rem", fontWeight: 800, textTransform: "uppercase", color: "var(--muted)" }}>Full Contact Page</span>
+                    <h4 style={{ margin: "2px 0 0", fontSize: "0.92rem", fontWeight: 800 }}>
+                      <Link to="/contact" style={{ color: "var(--primary)", textDecoration: "none" }}>Open Dedicated Contact Page →</Link>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Contact Form */}
+              <div style={{ background: "var(--surface)", border: "1.5px solid var(--border)", borderRadius: "20px", padding: "28px", boxShadow: "var(--shadow)" }}>
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    const form = e.target;
+                    const name = form.name.value;
+                    const email = form.email.value;
+                    const message = form.message.value;
+                    if (!name || !email || !message) return;
+
+                    try {
+                      await addDoc(collection(db, "contact_inquiries"), {
+                        name, email, message, targetEmail: "shiftlyin@gmail.com", createdAt: serverTimestamp()
+                      });
+                    } catch (err) {
+                      console.error(err);
+                    }
+                    const mailtoUrl = `mailto:shiftlyin@gmail.com?subject=${encodeURIComponent("Inquiry from " + name)}&body=${encodeURIComponent(message)}`;
+                    window.open(mailtoUrl, "_blank");
+                    alert(`Thank you ${name}! Your inquiry has been sent to shiftlyin@gmail.com.`);
+                    form.reset();
+                  }}
+                  style={{ display: "flex", flexDirection: "column", gap: "14px" }}
+                >
+                  <h3 style={{ margin: 0, fontSize: "1.15rem", fontWeight: 800, color: "var(--text)" }}>Send Quick Message</h3>
+                  <input
+                    required
+                    name="name"
+                    placeholder="Your Full Name"
+                    style={{ width: "100%", padding: "10px 14px", borderRadius: "10px", border: "1px solid var(--border)", background: "var(--bg)", color: "var(--text)", fontSize: "0.88rem" }}
+                  />
+                  <input
+                    required
+                    type="email"
+                    name="email"
+                    placeholder="Your Email (e.g. name@gmail.com)"
+                    style={{ width: "100%", padding: "10px 14px", borderRadius: "10px", border: "1px solid var(--border)", background: "var(--bg)", color: "var(--text)", fontSize: "0.88rem" }}
+                  />
+                  <textarea
+                    required
+                    name="message"
+                    rows={4}
+                    placeholder="Type your message for shiftlyin@gmail.com..."
+                    style={{ width: "100%", padding: "10px 14px", borderRadius: "10px", border: "1px solid var(--border)", background: "var(--bg)", color: "var(--text)", fontSize: "0.88rem", resize: "vertical" }}
+                  />
+                  <button
+                    type="submit"
+                    style={{
+                      padding: "12px", borderRadius: "10px", background: "var(--primary)", color: "#fff",
+                      fontWeight: 800, border: "none", cursor: "pointer", fontSize: "0.92rem"
+                    }}
+                  >
+                    Send Message to shiftlyin@gmail.com ✉️
+                  </button>
+                </form>
+              </div>
+
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ═══ 11. FOOTER (DARK NAVY #0B1437) ═══ */}
+      <footer className="dark-navy-footer" id="footer">
         <div className="footer-max-width">
           <div className="footer-grid-layout">
             <div className="footer-brand-info">
