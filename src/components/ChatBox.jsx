@@ -1,6 +1,6 @@
 import { addDoc, collection, doc, getDoc, onSnapshot, orderBy, query, serverTimestamp, updateDoc } from "firebase/firestore";
 import { isDateTimePast } from "../utils/dateTime.js";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { db } from "../services/firebase.js";
 
@@ -23,6 +23,7 @@ import {
   File,
   Image,
   Mic,
+  MicOff,
   Paperclip,
   Phone,
   Search,
@@ -30,7 +31,15 @@ import {
   Smile,
   UserRound,
   Video,
+  X,
 } from "lucide-react";
+
+const EMOJIS = [
+  "😊", "👍", "❤️", "🔥", "🎉", "💼",
+  "👏", "😂", "🙌", "🚀", "💬", "🙏",
+  "✨", "💯", "🤝", "🌟", "📍", "⏰",
+  "💪", "😍", "🤩", "😎", "🥳", "✅"
+];
 
 export default function ChatBox({ chat, onBack }) {
   const { currentUser, profile } = useAuth();
@@ -38,6 +47,13 @@ export default function ChatBox({ chat, onBack }) {
   const [text, setText] = useState("");
   const [jobDetails, setJobDetails] = useState(null);
   const [counterparty, setCounterparty] = useState(null);
+
+  // Search & Dictation States
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const recognitionRef = useRef(null);
 
   useEffect(() => {
     if (!chat?.id) return undefined;
@@ -77,6 +93,47 @@ export default function ChatBox({ chat, onBack }) {
     });
   }, [chat?.id, chat?.jobId, chat?.studentId, chat?.businessId, currentUser.uid]);
 
+  // Voice Dictation (Speech Recognition)
+  function toggleSpeechRecognition() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Voice speech recognition is not supported in this browser. Please use Chrome, Edge, or Safari.");
+      return;
+    }
+
+    if (isListening) {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      setIsListening(false);
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognitionRef.current = recognition;
+      recognition.lang = "hi-IN"; // Supports Hindi & English dictation
+      recognition.interimResults = false;
+      recognition.continuous = false;
+
+      recognition.onstart = () => setIsListening(true);
+      recognition.onend = () => setIsListening(false);
+      recognition.onerror = () => setIsListening(false);
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        if (transcript) {
+          setText((prev) => (prev ? `${prev} ${transcript}` : transcript));
+        }
+      };
+
+      recognition.start();
+    } catch (err) {
+      console.error("Speech recognition error:", err);
+      setIsListening(false);
+    }
+  }
+
   async function sendMessage(event) {
     if (event) event.preventDefault();
     if (!text.trim() || !chat?.id) return;
@@ -112,6 +169,11 @@ export default function ChatBox({ chat, onBack }) {
   const isExpired = jobDetails && isDateTimePast(jobDetails.shiftEndsAt);
   const lastSentMessageIndex = [...messages].reverse().findIndex((m) => m.senderId === currentUser.uid);
   const lastSentMessageId = lastSentMessageIndex !== -1 ? messages[messages.length - 1 - lastSentMessageIndex].id : null;
+
+  // Filtered messages for search
+  const filteredMessages = searchQuery.trim()
+    ? messages.filter((m) => m.message.toLowerCase().includes(searchQuery.toLowerCase().trim()))
+    : messages;
 
   return (
     <div className="chat-box-container" style={{ display: "flex", width: "100%", height: "100%", gap: "16px", alignItems: "stretch" }}>
@@ -184,16 +246,59 @@ export default function ChatBox({ chat, onBack }) {
             <Button variant="ghost" size="icon" title="Video call" style={{ color: "var(--muted)" }}>
               <Video style={{ width: "18px", height: "18px" }} />
             </Button>
-            <Button variant="ghost" size="icon" title="Search message" style={{ color: "var(--muted)" }}>
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Search messages in chat"
+              onClick={() => {
+                setShowSearch(!showSearch);
+                if (showSearch) setSearchQuery("");
+              }}
+              style={{ color: showSearch ? "#2563eb" : "var(--muted)" }}
+            >
               <Search style={{ width: "18px", height: "18px" }} />
             </Button>
           </div>
         </div>
 
+        {/* Search Bar Overlay */}
+        {showSearch && (
+          <div
+            style={{
+              padding: "8px 16px",
+              background: "var(--surface-soft)",
+              borderBottom: "1px solid var(--border)",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px"
+            }}
+          >
+            <Search style={{ width: "16px", height: "16px", color: "var(--muted)" }} />
+            <Input
+              autoFocus
+              placeholder="Search chat messages..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{ flex: 1, fontSize: "0.84rem", height: "34px", borderRadius: "8px" }}
+            />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => {
+                setShowSearch(false);
+                setSearchQuery("");
+              }}
+              style={{ width: "28px", height: "28px" }}
+            >
+              <X style={{ width: "14px", height: "14px" }} />
+            </Button>
+          </div>
+        )}
+
         {/* Messages Feed */}
         <ScrollArea style={{ flex: 1, padding: "16px" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "10px", minHeight: "260px" }}>
-            {messages.map((message) => {
+            {filteredMessages.map((message) => {
               const isMine = message.senderId === currentUser.uid;
               const isLastSent = message.id === lastSentMessageId;
               return (
@@ -221,9 +326,9 @@ export default function ChatBox({ chat, onBack }) {
                 </div>
               );
             })}
-            {messages.length === 0 && (
+            {filteredMessages.length === 0 && (
               <p className="empty-state" style={{ margin: "auto", textAlign: "center", color: "var(--muted)", fontSize: "0.88rem" }}>
-                No messages yet. Say hello to get started!
+                {searchQuery ? `No messages found matching "${searchQuery}"` : "No messages yet. Say hello to get started!"}
               </p>
             )}
           </div>
@@ -239,20 +344,46 @@ export default function ChatBox({ chat, onBack }) {
             display: "flex",
             alignItems: "center",
             gap: "8px",
-            background: "var(--surface)"
+            background: "var(--surface)",
+            position: "relative"
           }}
         >
-          <Button type="button" variant="ghost" size="icon" style={{ color: "var(--muted)" }}>
-            <Smile style={{ width: "20px", height: "20px" }} />
-          </Button>
+          {/* Emoji Picker Dropdown */}
+          <DropdownMenu open={showEmojiPicker} onOpenChange={setShowEmojiPicker}>
+            <DropdownMenuTrigger asChild>
+              <Button type="button" variant="ghost" size="icon" style={{ color: "var(--muted)" }}>
+                <Smile style={{ width: "20px", height: "20px" }} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="top" align="start" style={{ zIndex: 99999, background: "var(--surface)", border: "1px solid var(--border)", padding: "10px", borderRadius: "14px", width: "260px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "6px" }}>
+                {EMOJIS.map((emoji) => (
+                  <button
+                    key={emoji}
+                    type="button"
+                    onClick={() => {
+                      setText((prev) => prev + emoji);
+                      setShowEmojiPicker(false);
+                    }}
+                    style={{ fontSize: "1.2rem", padding: "6px", background: "none", border: "none", cursor: "pointer", borderRadius: "6px" }}
+                    onMouseEnter={(e) => (e.target.style.background = "var(--surface-soft)")}
+                    onMouseLeave={(e) => (e.target.style.background = "transparent")}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
+          {/* Attachment Paperclip Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button type="button" variant="ghost" size="icon" style={{ color: "var(--muted)" }}>
                 <Paperclip style={{ width: "20px", height: "20px" }} />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent side="top" align="start">
+            <DropdownMenuContent side="top" align="start" style={{ zIndex: 99999 }}>
               <DropdownMenuItem>
                 <Image style={{ width: "16px", height: "16px", marginRight: "8px" }} /> Photos & Videos
               </DropdownMenuItem>
@@ -277,7 +408,7 @@ export default function ChatBox({ chat, onBack }) {
           <Input
             value={text}
             onChange={(event) => setText(event.target.value)}
-            placeholder={isExpired ? "Session expired. Chat is disabled." : "Type a message..."}
+            placeholder={isListening ? "Listening to your voice..." : isExpired ? "Session expired. Chat is disabled." : "Type a message..."}
             disabled={isExpired}
             style={{
               flex: 1,
@@ -290,6 +421,23 @@ export default function ChatBox({ chat, onBack }) {
             }}
           />
 
+          {/* Voice Dictation Speaker/Mic Button */}
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={toggleSpeechRecognition}
+            title={isListening ? "Listening... Click to stop" : "Speak to type"}
+            style={{
+              color: isListening ? "#ef4444" : "var(--muted)",
+              background: isListening ? "rgba(239, 68, 68, 0.15)" : "transparent",
+              borderRadius: "50%"
+            }}
+          >
+            {isListening ? <MicOff style={{ width: "20px", height: "20px", color: "#ef4444" }} /> : <Mic style={{ width: "20px", height: "20px" }} />}
+          </Button>
+
+          {/* Send Button */}
           <Button
             type="submit"
             disabled={isExpired || !text.trim()}
@@ -308,10 +456,6 @@ export default function ChatBox({ chat, onBack }) {
             }}
           >
             <Send style={{ width: "16px", height: "16px" }} />
-          </Button>
-
-          <Button type="button" variant="ghost" size="icon" style={{ color: "var(--muted)" }}>
-            <Mic style={{ width: "20px", height: "20px" }} />
           </Button>
         </form>
       </section>
