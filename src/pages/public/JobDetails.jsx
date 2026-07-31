@@ -1,6 +1,6 @@
 import { addDoc, collection, doc, getDoc, getDocs, query, serverTimestamp, updateDoc, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useParams, Navigate } from "react-router-dom";
+import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import useCurrentTime from "../../hooks/useCurrentTime.js";
 import { db } from "../../services/firebase.js";
@@ -9,6 +9,7 @@ import { calculateDistanceKm, formatDistance } from "../../utils/distance.js";
 
 export default function JobDetails() {
   const { jobId } = useParams();
+  const navigate = useNavigate();
   const { currentUser, profile } = useAuth();
   const [job, setJob] = useState(null);
   const [applicationStatus, setApplicationStatus] = useState(null);
@@ -188,7 +189,51 @@ export default function JobDetails() {
           <button type="button" onClick={() => setNotice("")} aria-label="Close application message">Close</button>
         </div>
       )}
-      <section className="panel detail-panel">
+      <section className="panel detail-panel" style={{ position: "relative" }}>
+        {/* Top Navigation & Close (✕) Bar */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", marginBottom: "16px", paddingBottom: "12px", borderBottom: "1px solid var(--border)" }}>
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              padding: "6px 14px",
+              borderRadius: "10px",
+              border: "1.5px solid var(--border)",
+              background: "var(--surface-soft)",
+              color: "var(--text)",
+              fontWeight: "700",
+              fontSize: "13px",
+              cursor: "pointer"
+            }}
+          >
+            ← Back
+          </button>
+
+          <button
+            type="button"
+            onClick={() => navigate(profile?.role ? `/${profile.role}` : "/")}
+            title="Close Job Details"
+            style={{
+              width: "36px",
+              height: "36px",
+              borderRadius: "50%",
+              border: "1.5px solid var(--border)",
+              background: "var(--surface-soft)",
+              color: "var(--text)",
+              fontWeight: "900",
+              fontSize: "16px",
+              display: "grid",
+              placeItems: "center",
+              cursor: "pointer"
+            }}
+          >
+            ✕
+          </button>
+        </div>
+
         <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap", marginBottom: "12px" }}>
           <span className={`status-pill ${isExpired ? "expired" : job.urgency === "urgent" ? "urgent" : ""}`}>
             {isExpired ? "Session expired" : job.urgency === "urgent" ? "Urgent" : job.status}

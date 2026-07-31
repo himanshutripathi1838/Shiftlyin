@@ -142,10 +142,6 @@ const AnimatedSignIn = ({
     <div className={`asi-container ${isDarkMode ? "dark" : "light"} ${className}`}>
       <canvas id="animated-particles-canvas" className="asi-particles-canvas" />
 
-      <div className="asi-theme-toggle" onClick={toggleDarkMode} title="Toggle theme">
-        {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-      </div>
-
       <div className="asi-login-card">
         <div className="asi-login-card-inner">
           <div className="asi-login-header">
