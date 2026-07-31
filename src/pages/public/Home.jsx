@@ -5,6 +5,7 @@ import fullLogoImg from "../../assets/shiftlyin-full-logo.png";
 import sLogoImg from "../../assets/shiftlyin-s-logo.png";
 import studentAvatarImg from "../../assets/student-3d-avatar.png";
 import businessAvatarImg from "../../assets/business-3d-avatar.png";
+import { motion } from "motion/react";
 import LogoCloud from "@/components/ui/logo-cloud-15";
 import TestimonialCarousel from "@/components/ui/testimonial";
 import DotCard from "@/components/ui/moving-dot-card";
@@ -172,7 +173,12 @@ export default function Home() {
       {/* ═══ 2. HERO SECTION ═══ */}
       <section className="hero-wrapper" id="hero">
         <div className="hero-grid">
-          <div className="hero-text">
+          <motion.div
+            className="hero-text"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, ease: "easeOut" }}
+          >
             <span className="hero-badge-pill">🎓 Earn While You Learn</span>
 
             <h1 className="hero-h1">
@@ -197,9 +203,14 @@ export default function Home() {
               <span className="trust-item"><span className="trust-check">✓</span> Trusted Businesses</span>
               <span className="trust-item"><span className="trust-check">✓</span> Safe & Secure</span>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="hero-visual">
+          <motion.div
+            className="hero-visual"
+            initial={{ opacity: 0, scale: 0.93 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.75, delay: 0.2, ease: "easeOut" }}
+          >
             <img
               src={heroImage}
               alt="College students looking at a phone tablet"
@@ -231,11 +242,17 @@ export default function Home() {
                 <span>Businesses</span>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Dark Rounded Search Bar */}
-        <div className="hero-search-container" id="jobs">
+        <motion.div
+          className="hero-search-container"
+          id="jobs"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.35, ease: "easeOut" }}
+        >
           <form className="search-grid" onSubmit={(e) => e.preventDefault()}>
             <div className="search-field">
               <input type="text" placeholder="🔍 Search job title or keyword" />
@@ -251,24 +268,6 @@ export default function Home() {
                 }}
                 onFocus={() => setIsLocDropdownOpen(true)}
               />
-              <button
-                type="button"
-                onClick={detectCurrentLocation}
-                title="Use Current GPS Location"
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  fontSize: "13px",
-                  padding: "4px 8px",
-                  color: "#2563eb",
-                  fontWeight: 800,
-                  whiteSpace: "nowrap",
-                  flexShrink: 0
-                }}
-              >
-                📍 GPS
-              </button>
 
               {isLocDropdownOpen && (
                 <div
@@ -353,7 +352,7 @@ export default function Home() {
               Search Jobs →
             </button>
           </form>
-        </div>
+        </motion.div>
       </section>
 
       {/* ═══ 3. TRUSTED-BY LOGO STRIP ═══ */}
