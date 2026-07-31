@@ -847,7 +847,7 @@ export default function Home() {
                 <li><a href="#faq">FAQ</a></li>
                 <li><Link to="/privacy">Privacy Policy</Link></li>
                 <li><Link to="/terms">Terms of Use</Link></li>
-                <li><Link to="/help">Contact Us</Link></li>
+                <li><Link to="/contact">Contact Us</Link></li>
               </ul>
             </div>
 

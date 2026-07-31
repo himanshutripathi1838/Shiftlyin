@@ -343,7 +343,7 @@ export default function ServicePage() {
             Get Started Now →
           </Link>
           <Link
-            to="/help"
+            to="/contact"
             onClick={() => handleCtaClick("Hero_Secondary")}
             className="ghost-button"
             style={{ padding: "14px 24px", fontSize: "1rem", fontWeight: "700", borderRadius: "12px", border: "1.5px solid var(--border)", color: "var(--text)", textDecoration: "none" }}
