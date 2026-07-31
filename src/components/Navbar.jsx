@@ -29,9 +29,6 @@ export default function Navbar() {
 
   function handleNavClick(e, link) {
     setIsMenuOpen(false);
-    if (link.isPageLink) {
-      return; // Handled by React Router Link
-    }
     if (location.pathname === "/") {
       e.preventDefault();
       if (link.id === "top") { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
@@ -46,7 +43,7 @@ export default function Navbar() {
     { label: "Businesses", id: "trusted", href: "/#trusted" },
     { label: "About Us", id: "why-choose", href: "/#why-choose" },
     { label: "How It Works", id: "how-it-works", href: "/#how-it-works" },
-    { label: "Contact", href: "/contact", isPageLink: true },
+    { label: "Contact", id: "contact", href: "/#contact" },
     { label: "FAQ", id: "faq", href: "/#faq" },
   ];
 
@@ -73,31 +70,14 @@ export default function Navbar() {
       <nav className={`nav-actions ${isMenuOpen ? "is-active" : ""}`}>
         <div className="nav-links-wrap" style={{ display: "flex", gap: "16px", alignItems: "center", flexWrap: "nowrap" }}>
           {NAV_LINKS.map(link => (
-            link.isPageLink ? (
-              <Link
-                key={link.label}
-                to={link.href}
-                onClick={e => handleNavClick(e, link)}
-                style={{
-                  color: location.pathname === link.href ? "var(--primary)" : "var(--muted)",
-                  fontWeight: location.pathname === link.href ? 800 : 600,
-                  fontSize: "0.84rem",
-                  textDecoration: "none",
-                  whiteSpace: "nowrap"
-                }}
-              >
-                {link.label}
-              </Link>
-            ) : (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={e => handleNavClick(e, link)}
-                style={{ color: "var(--muted)", fontWeight: 600, fontSize: "0.84rem", textDecoration: "none", whiteSpace: "nowrap" }}
-              >
-                {link.label}
-              </a>
-            )
+            <a
+              key={link.label}
+              href={link.href}
+              onClick={e => handleNavClick(e, link)}
+              style={{ color: "var(--muted)", fontWeight: 600, fontSize: "0.84rem", textDecoration: "none", whiteSpace: "nowrap" }}
+            >
+              {link.label}
+            </a>
           ))}
         </div>
 
