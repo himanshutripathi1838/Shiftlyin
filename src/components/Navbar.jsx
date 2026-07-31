@@ -43,7 +43,7 @@ export default function Navbar() {
     { label: "Businesses", id: "trusted", href: "/#trusted" },
     { label: "About Us", id: "why-choose", href: "/#why-choose" },
     { label: "How It Works", id: "how-it-works", href: "/#how-it-works" },
-    { label: "Contact", id: "contact", href: "/#contact" },
+    { label: "Contact", id: "contact", href: "/contact" },
     { label: "FAQ", id: "faq", href: "/#faq" },
   ];
 

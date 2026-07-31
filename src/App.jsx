@@ -17,6 +17,7 @@ import { initAnalytics, trackPageView } from "./utils/analytics.js";
 const ServicePage = lazy(() => import("./pages/public/ServicePage.jsx"));
 const Privacy = lazy(() => import("./pages/public/Privacy.jsx"));
 const Terms = lazy(() => import("./pages/public/Terms.jsx"));
+const Contact = lazy(() => import("./pages/public/Contact.jsx"));
 const JobDetails = lazy(() => import("./pages/public/JobDetails.jsx"));
 const StudentDashboard = lazy(() => import("./pages/student/StudentDashboard.jsx"));
 const BusinessDashboard = lazy(() => import("./pages/business/BusinessDashboard.jsx"));
@@ -75,6 +76,7 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/services/:slug" element={<ServicePage />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
 
