@@ -10,12 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CardDescription, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import {
   Brush,
   Camera,
@@ -48,11 +43,12 @@ export default function ChatBox({ chat, onBack }) {
   const [jobDetails, setJobDetails] = useState(null);
   const [counterparty, setCounterparty] = useState(null);
 
-  // Search & Dictation States
+  // Reusable UI Popover States
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [showAttachments, setShowAttachments] = useState(false);
   const recognitionRef = useRef(null);
 
   useEffect(() => {
@@ -112,7 +108,7 @@ export default function ChatBox({ chat, onBack }) {
     try {
       const recognition = new SpeechRecognition();
       recognitionRef.current = recognition;
-      recognition.lang = "hi-IN"; // Supports Hindi & English dictation
+      recognition.lang = "hi-IN";
       recognition.interimResults = false;
       recognition.continuous = false;
 
@@ -162,6 +158,8 @@ export default function ChatBox({ chat, onBack }) {
     });
 
     setText("");
+    setShowEmojiPicker(false);
+    setShowAttachments(false);
   }
 
   if (!chat) return <div className="empty-state">Chat unlocks after an application is accepted.</div>;
@@ -187,7 +185,8 @@ export default function ChatBox({ chat, onBack }) {
           background: "var(--surface)",
           border: "1px solid var(--border)",
           borderRadius: "16px",
-          overflow: "hidden"
+          overflow: "hidden",
+          position: "relative"
         }}
       >
         {/* Chat Header */}
@@ -334,6 +333,119 @@ export default function ChatBox({ chat, onBack }) {
           </div>
         </ScrollArea>
 
+        {/* Emoji Picker Popover */}
+        {showEmojiPicker && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: "68px",
+              left: "12px",
+              zIndex: 999999,
+              background: "var(--surface)",
+              border: "1px solid var(--border)",
+              boxShadow: "0 14px 40px rgba(0, 0, 0, 0.3)",
+              borderRadius: "16px",
+              padding: "12px",
+              width: "280px"
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+              <span style={{ fontSize: "0.78rem", fontWeight: 800, color: "var(--muted)" }}>SELECT EMOJI</span>
+              <button
+                type="button"
+                onClick={() => setShowEmojiPicker(false)}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "var(--muted)" }}
+              >
+                <X style={{ width: "14px", height: "14px" }} />
+              </button>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "6px" }}>
+              {EMOJIS.map((emoji) => (
+                <button
+                  key={emoji}
+                  type="button"
+                  onClick={() => {
+                    setText((prev) => prev + emoji);
+                    setShowEmojiPicker(false);
+                  }}
+                  style={{
+                    fontSize: "1.25rem",
+                    padding: "6px",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    borderRadius: "8px",
+                    transition: "background 0.15s"
+                  }}
+                  onMouseEnter={(e) => (e.target.style.background = "var(--surface-soft)")}
+                  onMouseLeave={(e) => (e.target.style.background = "transparent")}
+                >
+                  {emoji}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Attachment Options Popover */}
+        {showAttachments && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: "68px",
+              left: "48px",
+              zIndex: 999999,
+              background: "var(--surface)",
+              border: "1px solid var(--border)",
+              boxShadow: "0 14px 40px rgba(0, 0, 0, 0.3)",
+              borderRadius: "16px",
+              padding: "8px",
+              width: "210px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "4px"
+            }}
+          >
+            {[
+              { icon: Image, label: "Photos & Videos" },
+              { icon: Camera, label: "Camera" },
+              { icon: File, label: "Document" },
+              { icon: UserRound, label: "Contact" },
+              { icon: ChartBarIncreasing, label: "Poll" },
+              { icon: Brush, label: "Drawing" }
+            ].map((item) => (
+              <button
+                key={item.label}
+                type="button"
+                onClick={() => {
+                  setText((prev) => (prev ? `${prev} [Attached ${item.label}]` : `[Attached ${item.label}]`));
+                  setShowAttachments(false);
+                }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "8px 12px",
+                  fontSize: "0.84rem",
+                  fontWeight: 600,
+                  color: "var(--text)",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  borderRadius: "8px",
+                  textAlign: "left",
+                  transition: "background 0.15s"
+                }}
+                onMouseEnter={(e) => (e.target.style.background = "var(--surface-soft)")}
+                onMouseLeave={(e) => (e.target.style.background = "transparent")}
+              >
+                <item.icon style={{ width: "16px", height: "16px", color: "var(--primary)" }} />
+                <span>{item.label}</span>
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* Chat Input Bar */}
         <form
           onSubmit={sendMessage}
@@ -348,67 +460,38 @@ export default function ChatBox({ chat, onBack }) {
             position: "relative"
           }}
         >
-          {/* Emoji Picker Dropdown */}
-          <DropdownMenu open={showEmojiPicker} onOpenChange={setShowEmojiPicker}>
-            <DropdownMenuTrigger asChild>
-              <Button type="button" variant="ghost" size="icon" style={{ color: "var(--muted)" }}>
-                <Smile style={{ width: "20px", height: "20px" }} />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent side="top" align="start" style={{ zIndex: 99999, background: "var(--surface)", border: "1px solid var(--border)", padding: "10px", borderRadius: "14px", width: "260px" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "6px" }}>
-                {EMOJIS.map((emoji) => (
-                  <button
-                    key={emoji}
-                    type="button"
-                    onClick={() => {
-                      setText((prev) => prev + emoji);
-                      setShowEmojiPicker(false);
-                    }}
-                    style={{ fontSize: "1.2rem", padding: "6px", background: "none", border: "none", cursor: "pointer", borderRadius: "6px" }}
-                    onMouseEnter={(e) => (e.target.style.background = "var(--surface-soft)")}
-                    onMouseLeave={(e) => (e.target.style.background = "transparent")}
-                  >
-                    {emoji}
-                  </button>
-                ))}
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/* Emoji Trigger Button */}
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={() => {
+              setShowEmojiPicker(!showEmojiPicker);
+              setShowAttachments(false);
+            }}
+            style={{ color: showEmojiPicker ? "#2563eb" : "var(--muted)" }}
+          >
+            <Smile style={{ width: "20px", height: "20px" }} />
+          </Button>
 
-          {/* Attachment Paperclip Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button type="button" variant="ghost" size="icon" style={{ color: "var(--muted)" }}>
-                <Paperclip style={{ width: "20px", height: "20px" }} />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent side="top" align="start" style={{ zIndex: 99999 }}>
-              <DropdownMenuItem>
-                <Image style={{ width: "16px", height: "16px", marginRight: "8px" }} /> Photos & Videos
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Camera style={{ width: "16px", height: "16px", marginRight: "8px" }} /> Camera
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <File style={{ width: "16px", height: "16px", marginRight: "8px" }} /> Document
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <UserRound style={{ width: "16px", height: "16px", marginRight: "8px" }} /> Contact
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <ChartBarIncreasing style={{ width: "16px", height: "16px", marginRight: "8px" }} /> Poll
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Brush style={{ width: "16px", height: "16px", marginRight: "8px" }} /> Drawing
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/* Paperclip Attachments Button */}
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={() => {
+              setShowAttachments(!showAttachments);
+              setShowEmojiPicker(false);
+            }}
+            style={{ color: showAttachments ? "#2563eb" : "var(--muted)" }}
+          >
+            <Paperclip style={{ width: "20px", height: "20px" }} />
+          </Button>
 
           <Input
             value={text}
             onChange={(event) => setText(event.target.value)}
-            placeholder={isListening ? "Listening to your voice..." : isExpired ? "Session expired. Chat is disabled." : "Type a message..."}
+            placeholder={isListening ? "🔴 Listening... Speak now" : isExpired ? "Session expired. Chat is disabled." : "Type a message..."}
             disabled={isExpired}
             style={{
               flex: 1,
