@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext.jsx";
 import useCurrentTime from "../../hooks/useCurrentTime.js";
 import { db } from "../../services/firebase.js";
 import { formatDateTime, isDateTimePast } from "../../utils/dateTime.js";
+import { calculateDistanceKm, formatDistance } from "../../utils/distance.js";
 
 export default function JobDetails() {
   const { jobId } = useParams();
@@ -14,6 +15,7 @@ export default function JobDetails() {
   const [existingAppId, setExistingAppId] = useState(null);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
+  const [distanceKm, setDistanceKm] = useState(null);
   const now = useCurrentTime();
 
   const [businessVerified, setBusinessVerified] = useState(false);
@@ -23,6 +25,7 @@ export default function JobDetails() {
       if (snapshot.exists()) {
         const jobData = { id: snapshot.id, ...snapshot.data() };
         setJob(jobData);
+
         if (jobData.createdBy) {
           try {
             const bizSnapshot = await getDoc(doc(db, "businesses", jobData.createdBy));
@@ -55,6 +58,44 @@ export default function JobDetails() {
     }
   }, [jobId, currentUser, profile]);
 
+  // Calculate distance between student and job location
+  useEffect(() => {
+    if (job?.latitude && job?.longitude) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const dist = calculateDistanceKm(
+              pos.coords.latitude,
+              pos.coords.longitude,
+              Number(job.latitude),
+              Number(job.longitude)
+            );
+            if (!isNaN(dist)) setDistanceKm(dist);
+          },
+          () => {
+            if (profile?.latitude && profile?.longitude) {
+              const dist = calculateDistanceKm(
+                Number(profile.latitude),
+                Number(profile.longitude),
+                Number(job.latitude),
+                Number(job.longitude)
+              );
+              if (!isNaN(dist)) setDistanceKm(dist);
+            }
+          }
+        );
+      } else if (profile?.latitude && profile?.longitude) {
+        const dist = calculateDistanceKm(
+          Number(profile.latitude),
+          Number(profile.longitude),
+          Number(job.latitude),
+          Number(job.longitude)
+        );
+        if (!isNaN(dist)) setDistanceKm(dist);
+      }
+    }
+  }, [job, profile]);
+
   async function apply() {
     if (isDateTimePast(job.shiftEndsAt)) {
       setNotice("This job session has expired and applications are closed.");
@@ -64,13 +105,17 @@ export default function JobDetails() {
       setNotice("Only students can apply.");
       return;
     }
+    if (distanceKm !== null && distanceKm > 20) {
+      setNotice(`This workplace is ${distanceKm.toFixed(1)} km away. You can only apply to jobs within a 20 km radius.`);
+      return;
+    }
     if (applicationStatus === "pending" || applicationStatus === "accepted") {
-      setNotice("You have already applied for this job.");
+      setNotice(`You have already applied. Status: ${applicationStatus.toUpperCase()}. Wait for the business owner's response.`);
       return;
     }
     setError("");
     try {
-      if (applicationStatus === "rejected" && existingAppId) {
+      if ((applicationStatus === "rejected" || applicationStatus === "cancelled") && existingAppId) {
         await updateDoc(doc(db, "applications", existingAppId), {
           status: "pending",
           createdAt: serverTimestamp()
@@ -132,22 +177,48 @@ export default function JobDetails() {
   }
 
   const isExpired = isDateTimePast(job.shiftEndsAt, now);
+  const isTooFar = distanceKm !== null && distanceKm > 20;
 
   return (
     <main className="page-shell">
       {notice && (
         <div className="floating-notice" role="status" aria-live="polite">
-          <strong>Application sent</strong>
+          <strong>Application Info</strong>
           <span>{notice}</span>
           <button type="button" onClick={() => setNotice("")} aria-label="Close application message">Close</button>
         </div>
       )}
       <section className="panel detail-panel">
-        <span className={`status-pill ${isExpired ? "expired" : job.urgency === "urgent" ? "urgent" : ""}`}>
-          {isExpired ? "Session expired" : job.urgency === "urgent" ? "Urgent" : job.status}
-        </span>
+        <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap", marginBottom: "12px" }}>
+          <span className={`status-pill ${isExpired ? "expired" : job.urgency === "urgent" ? "urgent" : ""}`}>
+            {isExpired ? "Session expired" : job.urgency === "urgent" ? "Urgent" : job.status}
+          </span>
+          {distanceKm !== null && (
+            <span
+              style={{
+                padding: "4px 12px",
+                borderRadius: "14px",
+                fontSize: "12px",
+                fontWeight: "800",
+                background: isTooFar ? "#fef2f2" : "#f0fdf4",
+                color: isTooFar ? "#ef4444" : "#16a34a",
+                border: `1px solid ${isTooFar ? "#fca5a5" : "#86efac"}`
+              }}
+            >
+              📍 {formatDistance(distanceKm)} {isTooFar ? "(Outside 20 km Range)" : "(Within 20 km Range)"}
+            </span>
+          )}
+        </div>
+
         <h1>{job.title}</h1>
         <p>{job.description}</p>
+
+        {isTooFar && (
+          <div style={{ background: "#fff5f5", border: "1.5px solid #feb2b2", borderRadius: "14px", padding: "16px 20px", color: "#c53030", margin: "16px 0", fontSize: "14px", fontWeight: "600" }}>
+            ⛔ <strong>Distance Restriction:</strong> This workplace is located <strong>{distanceKm.toFixed(1)} km</strong> away from you. Applications are restricted to candidates within a <strong>20 km radius</strong>.
+          </div>
+        )}
+
         <div className="metric-grid">
           <div className="metric-card"><span>Salary</span><strong>{job.salary}</strong></div>
           <div className="metric-card">
@@ -165,10 +236,32 @@ export default function JobDetails() {
           <div className="metric-card"><span>Ends</span><strong>{formatDateTime(job.shiftEndsAt) || "-"}</strong></div>
         </div>
         {error && <p className="form-error">{error}</p>}
+
         {profile?.role === "student" && !isExpired && (
-          <button className="primary-button" onClick={apply} disabled={applicationStatus === "pending" || applicationStatus === "accepted"}>
-            {applicationStatus === "pending" || applicationStatus === "accepted" ? "Applied" : "Apply now"}
-          </button>
+          <div style={{ marginTop: "24px" }}>
+            <button
+              className="primary-button"
+              onClick={apply}
+              disabled={isTooFar || applicationStatus === "pending" || applicationStatus === "accepted"}
+              style={{
+                borderRadius: "12px",
+                padding: "12px 28px",
+                fontWeight: "800",
+                fontSize: "15px",
+                background: (applicationStatus === "pending" || applicationStatus === "accepted" || isTooFar) ? "var(--muted)" : "var(--primary)"
+              }}
+            >
+              {isTooFar
+                ? "Outside 20 km Radius"
+                : applicationStatus === "pending"
+                ? "Applied (Pending Owner Confirmation)"
+                : applicationStatus === "accepted"
+                ? "Accepted 🎉"
+                : applicationStatus === "rejected" || applicationStatus === "cancelled"
+                ? "Re-apply for Job 🔄"
+                : "Apply Now"}
+            </button>
+          </div>
         )}
       </section>
     </main>

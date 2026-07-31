@@ -78,7 +78,9 @@ export default function StudentDashboard() {
       }
     }
     return { ...job, distance };
-  }).sort((a, b) => {
+  })
+  .filter((job) => job.distance === null || job.distance <= 20) // 20 KM Range Restriction
+  .sort((a, b) => {
     if (a.distance !== null && b.distance !== null) return a.distance - b.distance;
     if (a.distance !== null) return -1;
     if (b.distance !== null) return 1;
@@ -130,15 +132,19 @@ export default function StudentDashboard() {
       setNotice("This job session has expired and applications are closed.");
       return;
     }
+    if (job.distance !== null && job.distance > 20) {
+      setNotice(`This workplace is ${job.distance.toFixed(1)} km away. Applications are restricted to candidates within a 20 km radius.`);
+      return;
+    }
     const existingApp = applications.find((application) => application.jobId === job.id);
     if (existingApp && (existingApp.status === "pending" || existingApp.status === "accepted")) {
-      setNotice("You already applied for this job.");
+      setNotice(`You already applied for this job. Status: ${existingApp.status.toUpperCase()}. Wait for owner response.`);
       return;
     }
 
     try {
       setError("");
-      if (existingApp && existingApp.status === "rejected") {
+      if (existingApp && (existingApp.status === "rejected" || existingApp.status === "cancelled")) {
         await updateDoc(doc(db, "applications", existingApp.id), {
           status: "pending",
           createdAt: serverTimestamp()

@@ -63,10 +63,10 @@ export default function Attendance() {
       }
 
       const alreadyCheckedIn = records.some(
-        (record) => record.jobId === application.jobId && record.status === "checked-in"
+        (record) => record.jobId === application.jobId && (record.status === "checked-in" || record.status === "completed")
       );
       if (alreadyCheckedIn) {
-        setNotice("You are already checked in for this job.");
+        setNotice("You have already checked in or completed this shift. Single check-in limit enforced.");
         return;
       }
 
@@ -307,24 +307,29 @@ export default function Attendance() {
                   </button>
                 )}
                 {record.status === "completed" && (
-                  <div className="rating-inline" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                    <select
-                      value={ratings[record.id] || ""}
-                      onChange={(event) => setRatings((current) => ({ ...current, [record.id]: event.target.value }))}
-                      disabled={(profile.role === "business" && record.studentRatedByBusiness) || (profile.role === "student" && record.businessRatedByStudent)}
-                      style={{ padding: "6px 10px", borderRadius: "8px", fontSize: "13px" }}
-                    >
-                      <option value="">Select Rating</option>
-                      <option value="5">⭐⭐⭐⭐⭐ 5 - Excellent</option>
-                      <option value="4">⭐⭐⭐⭐ 4 - Good</option>
-                      <option value="3">⭐⭐⭐ 3 - Average</option>
-                      <option value="2">⭐⭐ 2 - Poor</option>
-                      <option value="1">⭐ 1 - Bad</option>
-                    </select>
-                    <button className="primary-button" onClick={() => submitRating(record)} style={{ borderRadius: "8px", padding: "6px 14px", fontSize: "13px" }}>
-                      Submit
-                    </button>
-                  </div>
+                  ((profile.role === "business" && record.studentRatedByBusiness) || (profile.role === "student" && record.businessRatedByStudent)) ? (
+                    <span style={{ background: "#f0fdf4", color: "#16a34a", padding: "6px 14px", borderRadius: "10px", fontWeight: "800", fontSize: "12px", border: "1px solid #86efac", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                      ⭐ Rating Submitted (Single Rating Limit)
+                    </span>
+                  ) : (
+                    <div className="rating-inline" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                      <select
+                        value={ratings[record.id] || ""}
+                        onChange={(event) => setRatings((current) => ({ ...current, [record.id]: event.target.value }))}
+                        style={{ padding: "6px 10px", borderRadius: "8px", fontSize: "13px" }}
+                      >
+                        <option value="">Select Rating</option>
+                        <option value="5">⭐⭐⭐⭐⭐ 5 - Excellent</option>
+                        <option value="4">⭐⭐⭐⭐ 4 - Good</option>
+                        <option value="3">⭐⭐⭐ 3 - Average</option>
+                        <option value="2">⭐⭐ 2 - Poor</option>
+                        <option value="1">⭐ 1 - Bad</option>
+                      </select>
+                      <button className="primary-button" onClick={() => submitRating(record)} style={{ borderRadius: "8px", padding: "6px 14px", fontSize: "13px" }}>
+                        Submit Rating
+                      </button>
+                    </div>
+                  )
                 )}
               </article>
             ))}
