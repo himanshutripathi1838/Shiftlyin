@@ -348,10 +348,10 @@ export default function Home() {
         <Reveal>
           <div className="land-center" style={{ marginBottom: "3rem" }}>
             <span className="showcase-top-badge">
-              HOW IT WORKS & WHY CHOOSE SHIFTLYIN
+              HOW IT WORKS
             </span>
             <h1 className="showcase-main-h1">
-              How <span className="highlight-blue">Shiftlyin</span> Works & Why Choose <span className="highlight-blue">Shiftlyin</span>
+              How <span className="highlight-blue">Shiftlyin</span> Works
             </h1>
             <p className="showcase-main-sub">
               One Platform. Endless Opportunities. Trusted by Students & Businesses.
