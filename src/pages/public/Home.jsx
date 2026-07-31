@@ -475,7 +475,7 @@ export default function Home() {
                 <motion.div
                   key={w.num}
                   className="why-feature-box"
-                  style={{ background: w.bg, borderColor: `${w.color}30` }}
+                  style={{ '--box-color': w.color }}
                   whileHover={{ y: -7, scale: 1.04 }}
                   whileTap={{ scale: 0.97 }}
                   transition={{ duration: 0.2 }}

@@ -699,7 +699,8 @@
 }
 
 .why-feature-box {
-  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--box-color, #2563eb) 6%, var(--surface));
+  border: 1.5px solid color-mix(in srgb, var(--box-color, #2563eb) 25%, transparent);
   border-radius: 16px;
   padding: 1rem 0.85rem;
   box-shadow: var(--shadow-sm);
@@ -710,7 +711,38 @@
 
 .why-feature-box:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow);
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--box-color, #2563eb) 20%, transparent);
+  border-color: var(--box-color, #2563eb);
+}
+
+.why-box-title {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 0.35rem 0;
+}
+
+.why-box-desc {
+  font-size: 0.76rem;
+  color: var(--muted);
+  line-height: 1.45;
+  margin: 0;
+}
+
+:root.dark .why-feature-box,
+.dark .why-feature-box {
+  background: color-mix(in srgb, var(--box-color, #2563eb) 14%, var(--surface));
+  border-color: color-mix(in srgb, var(--box-color, #2563eb) 35%, transparent);
+}
+
+:root.dark .why-box-title,
+.dark .why-box-title {
+  color: #f8fafc !important;
+}
+
+:root.dark .why-box-desc,
+.dark .why-box-desc {
+  color: #94a3b8 !important;
 }
 
 .why-box-top {
