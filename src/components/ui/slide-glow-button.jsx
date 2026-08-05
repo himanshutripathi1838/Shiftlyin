@@ -1,13 +1,12 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-export function Component({ text = "READY TO START YOUR JOURNEY?", className = "" }) {
-  const formattedText = `\u00A0${text}\u00A0`;
+export function Component({ text = "Ready to Start Your Journey?", className = "" }) {
   return (
-    <button type="button" className={cn("slide-glow-btn", className)} data-text={text}>
-      <span className="actual-text">{formattedText}</span>
-      <span aria-hidden="true" className="hover-text">{formattedText}</span>
-    </button>
+    <h2 className={cn("slide-glow-heading", className)}>
+      <span className="actual-text">{text}</span>
+      <span aria-hidden="true" className="hover-text">{text}</span>
+    </h2>
   );
 }
 
