@@ -689,8 +689,11 @@ export default function Home() {
           <Reveal>
             <div style={{ textAlign: "center", marginBottom: "40px" }}>
               <span className="eyebrow-pill">📩 Get in Touch</span>
-              <h2 style={{ fontSize: "2.2rem", fontWeight: 900, margin: "10px 0 8px", color: "var(--text)" }}>
-                Contact Shiftlyin Support
+              <h2 style={{ fontSize: "2.2rem", fontWeight: 900, margin: "10px 0 8px", color: "var(--text)", display: "flex", justifyContent: "center", width: "100%" }}>
+                <GradualSpacing
+                  text="Contact Shiftlyin Support"
+                  className="font-extrabold text-2xl sm:text-3xl md:text-4xl color-var-text"
+                />
               </h2>
               <p style={{ color: "var(--muted)", fontSize: "1rem", maxWidth: "600px", margin: "0 auto" }}>
                 Have questions or need assistance? Email us directly at <strong style={{ color: "var(--primary)" }}>shiftlyin@gmail.com</strong> or fill out the quick form below.
