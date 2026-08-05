@@ -9,6 +9,7 @@ import { motion } from "motion/react";
 import LogoCloud from "@/components/ui/logo-cloud-15";
 import TestimonialCarousel from "@/components/ui/testimonial";
 import DotCard from "@/components/ui/moving-dot-card";
+import TextLoop from "@/components/ui/text-loop";
 import SeoHead from "../../components/seo/SeoHead.jsx";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../../services/firebase.js";
@@ -176,9 +177,15 @@ export default function Home() {
           >
             <span className="hero-badge-pill">🎓 Earn While You Learn</span>
 
-            <h1 className="hero-h1">
-              Find Part-Time Jobs<br />Near You
-            </h1>
+            <div style={{ margin: "1rem 0" }}>
+              <TextLoop
+                staticText="Find Part-Time Jobs"
+                rotatingTexts={["Near You", "Smarter", "Faster", "Securely", "Limitlessly"]}
+                interval={2500}
+                staticTextClassName="text-slate-900 dark:text-white font-extrabold text-3xl sm:text-4xl md:text-5xl"
+                rotatingTextClassName="font-extrabold text-3xl sm:text-4xl md:text-5xl"
+              />
+            </div>
 
             <p className="hero-p">
               Shiftlyin connects college students with trusted businesses for flexible, part-time opportunities.
