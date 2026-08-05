@@ -11,6 +11,7 @@ import TestimonialCarousel from "@/components/ui/testimonial";
 import DotCard from "@/components/ui/moving-dot-card";
 import TextLoop from "@/components/ui/text-loop";
 import GradualSpacing from "@/components/ui/gradual-spacing";
+import SlideGlowButton from "@/components/ui/slide-glow-button";
 import SeoHead from "../../components/seo/SeoHead.jsx";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../../services/firebase.js";
@@ -669,7 +670,9 @@ export default function Home() {
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.3 }}
           >
-            <h2>Ready to Start Your Journey?</h2>
+            <div style={{ margin: "10px 0 16px" }}>
+              <SlideGlowButton text="Ready to Start Your Journey?" />
+            </div>
             <p>Join thousands of students and businesses already growing with Shiftlyin.</p>
             <div className="hero-btns" style={{ justifyContent: "center" }}>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}>
