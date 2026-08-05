@@ -177,15 +177,13 @@ export default function Home() {
           >
             <span className="hero-badge-pill">🎓 Earn While You Learn</span>
 
-            <div style={{ margin: "1rem 0" }}>
+            <h1 className="hero-h1" style={{ margin: "1rem 0" }}>
               <TextLoop
                 staticText="Find Part-Time Jobs"
                 rotatingTexts={["Near You", "Smarter", "Faster", "Securely", "Limitlessly"]}
                 interval={2500}
-                staticTextClassName="text-slate-900 dark:text-white font-extrabold text-3xl sm:text-4xl md:text-5xl"
-                rotatingTextClassName="font-extrabold text-3xl sm:text-4xl md:text-5xl"
               />
-            </div>
+            </h1>
 
             <p className="hero-p">
               Shiftlyin connects college students with trusted businesses for flexible, part-time opportunities.

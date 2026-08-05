@@ -5,18 +5,13 @@ import {
   m,
   AnimatePresence,
 } from "motion/react";
-import { cn } from "@/lib/utils";
 
 export default function TextLoop({
-  staticText = "Shift",
-  rotatingTexts = ["Smarter", "Faster", "Better", "Securely", "Limitlessly"],
-  className,
-  interval = 3000,
-  transition = { duration: 0.8, ease: "easeInOut" },
-  staticTextClassName,
-  rotatingTextClassName,
-  backgroundClassName,
-  cursorClassName,
+  staticText = "Find Part-Time Jobs",
+  rotatingTexts = ["Near You", "Smarter", "Faster", "Securely", "Limitlessly"],
+  className = "",
+  interval = 2500,
+  transition = { duration: 0.45, ease: "easeInOut" },
 }) {
   const [index, setIndex] = useState(0);
 
@@ -29,61 +24,64 @@ export default function TextLoop({
 
   return (
     <LazyMotion features={domAnimation}>
-      <div
-        className={cn(
-          "flex flex-row items-center justify-start w-fit text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight",
-          className
-        )}
-      >
-        <span className={cn("mr-3 whitespace-nowrap", staticTextClassName)}>
+      <span className={`text-loop-container ${className}`} style={{ display: "inline-flex", flexWrap: "wrap", alignItems: "center", gap: "0.4rem" }}>
+        <span style={{
+          color: "var(--text, #0f172a)",
+          fontWeight: 900,
+          fontSize: "inherit",
+          lineHeight: 1.15
+        }}>
           {staticText}
         </span>
-        <div className="relative flex items-center">
+        <span style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
           <AnimatePresence mode="wait">
-            <m.div
+            <m.span
               key={rotatingTexts[index]}
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: "auto", opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
+              initial={{ y: 14, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -14, opacity: 0 }}
               transition={transition}
-              className="overflow-hidden whitespace-nowrap relative"
+              style={{
+                display: "inline-block",
+                padding: "2px 10px",
+                borderRadius: "10px",
+                background: "linear-gradient(135deg, rgba(37, 99, 235, 0.12) 0%, rgba(124, 58, 237, 0.18) 100%)",
+                border: "1px solid rgba(37, 99, 235, 0.25)",
+                lineHeight: 1.15
+              }}
             >
-              {/* Background gradient box */}
-              <div
-                className={cn(
-                  "absolute inset-0",
-                  "bg-gradient-to-r from-transparent via-blue-200/30 to-blue-200",
-                  "dark:from-transparent dark:via-blue-950/30 dark:to-blue-950/60",
-                  backgroundClassName
-                )}
-              />
               <span
-                className={cn(
-                  "relative bg-clip-text text-transparent",
-                  "bg-gradient-to-r from-blue-600 to-indigo-600",
-                  "dark:bg-gradient-to-r from-blue-400 to-indigo-400 pr-1",
-                  rotatingTextClassName
-                )}
+                style={{
+                  fontWeight: 900,
+                  fontSize: "inherit",
+                  background: "linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  display: "inline-block"
+                }}
               >
                 {rotatingTexts[index]}
               </span>
-            </m.div>
+            </m.span>
           </AnimatePresence>
-          {/* Cursor Line */}
-          <m.div
-            className={cn(
-              "w-[3px] md:w-[4px] bg-blue-600 h-[1.10em] sm:h-[1em]",
-              cursorClassName
-            )}
-            animate={{ opacity: [1, 0.5] }}
+          <m.span
+            style={{
+              width: "3px",
+              height: "0.9em",
+              backgroundColor: "#2563eb",
+              marginLeft: "4px",
+              display: "inline-block",
+              borderRadius: "2px"
+            }}
+            animate={{ opacity: [1, 0.2] }}
             transition={{
-              duration: 0.8,
+              duration: 0.7,
               repeat: Infinity,
               repeatType: "reverse",
             }}
           />
-        </div>
-      </div>
+        </span>
+      </span>
     </LazyMotion>
   );
 }
