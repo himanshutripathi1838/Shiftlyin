@@ -10,6 +10,7 @@ import LogoCloud from "@/components/ui/logo-cloud-15";
 import TestimonialCarousel from "@/components/ui/testimonial";
 import DotCard from "@/components/ui/moving-dot-card";
 import TextLoop from "@/components/ui/text-loop";
+import GradualSpacing from "@/components/ui/gradual-spacing";
 import SeoHead from "../../components/seo/SeoHead.jsx";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../../services/firebase.js";
@@ -369,8 +370,11 @@ export default function Home() {
             <span className="showcase-top-badge">
               HOW IT WORKS
             </span>
-            <h1 className="showcase-main-h1">
-              How <span className="highlight-blue">Shiftlyin</span> Works
+            <h1 className="showcase-main-h1" style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+              <GradualSpacing
+                text="How Shiftlyin Works"
+                className="font-extrabold text-2xl sm:text-4xl md:text-5xl color-var-text"
+              />
             </h1>
             <p className="showcase-main-sub">
               One Platform. Endless Opportunities. Trusted by Students & Businesses.
@@ -463,8 +467,11 @@ export default function Home() {
         <div id="why-choose" style={{ paddingTop: "3.5rem" }}>
           <Reveal>
             <div className="land-center" style={{ marginBottom: "2.5rem" }}>
-              <h2 className="land-heading" style={{ fontSize: "2rem" }}>
-                Why Choose <span className="highlight-blue">Shiftlyin</span>
+              <h2 className="land-heading" style={{ fontSize: "2rem", display: "flex", justifyContent: "center", width: "100%" }}>
+                <GradualSpacing
+                  text="Why Choose Shiftlyin"
+                  className="font-extrabold text-2xl sm:text-3xl md:text-4xl color-var-text"
+                />
               </h2>
             </div>
           </Reveal>
