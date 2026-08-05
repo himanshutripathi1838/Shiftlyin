@@ -64,22 +64,6 @@ export default function TextLoop({
               </span>
             </m.span>
           </AnimatePresence>
-          <m.span
-            style={{
-              width: "3px",
-              height: "0.9em",
-              backgroundColor: "#2563eb",
-              marginLeft: "4px",
-              display: "inline-block",
-              borderRadius: "2px"
-            }}
-            animate={{ opacity: [1, 0.2] }}
-            transition={{
-              duration: 0.7,
-              repeat: Infinity,
-              repeatType: "reverse",
-            }}
-          />
         </span>
       </span>
     </LazyMotion>
