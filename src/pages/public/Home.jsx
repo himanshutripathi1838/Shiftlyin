@@ -625,7 +625,7 @@ export default function Home() {
       </section>
 
       {/* ═══ 8. FREQUENTLY ASKED QUESTIONS (MOCKUP STYLED 2-COLUMN) ═══ */}
-      <section className="land-section" id="faq" style={{ padding: "60px 0" }}>
+      <section className="final-cta-container" id="faq" style={{ marginBottom: "50px" }}>
         <Reveal>
           <div className="faq-mockup-wrapper" style={{
             display: "grid",
