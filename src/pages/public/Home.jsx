@@ -624,39 +624,153 @@ export default function Home() {
         </Reveal>
       </section>
 
-      {/* ═══ 8. FAQ + MOBILE APP TEASER ═══ */}
-      <section className="land-section" id="faq">
+      {/* ═══ 8. FREQUENTLY ASKED QUESTIONS (MOCKUP STYLED 2-COLUMN) ═══ */}
+      <section className="land-section" id="faq" style={{ padding: "60px 0" }}>
         <Reveal>
-          <div className="two-col-layout" style={{ gridTemplateColumns: "1.3fr 0.7fr" }}>
-            <div>
-              <h2 className="land-heading" style={{ fontSize: "1.35rem" }}>Frequently Asked Questions</h2>
-              <div className="faq-grid-2col">
-                {FAQS.map((faq, idx) => (
-                  <div className={`faq-accordion-box ${openFaq === idx ? "open" : ""}`} key={idx}>
-                    <button
-                      className={`faq-question-btn ${openFaq === idx ? "open" : ""}`}
-                      onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                    >
-                      {faq.q}
-                    </button>
-                    <div className={`faq-answer-text ${openFaq === idx ? "open" : ""}`}>
-                      {faq.a}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <motion.div
-                className="mobile-teaser-card"
-                whileHover={{ y: -6, scale: 1.02 }}
-                transition={{ duration: 0.3 }}
+          <div className="faq-mockup-wrapper" style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "28px",
+            alignItems: "stretch"
+          }}>
+            {/* LEFT COLUMN: VIBRANT BLUE HERO CARD WITH CENTER LOGO & CIRCUIT LINES */}
+            <motion.div
+              className="faq-blue-card"
+              whileHover={{ scale: 1.01 }}
+              transition={{ duration: 0.3 }}
+              style={{
+                background: "linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #1e40af 100%)",
+                borderRadius: "24px",
+                padding: "40px 32px",
+                color: "#ffffff",
+                position: "relative",
+                overflow: "hidden",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                minHeight: "440px",
+                boxShadow: "0 20px 40px -15px rgba(37, 99, 235, 0.4)"
+              }}
+            >
+              {/* Background Tech Circuit Pattern Lines */}
+              <svg
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  opacity: 0.25,
+                  pointerEvents: "none"
+                }}
+                viewBox="0 0 400 400"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <div className="qr-placeholder-box">📱</div>
-                <h4>Shiftlyin Coming Soon on Mobile</h4>
-                <p>Scan the QR code to get the app when we launch!</p>
-              </motion.div>
+                <path d="M 0 100 H 150 V 200 H 250 V 300 H 400" stroke="#ffffff" strokeWidth="1.5" strokeDasharray="4 4" />
+                <path d="M 400 80 H 220 V 180 H 120 V 400" stroke="#ffffff" strokeWidth="1.5" strokeDasharray="3 3" />
+                <circle cx="150" cy="200" r="4" fill="#ffffff" />
+                <circle cx="250" cy="200" r="4" fill="#ffffff" />
+                <circle cx="220" cy="180" r="4" fill="#ffffff" />
+              </svg>
+
+              {/* Top Title & Subtitle */}
+              <div style={{ position: "relative", zIndex: 2 }}>
+                <h2 style={{ fontSize: "2.4rem", fontWeight: 900, lineHeight: 1.15, marginBottom: "12px", color: "#ffffff" }}>
+                  Frequently<br />Asked Questions
+                </h2>
+                <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "0.95rem", lineHeight: 1.5, maxWidth: "340px" }}>
+                  Find Answers to Common Questions and Get the Most Out of Shiftlyin Experience. Everything You Need to Know to Get Started!
+                </p>
+              </div>
+
+              {/* Center Glowing Logo Badge */}
+              <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "center", alignItems: "center", margin: "30px 0" }}>
+                <motion.div
+                  animate={{ scale: [1, 1.06, 1], boxShadow: ["0 0 20px rgba(255,255,255,0.5)", "0 0 35px rgba(255,255,255,0.9)", "0 0 20px rgba(255,255,255,0.5)"] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  style={{
+                    width: "72px",
+                    height: "72px",
+                    borderRadius: "20px",
+                    background: "#ffffff",
+                    display: "grid",
+                    placeItems: "center",
+                    padding: "12px"
+                  }}
+                >
+                  <img src={sLogoImg} alt="Shiftlyin Logo" style={{ width: "42px", height: "42px", objectFit: "contain" }} />
+                </motion.div>
+              </div>
+
+              {/* Bottom Subtle Tagline */}
+              <div style={{ position: "relative", zIndex: 2, fontSize: "0.85rem", color: "rgba(255,255,255,0.7)", textAlign: "center" }}>
+                ⚡ Shiftlyin Support & Knowledge Base
+              </div>
+            </motion.div>
+
+            {/* RIGHT COLUMN: SLEEK ACCORDION LIST */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              {FAQS.map((faq, idx) => {
+                const isOpen = openFaq === idx;
+                return (
+                  <div
+                    key={idx}
+                    style={{
+                      background: "var(--surface)",
+                      border: "1.5px solid var(--border)",
+                      borderRadius: "16px",
+                      overflow: "hidden",
+                      transition: "all 0.25s ease"
+                    }}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setOpenFaq(isOpen ? null : idx)}
+                      style={{
+                        width: "100%",
+                        padding: "20px 24px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        gap: "16px",
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        textAlign: "left",
+                        color: "var(--text)",
+                        fontWeight: 700,
+                        fontSize: "1rem"
+                      }}
+                    >
+                      <span>{faq.q}</span>
+                      <span style={{
+                        fontSize: "0.85rem",
+                        color: isOpen ? "var(--primary)" : "var(--muted)",
+                        transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                        transition: "transform 0.25s ease",
+                        flexShrink: 0
+                      }}>
+                        ▼
+                      </span>
+                    </button>
+
+                    {isOpen && (
+                      <div
+                        style={{
+                          padding: "0 24px 20px 24px",
+                          color: "var(--muted)",
+                          fontSize: "0.92rem",
+                          lineHeight: 1.6,
+                          borderTop: "1px solid var(--border)",
+                          paddingTop: "16px"
+                        }}
+                      >
+                        {faq.a}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </Reveal>
